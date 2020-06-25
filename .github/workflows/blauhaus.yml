@@ -1,0 +1,31 @@
+name: Blauhaus Packages
+on:
+  push:
+    branches:
+    - release/*
+
+jobs:
+
+  build:
+     runs-on: ubuntu-latest
+     steps:
+     - uses: actions/checkout@v1
+     - name: Set Version
+       run: |
+        npm install @actions/core --save
+        node ./scripts/getversion.js
+     - name: Build NuGet Package
+       run: |
+        dotnet build ./src/Blauhaus.Domain.sln --configuration Release
+        dotnet pack ./src/Blauhaus.Domain.Client/Blauhaus.Domain.Client.csproj -p:PackageVersion=${VERSION_NAME} --no-build --output ./ --configuration Release 
+        dotnet pack ./src/Blauhaus.Domain.Client.Sqlite/Blauhaus.Domain.Client.Sqlite.csproj -p:PackageVersion=${VERSION_NAME} --no-build --output ./ --configuration Release 
+        dotnet pack ./src/Blauhaus.Domain.Common/Blauhaus.Domain.Common.csproj -p:PackageVersion=${VERSION_NAME} --no-build --output ./ --configuration Release 
+        dotnet pack ./src/Blauhaus.Domain.Server/Blauhaus.Domain.Server.csproj -p:PackageVersion=${VERSION_NAME} --no-build --output ./ --configuration Release 
+        dotnet pack ./src/Blauhaus.Domain.TestHelpers/Blauhaus.Domain.TestHelpers.csproj -p:PackageVersion=${VERSION_NAME} --no-build --output ./ --configuration Release 
+     - name: Deploy NuGet Package
+       run:  |
+        dotnet nuget push /home/runner/work/Blauhaus.Domain/Blauhaus.Domain/Blauhaus.Domain.Client.${VERSION_NAME}.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
+        dotnet nuget push /home/runner/work/Blauhaus.Domain/Blauhaus.Domain/Blauhaus.Domain.Client.Sqlite.${VERSION_NAME}.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
+        dotnet nuget push /home/runner/work/Blauhaus.Domain/Blauhaus.Domain/Blauhaus.Domain.Common.${VERSION_NAME}.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
+        dotnet nuget push /home/runner/work/Blauhaus.Domain/Blauhaus.Domain/Blauhaus.Domain.Server.${VERSION_NAME}.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
+        dotnet nuget push /home/runner/work/Blauhaus.Domain/Blauhaus.Domain/Blauhaus.Domain.TestHelpers.${VERSION_NAME}.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json

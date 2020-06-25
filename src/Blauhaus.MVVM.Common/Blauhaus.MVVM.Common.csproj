@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Blauhaus.Domain.Client" Version="0.3.22" />
+    <PackageReference Include="Blauhaus.Domain.Common" Version="0.3.22" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Blauhaus.MVVM.Abstractions\Blauhaus.MVVM.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>
