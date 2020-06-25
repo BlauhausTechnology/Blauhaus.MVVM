@@ -1,0 +1,12 @@
+﻿using System.Threading.Tasks;
+using Xamarin.Forms;
+
+namespace Blauhaus.MVVM.Xamarin.Navigation.FormsApplicationProxy
+{
+    public interface IFormsApplicationProxy
+    {
+        void SetMainPage<TPage>(TPage page) where TPage : Page;
+        Task<bool> DisplayAlertAsync(string title, string message, string cancel, string accept);
+        Task DisplayAlertAsync(string title, string message, string cancel);
+    }
+}
