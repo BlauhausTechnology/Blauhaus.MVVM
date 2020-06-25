@@ -74,5 +74,19 @@ namespace Blauhaus.MVVM.Xamarin._Ioc
             services.AddTransient<IModelViewElementUpdater<TModel, TViewElement>, TUpdater>();
             return services;
         }
+
+        public static IServiceCollection AddSyncCollectionViewElement<TICollection, TCollection, TModel, TViewElement, TSyncCommand, TUpdater>(this IServiceCollection services) 
+            where TICollection : class, ISyncCollectionViewElement<TViewElement, TSyncCommand>
+            where TCollection : SyncCollectionViewElement<TModel, TViewElement, TSyncCommand>, TICollection
+            where TModel : class, IClientEntity 
+            where TViewElement : ModelListItemViewElement, new() 
+            where TSyncCommand : SyncCommand, new()
+            where TUpdater : class, IModelViewElementUpdater<TModel, TViewElement>
+        {
+            services.AddTransient<TICollection, TCollection>();
+            services.AddTransient<SyncCollectionViewElement<TModel, TViewElement, TSyncCommand>>();
+            services.AddTransient<IModelViewElementUpdater<TModel, TViewElement>, TUpdater>();
+            return services;
+        }
     }
 }

@@ -13,7 +13,7 @@ using NUnit.Framework;
 namespace Blauhaus.MVVM.Tests.Tests.ViewElementTests.SyncCollectionTests
 {
     [TestFixture]
-    public class InitializeCommandTests : BaseMvvmTest<SyncCollectionViewElement<TestModel, TestListItem, TestSyncCommand>>
+    public class AppearingCommandTests : BaseMvvmTest<SyncCollectionViewElement<TestModel, TestListItem, TestSyncCommand>>
     {
         protected SyncClientMockBuilder<TestModel, TestSyncCommand> MockSyncClient => Mocks.AddMockSyncClient<TestModel, TestSyncCommand>().Invoke();
 
@@ -38,13 +38,31 @@ namespace Blauhaus.MVVM.Tests.Tests.ViewElementTests.SyncCollectionTests
             //Act
             Sut.SyncCommand.FavouriteColour = "Red";
             Sut.SyncRequirement = ClientSyncRequirement.Minimum(100);
-            Sut.InitializeCommand.Execute(null);
+            Sut.AppearingCommand.Execute(null);
 
             //Assert
             MockSyncClient.Mock.Verify(x => x.Connect(
                 It.Is<TestSyncCommand>(y => y.FavouriteColour == "Red"), 
                 It.Is<ClientSyncRequirement>(z => z.SyncMinimumQuantity.Value == 100), 
                 Sut.SyncStats));
+        }
+        
+
+        [Test]
+        public void IF_already_initialized_SHOULD_LoadNewFromClient()
+        {
+            //Act
+            Sut.SyncCommand.FavouriteColour = "Red";
+            Sut.SyncRequirement = ClientSyncRequirement.Minimum(100);
+            Sut.AppearingCommand.Execute();
+            Sut.AppearingCommand.Execute();
+
+            //Assert
+            MockSyncClient.Mock.Verify(x => x.Connect(
+                It.Is<TestSyncCommand>(y => y.FavouriteColour == "Red"), 
+                It.Is<ClientSyncRequirement>(z => z.SyncMinimumQuantity.Value == 100), 
+                Sut.SyncStats), Times.Once);
+            MockSyncClient.Mock.Verify(x => x.LoadNewFromClient());
         }
         
         [Test]
@@ -54,7 +72,7 @@ namespace Blauhaus.MVVM.Tests.Tests.ViewElementTests.SyncCollectionTests
             MockSyncClient.Where_Connect_returns_exception(new Exception("oops"));
 
             //Act
-            Sut.InitializeCommand.Execute(null);
+            Sut.AppearingCommand.Execute(null);
 
             //Assert
             MockErrorHandlingService.Verify_HandleExceptionMessage("oops");
@@ -69,7 +87,7 @@ namespace Blauhaus.MVVM.Tests.Tests.ViewElementTests.SyncCollectionTests
             Services.AddSingleton<IModelViewElementUpdater<TestModel, TestListItem>, ExceptionViewElementUpdater>();
 
             //Act
-            Sut.InitializeCommand.Execute(null);
+            Sut.AppearingCommand.Execute(null);
 
             //Assert
             MockErrorHandlingService.Verify_HandleExceptionMessage("This is an exceptionally bad thing that just happened");
@@ -83,16 +101,16 @@ namespace Blauhaus.MVVM.Tests.Tests.ViewElementTests.SyncCollectionTests
             MockSyncClient.Where_Connect_returns(newModels);
 
             //Act
-            Sut.InitializeCommand.Execute(null);
+            Sut.AppearingCommand.Execute(null);
 
             //Assert
-            Assert.AreEqual(3, Sut.Count);
-            Assert.AreEqual(newModels[0].Id, Sut[0].Id);
-            Assert.AreEqual(newModels[0].Name, Sut[0].Name);
-            Assert.AreEqual(newModels[1].Id, Sut[1].Id);
-            Assert.AreEqual(newModels[1].Name, Sut[1].Name);
-            Assert.AreEqual(newModels[2].Id, Sut[2].Id);
-            Assert.AreEqual(newModels[2].Name, Sut[2].Name);
+            Assert.AreEqual(3, Sut.ListItems.Count);
+            Assert.AreEqual(newModels[0].Id, Sut.ListItems[0].Id);
+            Assert.AreEqual(newModels[0].Name, Sut.ListItems[0].Name);
+            Assert.AreEqual(newModels[1].Id, Sut.ListItems[1].Id);
+            Assert.AreEqual(newModels[1].Name, Sut.ListItems[1].Name);
+            Assert.AreEqual(newModels[2].Id, Sut.ListItems[2].Id);
+            Assert.AreEqual(newModels[2].Name, Sut.ListItems[2].Name);
         }
         
         [Test]
@@ -107,12 +125,12 @@ namespace Blauhaus.MVVM.Tests.Tests.ViewElementTests.SyncCollectionTests
             });
 
             //Act
-            Sut.InitializeCommand.Execute(null);
+            Sut.AppearingCommand.Execute(null);
 
             //Assert
-            Assert.AreEqual(3000, Sut[0].ModifiedAtTicks);
-            Assert.AreEqual(2000, Sut[1].ModifiedAtTicks);
-            Assert.AreEqual(1000, Sut[2].ModifiedAtTicks);
+            Assert.AreEqual(3000, Sut.ListItems[0].ModifiedAtTicks);
+            Assert.AreEqual(2000, Sut.ListItems[1].ModifiedAtTicks);
+            Assert.AreEqual(1000, Sut.ListItems[2].ModifiedAtTicks);
         }
 
         [Test]
@@ -125,16 +143,16 @@ namespace Blauhaus.MVVM.Tests.Tests.ViewElementTests.SyncCollectionTests
             MockSyncClient.Where_Connect_returns(new List<TestModel>{update1, update2, update3});
 
             //Act
-            Sut.InitializeCommand.Execute(null);
+            Sut.AppearingCommand.Execute(null);
 
             //Assert
-            Assert.AreEqual(2, Sut.Count);
-            Assert.AreEqual(4000, Sut[0].ModifiedAtTicks);
-            Assert.AreEqual("D", Sut[0].Name);
-            Assert.AreEqual(update1.Id, Sut[0].Id);
-            Assert.AreEqual(2000, Sut[1].ModifiedAtTicks);
-            Assert.AreEqual("B", Sut[1].Name);
-            Assert.AreEqual(update2.Id, Sut[1].Id);
+            Assert.AreEqual(2, Sut.ListItems.Count);
+            Assert.AreEqual(4000, Sut.ListItems[0].ModifiedAtTicks);
+            Assert.AreEqual("D", Sut.ListItems[0].Name);
+            Assert.AreEqual(update1.Id, Sut.ListItems[0].Id);
+            Assert.AreEqual(2000, Sut.ListItems[1].ModifiedAtTicks);
+            Assert.AreEqual("B", Sut.ListItems[1].Name);
+            Assert.AreEqual(update2.Id, Sut.ListItems[1].Id);
 
         }
 

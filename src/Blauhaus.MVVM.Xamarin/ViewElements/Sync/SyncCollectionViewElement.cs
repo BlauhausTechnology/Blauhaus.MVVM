@@ -8,27 +8,33 @@ using Blauhaus.DeviceServices.Abstractions.Connectivity;
 using Blauhaus.Domain.Client.Sync;
 using Blauhaus.Domain.Common.CommandHandlers.Sync;
 using Blauhaus.Domain.Common.Entities;
+using Blauhaus.MVVM.Abstractions.Bindable;
+using Blauhaus.MVVM.Abstractions.Commands;
 using Blauhaus.MVVM.Abstractions.ErrorHandling;
+using Blauhaus.MVVM.Abstractions.ViewModels;
+using Blauhaus.MVVM.Xamarin.Commands.ExecutingCommands.ExecutingNoValueCommands;
 using Xamarin.Forms;
 
 namespace Blauhaus.MVVM.Xamarin.ViewElements.Sync
 {
-    public class SyncCollectionViewElement<TModel, TViewElement, TSyncCommand> : ObservableCollection<TViewElement> where TModel : class, IClientEntity
-        where TViewElement : ModelListItemViewElement, new()
+    public class SyncCollectionViewElement<TModel, TListItem, TSyncCommand> : BaseBindableObject, ISyncCollectionViewElement<TListItem, TSyncCommand>
+        where TModel : class, IClientEntity
+        where TListItem : ModelListItemViewElement, new()
         where TSyncCommand : SyncCommand, new()
     {
         private readonly IErrorHandlingService _errorHandlingService;
         private readonly IAnalyticsService _analyticsService;
         private readonly IConnectivityService _connectivityService;
         private readonly ISyncClient<TModel, TSyncCommand> _syncClient;
-        private readonly IModelViewElementUpdater<TModel, TViewElement> _listItemUpdater;
+        private readonly IModelViewElementUpdater<TModel, TListItem> _listItemUpdater;
+        private IDisposable? _syncClientConnection;
 
         public SyncCollectionViewElement(
             IErrorHandlingService errorHandlingService, 
             IAnalyticsService analyticsService,
             IConnectivityService connectivityService,
             ISyncClient<TModel, TSyncCommand> syncClient,
-            IModelViewElementUpdater<TModel, TViewElement> listItemUpdater)
+            IModelViewElementUpdater<TModel, TListItem> listItemUpdater)
         {
             _errorHandlingService = errorHandlingService;
             _analyticsService = analyticsService;
@@ -39,29 +45,38 @@ namespace Blauhaus.MVVM.Xamarin.ViewElements.Sync
             SyncCommand = new TSyncCommand();
             SyncStats = new SyncStats();
             SyncRequirement = ClientSyncRequirement.Batch;
+            ListItems = new ObservableCollection<TListItem>();
 
-            BindingBase.EnableCollectionSynchronization(this, null, ObservableCollectionCallback);
-            InitializeCommand = new Command(Initialize);
+            BindingBase.EnableCollectionSynchronization(ListItems, null, ObservableCollectionCallback);
+            AppearingCommand = new ExecutingCommand(errorHandlingService, Initialize);
         }
         
 
-        public TSyncCommand SyncCommand { get; }
-        public ICommand InitializeCommand { get; }
-        public SyncStats SyncStats { get; }
         public ClientSyncRequirement SyncRequirement { get; set; }
+        public ObservableCollection<TListItem> ListItems { get; }
+        public TSyncCommand SyncCommand { get; }
+        public IExecutingCommand AppearingCommand { get; }
+        public SyncStats SyncStats { get; }
 
 
         private void Initialize()
         {
-            _syncClient.Connect(SyncCommand, SyncRequirement, SyncStats)
-                .Subscribe(OnNext, OnError);
+            if (_syncClientConnection == null)
+            {
+                _syncClientConnection = _syncClient.Connect(SyncCommand, SyncRequirement, SyncStats)
+                    .Subscribe(OnNext, OnError);
+            }
+            else
+            {
+                _syncClient.LoadNewFromClient();
+            }
         }
 
         private void OnNext(TModel nextModel)
         {
             try
             {
-                var existingElement = this.FirstOrDefault(x => x.Id == nextModel.Id);
+                var existingElement = ListItems.FirstOrDefault(x => x.Id == nextModel.Id);
                 if (existingElement == null)
                 {
                     AddNewElement(nextModel);
@@ -77,49 +92,50 @@ namespace Blauhaus.MVVM.Xamarin.ViewElements.Sync
             }
         }
 
-        private void UpdateExistingElement(TViewElement existingElement, TModel model)
+        private void UpdateExistingElement(TListItem existingElement, TModel model)
         {
             existingElement = _listItemUpdater.Update(model, existingElement);
             existingElement.ModifiedAtTicks = model.ModifiedAtTicks;
                 
-            var currentIndex = IndexOf(existingElement);
+            var currentIndex = ListItems.IndexOf(existingElement);
             var newIndex = 0;
-            var numberOfItems = Count;
+            var numberOfItems = ListItems.Count;
                 
             for (var i = 0; i < numberOfItems; i++)
             {
-                if (existingElement.ModifiedAtTicks > this[i].ModifiedAtTicks)
+                if (existingElement.ModifiedAtTicks > ListItems[i].ModifiedAtTicks)
                 {
                     newIndex = i;
                     break;
                 }
             }
 
-            Move(currentIndex, newIndex);
+            ListItems.Move(currentIndex, newIndex);
         }
 
+        //todo add IsVisible property and remove / do not add if false;
         private void AddNewElement(TModel model)
         {
-            var newListItem = _listItemUpdater.Update(model, new TViewElement
+            var newListItem = _listItemUpdater.Update(model, new TListItem
             {
                 Id = model.Id,
                 ModifiedAtTicks = model.ModifiedAtTicks
             });
 
             var isAdded = false;
-            var numberOfItems = Count;
+            var numberOfItems = ListItems.Count;
             for (var i = 0; i < numberOfItems; i++)
             {
-                if (newListItem.ModifiedAtTicks > this[i].ModifiedAtTicks)
+                if (newListItem.ModifiedAtTicks > ListItems[i].ModifiedAtTicks)
                 {
-                    Insert(i, newListItem);
+                    ListItems.Insert(i, newListItem);
                     isAdded = true;
                     break;
                 }
             }
             if (!isAdded)
             {
-                Add(newListItem);
+                ListItems.Add(newListItem);
             }
         }
 

@@ -11,6 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blauhaus.MVVM.Tests", "Blau
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blauhaus.MVVM.Xamarin", "Blauhaus.MVVM.Xamarin\Blauhaus.MVVM.Xamarin.csproj", "{878CCF87-9E78-42B3-A141-48CCF2478ACF}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{24A052CE-6A75-40FD-939B-D3E18A3C1212}"
+	ProjectSection(SolutionItems) = preProject
+		..\.github\workflows\blauhaus.yml = ..\.github\workflows\blauhaus.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

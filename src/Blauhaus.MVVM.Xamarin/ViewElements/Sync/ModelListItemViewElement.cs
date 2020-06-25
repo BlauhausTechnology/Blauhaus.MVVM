@@ -8,6 +8,7 @@ namespace Blauhaus.MVVM.Xamarin.ViewElements.Sync
     { 
 
         public Guid Id { get; set; }
+        public bool IsVisible { get; set; } //todo
         public long ModifiedAtTicks { get; set; }
         public EntityState EntityState { get; } = EntityState.Active;
 

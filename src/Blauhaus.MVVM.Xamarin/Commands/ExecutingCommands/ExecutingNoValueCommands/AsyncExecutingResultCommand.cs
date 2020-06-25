@@ -34,8 +34,8 @@ namespace Blauhaus.MVVM.Xamarin.Commands.ExecutingCommands.ExecutingNoValueComma
             }
             catch (Exception e)
             {
-                await ErrorHandlingService.HandleExceptionAsync(this, e);
                 IsExecuting = false;
+                ErrorHandlingService.HandleExceptionAsync(this, e);
             }
         }
 

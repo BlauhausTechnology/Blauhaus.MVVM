@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Blauhaus.DeviceServices.TestHelpers" Version="0.6.1" />
-    <PackageReference Include="Blauhaus.Domain.TestHelpers" Version="0.3.22" />
+    <PackageReference Include="Blauhaus.Domain.TestHelpers" Version="0.4.8" />
     <PackageReference Include="nunit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.16.1">
       <PrivateAssets>all</PrivateAssets>

@@ -25,7 +25,7 @@ namespace Blauhaus.MVVM.Tests.TestObjects
         public int CountMeWithSideEffect
         {
             get => _countWithSideEffect;
-            set => SetProperty(ref _countWithSideEffect, value, x => SideEffect = x);
+            set => SetProperty(ref _countWithSideEffect, value, () => SideEffect = value);
         }
 
         private int _sideEffect;

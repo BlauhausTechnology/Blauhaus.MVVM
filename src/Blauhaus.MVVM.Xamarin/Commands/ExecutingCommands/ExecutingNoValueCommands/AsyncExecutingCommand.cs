@@ -12,10 +12,10 @@ namespace Blauhaus.MVVM.Xamarin.Commands.ExecutingCommands.ExecutingNoValueComma
         public AsyncExecutingCommand(IErrorHandlingService errorHandlingService, Func<Task> task, Func<bool>? canExecute = null) 
             : base(errorHandlingService, canExecute)
         {
-            Command = new Command(() => InvokeAsync(task), CanExecute);
+            Command = new Command(async () => await InvokeAsync(task), CanExecute);
         }
 
-        private async void InvokeAsync(Func<Task> task)
+        private async Task InvokeAsync(Func<Task> task)
         {
             try
             {
@@ -28,8 +28,8 @@ namespace Blauhaus.MVVM.Xamarin.Commands.ExecutingCommands.ExecutingNoValueComma
             }
             catch (Exception e)
             {
-                await ErrorHandlingService.HandleExceptionAsync(this, e);
                 IsExecuting = false;
+                await ErrorHandlingService.HandleExceptionAsync(this, e);
             }
         }
 

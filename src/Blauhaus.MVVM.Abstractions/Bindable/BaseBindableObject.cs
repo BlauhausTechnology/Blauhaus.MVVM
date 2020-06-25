@@ -9,13 +9,21 @@ namespace Blauhaus.MVVM.Abstractions.Bindable
     public abstract class BaseBindableObject : INotifyPropertyChanged
     {
 
-        protected bool SetProperty<T>(ref T backingStore, T value,  Action<T> onChanged, [CallerMemberName]string propertyName = "")
+        protected bool SetProperty<T>(ref T backingStore, T value,  Action onChanged, [CallerMemberName]string propertyName = "")
         {
             if (EqualityComparer<T>.Default.Equals(backingStore, value))
                 return false;
 
             backingStore = value;
-            onChanged?.Invoke(value);
+            onChanged?.Invoke();
+            RaisePropertyChanged(propertyName);
+            return true;
+        }
+
+        protected bool SetProperty<T>(Action<T> action, T value,  Action onChanged, [CallerMemberName]string propertyName = "")
+        { 
+            action.Invoke(value);
+            onChanged?.Invoke();
             RaisePropertyChanged(propertyName);
             return true;
         }

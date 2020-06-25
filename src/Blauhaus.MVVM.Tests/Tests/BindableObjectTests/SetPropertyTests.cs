@@ -64,13 +64,14 @@ namespace Blauhaus.MVVM.Tests.Tests.BindableObjectTests
             {
                 //Act
                 sut.CountMeWithSideEffect = 2;
-                sut.CountMeWithSideEffect = 2;
                 sut.CountMeWithSideEffect = 3;
+                sut.CountMeWithSideEffect = 4;
 
                 //Assert
-                Assert.AreEqual(2, changedProperties.Count);
+                Assert.AreEqual(3, changedProperties.Count);
                 Assert.AreEqual(2, changedProperties[0]);
                 Assert.AreEqual(3, changedProperties[1]);
+                Assert.AreEqual(4, changedProperties[2]);
             }
         }
 

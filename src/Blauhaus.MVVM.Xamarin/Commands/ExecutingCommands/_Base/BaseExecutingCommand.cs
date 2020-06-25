@@ -43,7 +43,7 @@ namespace Blauhaus.MVVM.Xamarin.Commands.ExecutingCommands._Base
             Command.Execute(parameter);
         }
 
-        private void OnIsExecutingChanged(bool obj)
+        private void OnIsExecutingChanged()
         {
             RaiseCanExecuteChanged();
         }

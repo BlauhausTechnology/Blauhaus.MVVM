@@ -22,6 +22,8 @@ namespace Blauhaus.MVVM.Xamarin.ErrorHandling
         }
 
 
+        //todo subclass and handle AuthError.NotAuthenticated
+
         public Task HandleExceptionAsync(object sender, Exception exception)
         {
             _analyticsService.LogException(sender, exception);
