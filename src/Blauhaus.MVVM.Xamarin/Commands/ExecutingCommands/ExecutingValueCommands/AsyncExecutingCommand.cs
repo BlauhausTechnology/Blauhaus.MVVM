@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Blauhaus.MVVM.Abstractions.ErrorHandling;
-using Blauhaus.MVVM.Xamarin.Commands.ExecutingCommands.ExecutingNoValueCommands._Base;
+using Blauhaus.Errors.Handler;
 using Blauhaus.MVVM.Xamarin.Commands.ExecutingCommands.ExecutingValueCommands._Base;
 using Xamarin.Forms;
 
@@ -10,8 +9,8 @@ namespace Blauhaus.MVVM.Xamarin.Commands.ExecutingCommands.ExecutingValueCommand
     public class AsyncExecutingCommand<TValue> : BaseExecutingValueCommand<TValue>
     {
          
-        public AsyncExecutingCommand(IErrorHandlingService errorHandlingService, Func<TValue, Task> task, Func<bool>? canExecute = null) 
-            : base(errorHandlingService, canExecute)
+        public AsyncExecutingCommand(IErrorHandler errorHandler, Func<TValue, Task> task, Func<bool>? canExecute = null) 
+            : base(errorHandler, canExecute)
         {
             Command = new Command((parameter) => InvokeAsync(task, parameter), x => CanExecute());
         }
@@ -32,7 +31,7 @@ namespace Blauhaus.MVVM.Xamarin.Commands.ExecutingCommands.ExecutingValueCommand
             }
             catch (Exception e)
             {
-                await ErrorHandlingService.HandleExceptionAsync(this, e);
+                await ErrorHandler.HandleExceptionAsync(this, e);
                 IsExecuting = false;
             }
         }

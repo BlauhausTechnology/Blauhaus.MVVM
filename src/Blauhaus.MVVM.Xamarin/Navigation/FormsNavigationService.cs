@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Blauhaus.DeviceServices.Abstractions.Thread;
+using Blauhaus.MVVM.Abstractions.Contracts;
 using Blauhaus.MVVM.Abstractions.Navigation;
 using Blauhaus.MVVM.Abstractions.ViewModels;
 using Blauhaus.MVVM.Abstractions.Views;
 using Blauhaus.MVVM.Xamarin.Navigation.FormsApplicationProxy;
-using Blauhaus.MVVM.Xamarin.Views;
 using Xamarin.Forms;
 
 namespace Blauhaus.MVVM.Xamarin.Navigation
@@ -46,7 +44,7 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
             await CurrentNavigationPage.PushAsync(page, true);
         }
 
-        public async Task ShowAndInitializeViewAsync<TViewModel, T>(T parameter) where TViewModel : IViewModel, IInitializing<T>
+        public async Task ShowAndInitializeViewAsync<TViewModel, T>(T parameter) where TViewModel : IViewModel, IInitialize<T>
         {
             var page = GetPageForViewModel<Page>(typeof(TViewModel));
 

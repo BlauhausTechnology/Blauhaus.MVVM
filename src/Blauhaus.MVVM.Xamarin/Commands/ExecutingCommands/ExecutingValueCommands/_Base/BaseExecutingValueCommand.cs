@@ -1,15 +1,14 @@
 ﻿using System;
-using Blauhaus.MVVM.Abstractions.Commands;
-using Blauhaus.MVVM.Abstractions.ErrorHandling;
+using Blauhaus.Errors.Handler;
 using Blauhaus.MVVM.Xamarin.Commands.ExecutingCommands._Base;
 
 namespace Blauhaus.MVVM.Xamarin.Commands.ExecutingCommands.ExecutingValueCommands._Base
 {
-    public abstract class BaseExecutingValueCommand<TValue> : BaseExecutingCommand, IExecutingCommand
+    public abstract class BaseExecutingValueCommand<TValue> : BaseExecutingCommand
     {
 
-        protected BaseExecutingValueCommand(IErrorHandlingService errorHandlingService, Func<bool>? canExecute = null) 
-            : base(errorHandlingService, canExecute)
+        protected BaseExecutingValueCommand(IErrorHandler errorHandler, Func<bool>? canExecute = null) 
+            : base(errorHandler, canExecute)
         {
         }
           

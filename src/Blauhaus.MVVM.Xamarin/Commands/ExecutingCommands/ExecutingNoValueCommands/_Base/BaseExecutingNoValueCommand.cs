@@ -1,5 +1,5 @@
 ﻿using System;
-using Blauhaus.MVVM.Abstractions.ErrorHandling;
+using Blauhaus.Errors.Handler;
 using Blauhaus.MVVM.Xamarin.Commands.ExecutingCommands._Base;
 
 namespace Blauhaus.MVVM.Xamarin.Commands.ExecutingCommands.ExecutingNoValueCommands._Base
@@ -7,8 +7,8 @@ namespace Blauhaus.MVVM.Xamarin.Commands.ExecutingCommands.ExecutingNoValueComma
     public abstract class BaseExecutingNoValueCommand : BaseExecutingCommand
     {
 
-        protected BaseExecutingNoValueCommand(IErrorHandlingService errorHandlingService, Func<bool>? canExecute = null) 
-            : base(errorHandlingService, canExecute)
+        protected BaseExecutingNoValueCommand(IErrorHandler errorHandler, Func<bool>? canExecute = null) 
+            : base(errorHandler, canExecute)
         {
         }
 

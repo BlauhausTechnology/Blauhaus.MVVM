@@ -1,10 +1,11 @@
 ﻿using System;
+using Blauhaus.MVVM.Abstractions.Contracts;
 using Blauhaus.MVVM.Abstractions.ViewModels;
 
 namespace Blauhaus.MVVM.Xamarin.Views
 {
     public abstract class BaseDisappearingContentPage<TViewModel> : BaseAppearingContentPage<TViewModel> 
-        where TViewModel : IAppearing, IDisappearing
+        where TViewModel : IAppear, IDisappear
     {
         protected BaseDisappearingContentPage(TViewModel viewModel) : base(viewModel)
         {
@@ -17,12 +18,12 @@ namespace Blauhaus.MVVM.Xamarin.Views
                 throw new Exception($"Cannot call DisappearingCommand because {typeof(TViewModel).Name} is null");
             }
 
-            if (ViewModel.DisappearingCommand == null)
+            if (ViewModel.DisappearCommand == null)
             {
                 throw new Exception($"Cannot call DisappearingCommand on {typeof(TViewModel).Name} because the command is null");
             }
 
-            ViewModel.DisappearingCommand.Execute(null);
+            ViewModel.DisappearCommand.Execute(null);
         }
 
     }

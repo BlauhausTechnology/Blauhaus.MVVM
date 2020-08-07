@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Linq.Expressions;
-using System.Windows.Input;
 using Blauhaus.Common.Utils.Extensions;
 using Blauhaus.MVVM.Abstractions.Commands;
 using Blauhaus.MVVM.Abstractions.ViewModels;
 using Xamarin.Forms;
-using Xamarin.Forms.Internals;
 
 namespace Blauhaus.MVVM.Xamarin.Extensions
 {

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests._Base;
-using Blauhaus.MVVM.Xamarin.Commands.ExecutingCommands.ExecutingNoValueCommands;
 using Blauhaus.MVVM.Xamarin.Commands.ExecutingCommands.ExecutingValueCommands;
 using Blauhaus.TestHelpers.PropertiesChanged.CanExecuteChanged;
-using Blauhaus.TestHelpers.PropertiesChanged.NotifyPropertyChanged;
+using Blauhaus.TestHelpers.PropertiesChanged.PropertiesChanged;
 using CSharpFunctionalExtensions;
 using NUnit.Framework;
 
@@ -15,6 +14,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
         private Func<string, Task<Result>> _task;
         private Result _result;
         private Func<bool> _canExecute;
+        private Func<Task>? _onSuccess;
 
         public override void Setup()
         {
@@ -27,11 +27,12 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
                 return _result;
             };
             _canExecute = () => true;
+            _onSuccess = null;
         }
 
         protected override AsyncExecutingResultCommand<string> ConstructSut()
         {
-            return new AsyncExecutingResultCommand<string>(MockErrorHandlingService.Object, _task, _canExecute);
+            return new AsyncExecutingResultCommand<string>(MockErrorHandler.Object, _task,_onSuccess, _canExecute);
         }
          
         [Test]
@@ -100,6 +101,25 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
         }
 
         [Test]
+        public async Task IF_OnSuccess_is_given_SHOULD_invoke_onsuccess()
+        {
+            //Arrange
+            var tcs = new TaskCompletionSource<string>();
+            _onSuccess = async () =>
+            {
+                await Task.CompletedTask;
+                tcs.SetResult("hi");
+            };
+
+            //Act
+            Sut.Command.Execute("hi");
+            var result = await tcs.Task;
+
+            //Assert
+            Assert.AreEqual("hi", result);
+        }
+
+        [Test]
         public void IF_task_throws_exception_SHOULD_handle_and_reset_IsExecuting()
         {
             //Arrange
@@ -112,7 +132,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
                 isExecutingChanges.WaitForChangeCount(2);
 
                 //Assert
-                MockErrorHandlingService.Verify_HandleExceptionMessage("gosh darn it");
+                MockErrorHandler.Verify_HandleExceptionMessage("gosh darn it");
                 Assert.AreEqual(false, Sut.IsExecuting);
             }
         }
@@ -130,7 +150,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
                 isExecutingChanges.WaitForChangeCount(2);
 
                 //Assert
-                MockErrorHandlingService.Verify_HandleError("oops");
+                MockErrorHandler.Verify_HandleError("oops");
                 Assert.AreEqual(false, Sut.IsExecuting);
             }
         }

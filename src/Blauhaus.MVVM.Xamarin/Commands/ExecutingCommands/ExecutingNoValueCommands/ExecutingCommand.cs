@@ -1,5 +1,5 @@
 ﻿using System;
-using Blauhaus.MVVM.Abstractions.ErrorHandling;
+using Blauhaus.Errors.Handler;
 using Blauhaus.MVVM.Xamarin.Commands.ExecutingCommands.ExecutingNoValueCommands._Base;
 using Xamarin.Forms;
 
@@ -7,8 +7,8 @@ namespace Blauhaus.MVVM.Xamarin.Commands.ExecutingCommands.ExecutingNoValueComma
 {
     public class ExecutingCommand : BaseExecutingNoValueCommand
     {
-        public ExecutingCommand(IErrorHandlingService errorHandlingService, Action action, Func<bool>? canExecute = null) 
-            : base(errorHandlingService, canExecute)
+        public ExecutingCommand(IErrorHandler errorHandler, Action action, Func<bool>? canExecute = null) 
+            : base(errorHandler, canExecute)
         {
             Command = new Command(() => Invoke(action), CanExecute);
         }
@@ -27,7 +27,7 @@ namespace Blauhaus.MVVM.Xamarin.Commands.ExecutingCommands.ExecutingNoValueComma
             catch (Exception e)
             {
                 IsExecuting = false;
-                ErrorHandlingService.HandleExceptionAsync(this, e);
+                ErrorHandler.HandleExceptionAsync(this, e);
             }
         } 
     }

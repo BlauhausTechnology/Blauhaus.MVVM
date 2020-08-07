@@ -1,11 +1,11 @@
 ﻿using System;
-using Blauhaus.MVVM.Abstractions.ErrorHandling;
+using Blauhaus.Errors.Handler;
 using Blauhaus.TestHelpers.MockBuilders;
 using Moq;
 
 namespace Blauhaus.MVVM.TestHelpers.MockBuilders.Services
 {
-    public class ErrorHandlingServiceMockBuilder : BaseMockBuilder<ErrorHandlingServiceMockBuilder, IErrorHandlingService>
+    public class ErrorHandlerMockBuilder : BaseMockBuilder<ErrorHandlerMockBuilder, IErrorHandler>
     {
         public void Verify_HandleException(Exception exception)
         {

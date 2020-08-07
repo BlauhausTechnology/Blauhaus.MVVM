@@ -1,10 +1,11 @@
 ﻿using System;
+using Blauhaus.MVVM.Abstractions.Contracts;
 using Blauhaus.MVVM.Abstractions.ViewModels;
 
 namespace Blauhaus.MVVM.Xamarin.Views
 {
     public abstract class BaseAppearingContentPage<TViewModel> : BaseContentPage<TViewModel> 
-        where TViewModel : IAppearing
+        where TViewModel : IAppear
     {
         protected BaseAppearingContentPage(TViewModel viewModel) : base(viewModel)
         {
@@ -17,12 +18,12 @@ namespace Blauhaus.MVVM.Xamarin.Views
                 throw new Exception($"Cannot call AppearingCommand because {typeof(TViewModel).Name} is null");
             }
 
-            if (ViewModel.AppearingCommand == null)
+            if (ViewModel.AppearCommand == null)
             {
                 throw new Exception($"Cannot call AppearingCommand on {typeof(TViewModel).Name} because the command is null");
             }
 
-            ViewModel.AppearingCommand.Execute();
+            ViewModel.AppearCommand.Execute();
         }
 
     }

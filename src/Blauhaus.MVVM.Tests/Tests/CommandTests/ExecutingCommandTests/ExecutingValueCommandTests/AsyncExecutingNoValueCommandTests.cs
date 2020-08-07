@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests._Base;
-using Blauhaus.MVVM.Xamarin.Commands.ExecutingCommands.ExecutingNoValueCommands;
 using Blauhaus.MVVM.Xamarin.Commands.ExecutingCommands.ExecutingValueCommands;
 using Blauhaus.TestHelpers.PropertiesChanged.CanExecuteChanged;
-using Blauhaus.TestHelpers.PropertiesChanged.NotifyPropertyChanged;
+using Blauhaus.TestHelpers.PropertiesChanged.PropertiesChanged;
 using NUnit.Framework;
 
 namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.ExecutingValueCommandTests
@@ -23,7 +22,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
 
         protected override AsyncExecutingCommand<string> ConstructSut()
         {
-            return new AsyncExecutingCommand<string>(MockErrorHandlingService.Object, _task, _canExecute);
+            return new AsyncExecutingCommand<string>(MockErrorHandler.Object, _task, _canExecute);
         }
         
         [Test]
@@ -102,7 +101,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
                 isExecutingChanges.WaitForChangeCount(2);
 
                 //Assert
-                MockErrorHandlingService.Verify_HandleExceptionMessage("gosh darn it");
+                MockErrorHandler.Verify_HandleExceptionMessage("gosh darn it");
                 Assert.AreEqual(false, Sut.IsExecuting);
             }
         }

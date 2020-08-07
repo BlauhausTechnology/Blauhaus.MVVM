@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
-using System.Windows.Input;
 using Blauhaus.Common.Utils.Extensions;
 using Blauhaus.MVVM.Abstractions.Commands;
-using Blauhaus.MVVM.Abstractions.ViewModels;
 using Blauhaus.MVVM.Xamarin.Converters;
 using Xamarin.Forms;
 

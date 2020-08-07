@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows.Input;
-using Blauhaus.MVVM.Abstractions.Bindable;
+using Blauhaus.Common.Utils.NotifyPropertyChanged;
+using Blauhaus.Errors.Handler;
 using Blauhaus.MVVM.Abstractions.Commands;
-using Blauhaus.MVVM.Abstractions.ErrorHandling;
 using Xamarin.Forms;
 
 namespace Blauhaus.MVVM.Xamarin.Commands.ExecutingCommands._Base
@@ -12,11 +12,11 @@ namespace Blauhaus.MVVM.Xamarin.Commands.ExecutingCommands._Base
         private readonly Func<bool>? _canExecute;
         private bool _isExecuting;
 
-        protected readonly IErrorHandlingService ErrorHandlingService;
+        protected readonly IErrorHandler ErrorHandler;
 
-        protected BaseExecutingCommand(IErrorHandlingService errorHandlingService, Func<bool>? canExecute)
+        protected BaseExecutingCommand(IErrorHandler errorHandler, Func<bool>? canExecute)
         {
-            ErrorHandlingService = errorHandlingService;
+            ErrorHandler = errorHandler;
             _canExecute = canExecute;
         }
         
