@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests._Base
 {
-    public class BaseExecutingCommandTest<TCommand> : BaseMvvmTest<TCommand> where TCommand : BaseExecutingCommand
+    public class BaseExecutingCommandTest<TCommand> : BaseMvvmTest<TCommand> where TCommand : BaseExecutingCommand<TCommand>
     {
         
         [Test]
@@ -16,7 +16,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests._Base
             using (var isExecutingChanges = Sut.SubscribeToPropertyChanged(x => x.IsExecuting))
             {
                 //Act
-                Sut.Command.Execute(null);
+                Sut.Execute(default);
                 isExecutingChanges.WaitForChangeCount(2);
                 
                 //Assert
@@ -30,10 +30,10 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests._Base
         public void SHOULD_set_and_reset_CanExecute()
         {
             //Act
-            using (var canExecuteChanges = Sut.Command.SubscribeToCanExecuteChanged())
+            using (var canExecuteChanges = Sut.SubscribeToCanExecuteChanged())
             {
                 //Act
-                Sut.Command.Execute(null);
+                Sut.Execute(null);
                 canExecuteChanges.WaitForChangeCount(2);
                 
                 //Assert

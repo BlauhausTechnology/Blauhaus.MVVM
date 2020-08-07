@@ -23,7 +23,7 @@ namespace Blauhaus.MVVM.Xamarin.Views
                 throw new Exception($"Cannot call AppearingCommand on {typeof(TViewModel).Name} because the command is null");
             }
 
-            ViewModel.AppearCommand.Execute();
+            ViewModel.AppearCommand.Execute(null);
         }
 
     }

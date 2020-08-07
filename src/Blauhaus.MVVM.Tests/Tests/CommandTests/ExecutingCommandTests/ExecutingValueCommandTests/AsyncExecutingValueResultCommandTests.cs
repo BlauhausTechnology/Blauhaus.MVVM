@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests._Base;
-using Blauhaus.MVVM.Xamarin.Commands.ExecutingCommands.ExecutingValueCommands;
+using Blauhaus.MVVM.Xamarin.Commands.ExecutingCommands.ExecutingParameterCommands;
 using Blauhaus.TestHelpers.PropertiesChanged.CanExecuteChanged;
 using Blauhaus.TestHelpers.PropertiesChanged.PropertiesChanged;
 using CSharpFunctionalExtensions;
@@ -9,7 +9,7 @@ using NUnit.Framework;
 
 namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.ExecutingValueCommandTests
 {
-    public class AsyncExecutingValueResultCommandTests : BaseExecutingCommandTest<AsyncExecutingResultCommand<string>>
+    public class AsyncExecutingValueResultCommandTests : BaseExecutingCommandTest<AsyncExecutingResultParameterCommand<string>>
     {
         private Func<string, Task<Result>> _task;
         private Result _result;
@@ -30,9 +30,12 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
             _onSuccess = null;
         }
 
-        protected override AsyncExecutingResultCommand<string> ConstructSut()
+        protected override AsyncExecutingResultParameterCommand<string> ConstructSut()
         {
-            return new AsyncExecutingResultCommand<string>(MockErrorHandler.Object, _task,_onSuccess, _canExecute);
+            return base.ConstructSut()
+                .WithTask(_task)
+                .WithOnSuccess(_onSuccess)
+                .WithCanExecute(_canExecute);
         }
          
         [Test]
@@ -47,7 +50,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
             };
 
             //Act
-            using (var canExecuteChanges = Sut.Command.SubscribeToCanExecuteChanged())
+            using (var canExecuteChanges = Sut.SubscribeToCanExecuteChanged())
             {
                 //Act
                 Sut.RaiseCanExecuteChanged();
@@ -73,7 +76,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
             };
 
             //Act
-            Sut.Command.Execute("hi");
+            Sut.Execute("hi");
             await Task.Delay(10);
 
             //Assert
@@ -93,7 +96,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
             };
 
             //Act
-            Sut.Command.Execute("hi");
+            Sut.Execute("hi");
             var result = await tcs.Task;
 
             //Assert
@@ -112,7 +115,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
             };
 
             //Act
-            Sut.Command.Execute("hi");
+            Sut.Execute("hi");
             var result = await tcs.Task;
 
             //Assert
@@ -128,7 +131,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
             using (var isExecutingChanges = Sut.SubscribeToPropertyChanged(x => x.IsExecuting))
             {
                 //Act
-                Sut.Command.Execute("hi");
+                Sut.Execute("hi");
                 isExecutingChanges.WaitForChangeCount(2);
 
                 //Assert
@@ -146,7 +149,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
             using (var isExecutingChanges = Sut.SubscribeToPropertyChanged(x => x.IsExecuting))
             {
                 //Act
-                Sut.Command.Execute("hi");
+                Sut.Execute("hi");
                 isExecutingChanges.WaitForChangeCount(2);
 
                 //Assert

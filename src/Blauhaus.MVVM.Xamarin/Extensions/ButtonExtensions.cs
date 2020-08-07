@@ -11,7 +11,7 @@ namespace Blauhaus.MVVM.Xamarin.Extensions
     {
         public static Button BindExecutingCommand(this Button button, string executingCommandName) 
         {
-            var commandPropertyName = $"{executingCommandName}.{nameof(IExecutingCommand.Command)}";
+            var commandPropertyName = $"{executingCommandName}.{nameof(IExecutingCommand)}";
             button.SetBinding(Button.CommandProperty, new Binding(commandPropertyName));
             return button;
         }
@@ -19,7 +19,7 @@ namespace Blauhaus.MVVM.Xamarin.Extensions
         public static Button BindExecutingCommand<TViewModel>(this Button button, Expression<Func<TViewModel, IExecutingCommand>> expression) 
         {
             var executingCommandName = expression.ToPropertyName();
-            var commandPropertyName = $"{executingCommandName}.{nameof(IExecutingCommand.Command)}";
+            var commandPropertyName = $"{executingCommandName}.{nameof(IExecutingCommand)}";
             var isExecutingPropertyName = $"{executingCommandName}.{nameof(IExecutingCommand.IsExecuting)}";
 
             button.SetBinding(Button.CommandProperty, new Binding(commandPropertyName));

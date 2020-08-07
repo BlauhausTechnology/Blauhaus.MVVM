@@ -9,9 +9,11 @@ using Blauhaus.MVVM.Abstractions.Dialogs;
 using Blauhaus.MVVM.Abstractions.Navigation;
 using Blauhaus.MVVM.TestHelpers.MockBuilders.Services;
 using Blauhaus.MVVM.Tests.MockBuilders;
+using Blauhaus.MVVM.Xamarin.Commands.ExecutingCommands.ExecutingNoParameterCommands;
 using Blauhaus.MVVM.Xamarin.Navigation.FormsApplicationProxy;
 using Blauhaus.TestHelpers.BaseTests;
 using CSharpFunctionalExtensions;
+using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
 namespace Blauhaus.MVVM.Tests.Tests._Base

@@ -14,7 +14,7 @@ namespace Blauhaus.MVVM.Xamarin.Extensions
             where TControl : View
             
         {
-            var commandName = viewModelCommand.ToPropertyName() + "." + nameof(IExecutingCommand.Command);
+            var commandName = viewModelCommand.ToPropertyName() + "." + nameof(IExecutingCommand);
 
             var tapGestureRecognizer = new TapGestureRecognizer();
             var bindingSource = new RelativeBindingSource(RelativeBindingSourceMode.FindAncestorBindingContext, typeof(TViewModel));

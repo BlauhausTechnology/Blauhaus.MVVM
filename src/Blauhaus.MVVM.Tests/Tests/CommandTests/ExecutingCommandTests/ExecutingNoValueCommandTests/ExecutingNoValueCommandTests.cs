@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests._Base;
-using Blauhaus.MVVM.Xamarin.Commands.ExecutingCommands.ExecutingNoValueCommands;
+using Blauhaus.MVVM.Xamarin.Commands.ExecutingCommands.ExecutingNoParameterCommands;
 using Blauhaus.TestHelpers.PropertiesChanged.CanExecuteChanged;
 using Blauhaus.TestHelpers.PropertiesChanged.PropertiesChanged;
 using NUnit.Framework;
@@ -22,7 +22,9 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
 
         protected override ExecutingCommand ConstructSut()
         {
-            return new ExecutingCommand(MockErrorHandler.Object, _action, _canExecute);
+            return base.ConstructSut()
+                .WithAction(_action)
+                .WithCanExecute(_canExecute);
         }
 
         [Test]
@@ -37,7 +39,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
             };
 
             //Act
-            Sut.Command.Execute(null);
+            Sut.Execute(null);
             await Task.Delay(10);
 
             //Assert
@@ -55,7 +57,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
             };
 
             //Act
-            Sut.Command.Execute(null);
+            Sut.Execute(null);
             var result = await tcs.Task;
 
             //Assert
@@ -74,7 +76,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
             };
 
             //Act
-            using (var canExecuteChanges = Sut.Command.SubscribeToCanExecuteChanged())
+            using (var canExecuteChanges = Sut.SubscribeToCanExecuteChanged())
             {
                 //Act
                 Sut.RaiseCanExecuteChanged();
@@ -95,7 +97,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
             using (var isExecutingChanges = Sut.SubscribeToPropertyChanged(x => x.IsExecuting))
             {
                 //Act
-                Sut.Command.Execute(null);
+                Sut.Execute(null);
                 isExecutingChanges.WaitForChangeCount(2);
 
                 //Assert

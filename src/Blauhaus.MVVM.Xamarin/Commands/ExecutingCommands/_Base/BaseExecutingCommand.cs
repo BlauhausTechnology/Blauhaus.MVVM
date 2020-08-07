@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Input;
+using Blauhaus.Analytics.Abstractions.Operation;
+using Blauhaus.Analytics.Abstractions.Service;
 using Blauhaus.Common.Utils.NotifyPropertyChanged;
 using Blauhaus.Errors.Handler;
 using Blauhaus.MVVM.Abstractions.Commands;
@@ -7,21 +10,44 @@ using Xamarin.Forms;
 
 namespace Blauhaus.MVVM.Xamarin.Commands.ExecutingCommands._Base
 {
-    public abstract class BaseExecutingCommand : BaseBindableObject, IExecutingCommand
+    public abstract class BaseExecutingCommand<TExecutingCommand> : BaseBindableObject, IExecutingCommand
+        where TExecutingCommand : BaseExecutingCommand<TExecutingCommand>
     {
-        private readonly Func<bool>? _canExecute;
+        protected string? AnalyticsOperationName;
+        private Func<bool>? _canExecute;
         private bool _isExecuting;
 
         protected readonly IErrorHandler ErrorHandler;
+        protected readonly IAnalyticsService AnalyticsService;
+        private IAnalyticsOperation _analyticsOperation;
 
-        protected BaseExecutingCommand(IErrorHandler errorHandler, Func<bool>? canExecute)
+        protected BaseExecutingCommand(IErrorHandler errorHandler, IAnalyticsService analyticsService)
         {
+            ErrorHandler = errorHandler;
+            AnalyticsService = analyticsService;
+        }
+
+        protected BaseExecutingCommand(IErrorHandler errorHandler,  IAnalyticsService analyticsService, Func<bool>? canExecute)
+        {
+            AnalyticsService = analyticsService;
             ErrorHandler = errorHandler;
             _canExecute = canExecute;
         }
+
+        public TExecutingCommand WithCanExecute(Func<bool> canExecute)
+        {
+            _canExecute = canExecute;
+            return (TExecutingCommand) this;
+        }
         
-        public ICommand Command { get; protected set; }
+        public TExecutingCommand WithAnalyticsOperationName(string operationName)
+        {
+            AnalyticsOperationName = operationName;
+            return (TExecutingCommand) this;
+        }
+
         
+        public bool CanExecute(object parameter) => CanExecute();
         protected bool CanExecute()
         {
             if (_canExecute == null)
@@ -35,22 +61,40 @@ namespace Blauhaus.MVVM.Xamarin.Commands.ExecutingCommands._Base
         public bool IsExecuting
         {
             get => _isExecuting;
-            set => SetProperty(ref _isExecuting, value, OnIsExecutingChanged);
-        }
-        
-        public void Execute(object? parameter = null)
-        {
-            Command.Execute(parameter);
+            set => SetProperty(ref _isExecuting, value, RaiseCanExecuteChanged);
         }
 
-        private void OnIsExecutingChanged()
-        {
-            RaiseCanExecuteChanged();
-        }
+        public abstract void Execute(object? parameter);
+
+        public event EventHandler? CanExecuteChanged;
         
         public void RaiseCanExecuteChanged()
         {
-            ((Command)Command).ChangeCanExecute();
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        protected void Start()
+        {
+            IsExecuting = true;
+
+            if (AnalyticsOperationName != null && AnalyticsOperationName != string.Empty)
+            {
+                var properties = new Dictionary<string, object> { ["Command"] = typeof(TExecutingCommand).Name };
+                _analyticsOperation = AnalyticsService.StartOperation(this, AnalyticsOperationName, properties);
+            }
+        }
+
+        protected void Finish()
+        {
+            IsExecuting = false;
+            _analyticsOperation?.Dispose();
+        }
+
+        protected void Fail(object sender, Exception e)
+        {
+            IsExecuting = false;
+            _analyticsOperation?.Dispose();
+            ErrorHandler.HandleExceptionAsync(sender, e); 
         }
 
     }
