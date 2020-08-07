@@ -61,6 +61,11 @@ namespace Blauhaus.MVVM.ExecutingCommands._Base
             get => _isExecuting;
             set => SetProperty(ref _isExecuting, value, RaiseCanExecuteChanged);
         }
+        
+        public void Execute()
+        {
+            Execute(null);
+        }
 
         public abstract void Execute(object? parameter);
 

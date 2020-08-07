@@ -8,5 +8,6 @@ namespace Blauhaus.MVVM.Abstractions.Commands
     public interface IExecutingCommand : IExecute, INotifyPropertyChanged, ICommand
     { 
         void RaiseCanExecuteChanged();
+        void Execute();
     }
 }
