@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Input;
 using Blauhaus.Analytics.Abstractions.Operation;
 using Blauhaus.Analytics.Abstractions.Service;
 using Blauhaus.Common.Utils.NotifyPropertyChanged;
 using Blauhaus.Errors.Handler;
 using Blauhaus.MVVM.Abstractions.Commands;
-using Xamarin.Forms;
 
-namespace Blauhaus.MVVM.Xamarin.Commands.ExecutingCommands._Base
+namespace Blauhaus.MVVM.ExecutingCommands._Base
 {
     public abstract class BaseExecutingCommand<TExecutingCommand> : BaseBindableObject, IExecutingCommand
         where TExecutingCommand : BaseExecutingCommand<TExecutingCommand>

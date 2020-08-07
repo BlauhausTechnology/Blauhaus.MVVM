@@ -1,5 +1,5 @@
-﻿using Blauhaus.MVVM.Tests.Tests._Base;
-using Blauhaus.MVVM.Xamarin.Commands.ExecutingCommands._Base;
+﻿using Blauhaus.MVVM.ExecutingCommands._Base;
+using Blauhaus.MVVM.Tests.Tests._Base;
 using Blauhaus.TestHelpers.PropertiesChanged.CanExecuteChanged;
 using Blauhaus.TestHelpers.PropertiesChanged.PropertiesChanged;
 using NUnit.Framework;

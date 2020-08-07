@@ -25,6 +25,7 @@
     <ProjectReference Include="..\Blauhaus.MVVM.Abstractions\Blauhaus.MVVM.Abstractions.csproj" />
     <ProjectReference Include="..\Blauhaus.MVVM.TestHelpers\Blauhaus.MVVM.TestHelpers.csproj" />
     <ProjectReference Include="..\Blauhaus.MVVM.Xamarin\Blauhaus.MVVM.Xamarin.csproj" />
+    <ProjectReference Include="..\Blauhaus.MVVM\Blauhaus.MVVM.csproj" />
   </ItemGroup>
 
 </Project>

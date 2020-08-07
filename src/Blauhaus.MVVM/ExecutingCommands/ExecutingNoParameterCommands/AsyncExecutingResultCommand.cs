@@ -2,11 +2,10 @@
 using System.Threading.Tasks;
 using Blauhaus.Analytics.Abstractions.Service;
 using Blauhaus.Errors.Handler;
-using Blauhaus.MVVM.Xamarin.Commands.ExecutingCommands.ExecutingNoParameterCommands._Base;
+using Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands._Base;
 using CSharpFunctionalExtensions;
-using Xamarin.Forms;
 
-namespace Blauhaus.MVVM.Xamarin.Commands.ExecutingCommands.ExecutingNoParameterCommands
+namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands
 {
     public class AsyncExecutingResultCommand : BaseExecutingNoParameterCommand<AsyncExecutingResultCommand>
     {

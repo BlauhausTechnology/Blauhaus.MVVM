@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Blauhaus.MVVM.Abstractions\Blauhaus.MVVM.Abstractions.csproj" />
+    <ProjectReference Include="..\Blauhaus.MVVM\Blauhaus.MVVM.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,9 +1,9 @@
 ﻿using System;
 using Blauhaus.Analytics.Abstractions.Service;
 using Blauhaus.Errors.Handler;
-using Blauhaus.MVVM.Xamarin.Commands.ExecutingCommands._Base;
+using Blauhaus.MVVM.ExecutingCommands._Base;
 
-namespace Blauhaus.MVVM.Xamarin.Commands.ExecutingCommands.ExecutingNoParameterCommands._Base
+namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands._Base
 {
     public abstract class BaseExecutingNoParameterCommand<TExecutingCommand> : BaseExecutingCommand<TExecutingCommand> 
         where TExecutingCommand : BaseExecutingNoParameterCommand<TExecutingCommand>

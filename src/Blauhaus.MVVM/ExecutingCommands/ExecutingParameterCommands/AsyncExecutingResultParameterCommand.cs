@@ -2,10 +2,10 @@
 using System.Threading.Tasks;
 using Blauhaus.Analytics.Abstractions.Service;
 using Blauhaus.Errors.Handler;
-using Blauhaus.MVVM.Xamarin.Commands.ExecutingCommands.ExecutingParameterCommands._Base;
+using Blauhaus.MVVM.ExecutingCommands.ExecutingParameterCommands._Base;
 using CSharpFunctionalExtensions;
 
-namespace Blauhaus.MVVM.Xamarin.Commands.ExecutingCommands.ExecutingParameterCommands
+namespace Blauhaus.MVVM.ExecutingCommands.ExecutingParameterCommands
 {
     public class AsyncExecutingResultParameterCommand<TParameter> : BaseExecutingParameterCommand<AsyncExecutingResultParameterCommand<TParameter>, TParameter>
     {
