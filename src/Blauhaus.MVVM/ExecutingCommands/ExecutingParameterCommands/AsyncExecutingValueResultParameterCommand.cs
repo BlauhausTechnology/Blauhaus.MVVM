@@ -11,31 +11,31 @@ using CSharpFunctionalExtensions;
 
 namespace Blauhaus.MVVM.ExecutingCommands.ExecutingParameterCommands
 {
-    public class AsyncExecutingResultParameterCommand<TParameter> : BaseExecutingParameterCommand<AsyncExecutingResultParameterCommand<TParameter>, TParameter>
+    public class AsyncExecutingValueResultParameterCommand<TParameter, TValue> : BaseExecutingParameterCommand<AsyncExecutingValueResultParameterCommand<TParameter, TValue>, TParameter>
     {
-        private Func<TParameter, Task<Result>>? _task;
-        private Func<Task>? _successHandler;
+        private Func<TParameter, Task<Result<TValue>>>? _task;
+        private Func<TValue, Task> _successHandler;
         private Dictionary<Error, Func<Error, Task>>? _errorHandlers;
 
 
-        public AsyncExecutingResultParameterCommand(
+        public AsyncExecutingValueResultParameterCommand(
             IErrorHandler errorHandler, 
             IAnalyticsService analyticsService) 
             : base(errorHandler, analyticsService)
         {
         }
          
-        public AsyncExecutingResultParameterCommand<TParameter> WithTask(Func<TParameter, Task<Result>> task)
+        public AsyncExecutingValueResultParameterCommand<TParameter, TValue> WithTask(Func<TParameter, Task<Result<TValue>>>? task)
         {
             _task = task;
             return this;
         }
-        public AsyncExecutingResultParameterCommand<TParameter> OnSuccess(Func<Task> onSuccess)
+        public AsyncExecutingValueResultParameterCommand<TParameter, TValue> OnSuccess(Func<TValue, Task> onSuccess)
         {
             _successHandler = onSuccess;
             return this;
         }
-        public AsyncExecutingResultParameterCommand<TParameter> OnFailure(Error errorCondition, Func<Error, Task> errorHandler)
+        public AsyncExecutingValueResultParameterCommand<TParameter, TValue> OnFailure(Error errorCondition, Func<Error, Task> errorHandler)
         {
             _errorHandlers ??= new Dictionary<Error, Func<Error, Task>>();
             _errorHandlers[errorCondition] = errorHandler;
@@ -58,7 +58,7 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingParameterCommands
 
                 if (_successHandler != null)
                 {
-                    await _successHandler.Invoke();
+                    await _successHandler.Invoke(result.Value);
                 }
             });
         }

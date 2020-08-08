@@ -23,13 +23,13 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands
             return this;
         }
         
-        public ExecutingObservableCommand<T> WithOnNext(Action<T> onNext)
+        public ExecutingObservableCommand<T> OnNext(Action<T> onNext)
         {
             _onNext = onNext;
             return this;
         }
         
-        public ExecutingObservableCommand<T> WithOnCompleted(Action onCompleted)
+        public ExecutingObservableCommand<T> OnCompleted(Action onCompleted)
         {
             _onCompleted = onCompleted;
             return this;

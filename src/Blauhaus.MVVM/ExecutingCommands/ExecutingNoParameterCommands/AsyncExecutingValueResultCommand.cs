@@ -11,31 +11,31 @@ using CSharpFunctionalExtensions;
 
 namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands
 {
-    public class AsyncExecutingResultCommand : BaseExecutingNoParameterCommand<AsyncExecutingResultCommand>
+    public class AsyncExecutingValueResultCommand<TValue> : BaseExecutingNoParameterCommand<AsyncExecutingValueResultCommand<TValue>>
     {
-        private Func<Task<Result>>? _task;
-        private Func<Task>? _successHandler;
+        private Func<Task<Result<TValue>>>? _task;
+        private Func<TValue, Task> _successHandler;
         private Dictionary<Error, Func<Error, Task>>? _errorHandlers;
         
-        public AsyncExecutingResultCommand(IErrorHandler errorHandler, IAnalyticsService analyticsService) 
+        public AsyncExecutingValueResultCommand(IErrorHandler errorHandler, IAnalyticsService analyticsService) 
             : base(errorHandler, analyticsService)
         {
         }
          
         
-        public AsyncExecutingResultCommand WithTask(Func<Task<Result>> task)
+        public AsyncExecutingValueResultCommand<TValue> WithTask(Func<Task<Result<TValue>>> task)
         {
             _task = task;
             return this;
         }
 
-        public AsyncExecutingResultCommand OnSuccess(Func<Task> onSuccess)
+        public AsyncExecutingValueResultCommand<TValue> OnSuccess(Func<TValue, Task> onSuccess)
         {
             _successHandler = onSuccess;
             return this;
         }
 
-        public AsyncExecutingResultCommand OnFailure(Error errorCondition, Func<Error, Task> errorHandler)
+        public AsyncExecutingValueResultCommand<TValue> OnFailure(Error errorCondition, Func<Error, Task> errorHandler)
         {
             _errorHandlers ??= new Dictionary<Error, Func<Error, Task>>();
             _errorHandlers[errorCondition] = errorHandler;
@@ -58,7 +58,7 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands
 
                 if (_successHandler != null)
                 {
-                    await _successHandler.Invoke();
+                    await _successHandler.Invoke(result.Value);
                 }
             }); 
         } 

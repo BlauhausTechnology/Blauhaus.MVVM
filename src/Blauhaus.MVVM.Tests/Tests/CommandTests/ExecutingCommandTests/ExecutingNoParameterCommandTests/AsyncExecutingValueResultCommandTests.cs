@@ -1,26 +1,29 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Blauhaus.Errors;
+using Blauhaus.Errors.Extensions;
 using Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands;
+using Blauhaus.MVVM.Tests.TestObjects;
 using Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests._Base;
 using Blauhaus.TestHelpers.PropertiesChanged.CanExecuteChanged;
 using Blauhaus.TestHelpers.PropertiesChanged.PropertiesChanged;
 using CSharpFunctionalExtensions;
 using NUnit.Framework;
 
-namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.ExecutingNoValueCommandTests
+namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.ExecutingNoParameterCommandTests
 {
-    public class AsyncExecutingNoValueResultCommandTests : BaseExecutingCommandTest<AsyncExecutingResultCommand>
+    public class AsyncExecutingValueResultCommandTests : BaseExecutingCommandTest<AsyncExecutingValueResultCommand<int>>
     {
-        private Func<Task<Result>> _task;
-        private Result _result;
+        private Func<Task<Result<int>>> _task;
+        private Result<int> _result;
         private Func<bool> _canExecute;
-        private Func<Task>? _onSuccess;
+        private Func<int, Task> _onSuccess;
 
         public override void Setup()
         {
             base.Setup();
 
-            _result = Result.Success();
+            _result = Result.Success(1);
             _task = async () =>
             {
                 await Task.CompletedTask;
@@ -30,10 +33,10 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
             _onSuccess = null;
         }
 
-        protected override AsyncExecutingResultCommand ConstructSut()
+        protected override AsyncExecutingValueResultCommand<int> ConstructSut()
         {
             return base.ConstructSut()
-                .WithOnSuccess(_onSuccess)
+                .OnSuccess(_onSuccess)
                 .WithTask(_task)
                 .WithCanExecute(_canExecute);
         }
@@ -72,7 +75,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
             {
                 await Task.CompletedTask;
                 wasCalled = true;
-                return Result.Success();
+                return Result.Success(1);
             };
 
             //Act
@@ -92,7 +95,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
             {
                 await Task.CompletedTask;
                 tcs.SetResult(1);
-                return Result.Success();
+                return Result.Success(1);
             };
 
             //Act
@@ -102,17 +105,16 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
             //Assert
             Assert.AreEqual(1, result);
         }
-
         
         [Test]
         public async Task IF_OnSuccess_is_given_SHOULD_invoke_onsuccess()
         {
             //Arrange
             var tcs = new TaskCompletionSource<string>();
-            _onSuccess = async () =>
+            _onSuccess = async (i) =>
             {
                 await Task.CompletedTask;
-                tcs.SetResult("hi");
+                tcs.SetResult("hi " + i);
             };
 
             //Act
@@ -120,7 +122,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
             var result = await tcs.Task;
 
             //Assert
-            Assert.AreEqual("hi", result);
+            Assert.AreEqual("hi 1", result);
         }
 
         [Test]
@@ -132,7 +134,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
             using (var isExecutingChanges = Sut.SubscribeToPropertyChanged(x => x.IsExecuting))
             {
                 //Act
-                Sut.Execute(null);
+                Sut.Execute();
                 isExecutingChanges.WaitForChangeCount(2);
 
                 //Assert
@@ -145,17 +147,42 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
         public void IF_task_returns_fail_SHOULD_handle_and_reset_IsExecuting()
         {
             //Arrange
-            _result = Result.Failure("oops");
+            _result = Result.Failure<int>("oops");
             
             using (var isExecutingChanges = Sut.SubscribeToPropertyChanged(x => x.IsExecuting))
             {
                 //Act
-                Sut.Execute(null);
+                Sut.Execute();
                 isExecutingChanges.WaitForChangeCount(2);
 
                 //Assert
                 MockErrorHandler.Verify_HandleError("oops");
                 Assert.AreEqual(false, Sut.IsExecuting);
+            }
+        }
+        
+        [Test]
+        public void IF_OnFailure_is_given_and_task_returns_correct_fail_SHOULD_handle_and_reset_IsExecuting()
+        {
+            //Arrange
+            Error result = default;
+            Sut.OnFailure(TestErrors.Fail(), x =>
+            {
+                result = x;
+                return Task.CompletedTask;
+            });
+            _result = Result.Failure<int>(TestErrors.Fail().ToString());
+            
+            using (var isExecutingChanges = Sut.SubscribeToPropertyChanged(x => x.IsExecuting))
+            {
+                //Act
+                Sut.Execute();
+                isExecutingChanges.WaitForChangeCount(2);
+
+                //Assert
+                Assert.That(result == TestErrors.Fail());
+                Assert.AreEqual(false, Sut.IsExecuting);
+                MockErrorHandler.Verify_HandleError_not_called();
             }
         }
          

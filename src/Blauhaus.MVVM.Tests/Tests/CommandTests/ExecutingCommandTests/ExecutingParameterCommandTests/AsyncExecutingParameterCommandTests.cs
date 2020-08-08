@@ -6,7 +6,7 @@ using Blauhaus.TestHelpers.PropertiesChanged.CanExecuteChanged;
 using Blauhaus.TestHelpers.PropertiesChanged.PropertiesChanged;
 using NUnit.Framework;
 
-namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.ExecutingValueCommandTests
+namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.ExecutingParameterCommandTests
 {
     public class AsyncExecutingValueCommandTests : BaseExecutingCommandTest<AsyncExecutingParameterCommand<string>>
     {

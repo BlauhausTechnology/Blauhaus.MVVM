@@ -25,7 +25,6 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests._Base
             }
         }
 
-        
         [Test]
         public void SHOULD_set_and_reset_CanExecute()
         {

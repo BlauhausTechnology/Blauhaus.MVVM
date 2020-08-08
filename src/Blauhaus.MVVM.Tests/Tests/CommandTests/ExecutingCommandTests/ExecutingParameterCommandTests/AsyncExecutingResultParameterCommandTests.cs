@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Blauhaus.Errors;
 using Blauhaus.MVVM.ExecutingCommands.ExecutingParameterCommands;
+using Blauhaus.MVVM.Tests.TestObjects;
 using Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests._Base;
 using Blauhaus.TestHelpers.PropertiesChanged.CanExecuteChanged;
 using Blauhaus.TestHelpers.PropertiesChanged.PropertiesChanged;
 using CSharpFunctionalExtensions;
 using NUnit.Framework;
 
-namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.ExecutingValueCommandTests
+namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.ExecutingParameterCommandTests
 {
-    public class AsyncExecutingValueResultCommandTests : BaseExecutingCommandTest<AsyncExecutingResultParameterCommand<string>>
+    public class AsyncExecutingResultParameterCommandTests : BaseExecutingCommandTest<AsyncExecutingResultParameterCommand<string>>
     {
         private Func<string, Task<Result>> _task;
         private Result _result;
@@ -34,7 +36,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
         {
             return base.ConstructSut()
                 .WithTask(_task)
-                .WithOnSuccess(_onSuccess)
+                .OnSuccess(_onSuccess)
                 .WithCanExecute(_canExecute);
         }
          
@@ -157,6 +159,29 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
                 Assert.AreEqual(false, Sut.IsExecuting);
             }
         }
-         
+        [Test]
+        public void IF_OnFailure_is_given_and_task_returns_correct_fail_SHOULD_handle_and_reset_IsExecuting()
+        {
+            //Arrange
+            Error result = default;
+            Sut.OnFailure(TestErrors.Fail(), x =>
+            {
+                result = x;
+                return Task.CompletedTask;
+            });
+            _result = Result.Failure(TestErrors.Fail().ToString());
+            
+            using (var isExecutingChanges = Sut.SubscribeToPropertyChanged(x => x.IsExecuting))
+            {
+                //Act
+                Sut.Execute();
+                isExecutingChanges.WaitForChangeCount(2);
+
+                //Assert
+                Assert.That(result == TestErrors.Fail());
+                Assert.AreEqual(false, Sut.IsExecuting);
+                MockErrorHandler.Verify_HandleError_not_called();
+            }
+        }
     }
 }

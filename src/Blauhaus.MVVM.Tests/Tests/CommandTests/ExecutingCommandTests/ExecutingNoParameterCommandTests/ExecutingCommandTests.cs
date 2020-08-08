@@ -6,9 +6,9 @@ using Blauhaus.TestHelpers.PropertiesChanged.CanExecuteChanged;
 using Blauhaus.TestHelpers.PropertiesChanged.PropertiesChanged;
 using NUnit.Framework;
 
-namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.ExecutingNoValueCommandTests
+namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.ExecutingNoParameterCommandTests
 {
-    public class ExecutingNoValueCommandTests : BaseExecutingCommandTest<ExecutingCommand>
+    public class ExecutingCommandTests : BaseExecutingCommandTest<ExecutingCommand>
     {
         private Action _action;
         private Func<bool> _canExecute;

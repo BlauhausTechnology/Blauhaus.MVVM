@@ -12,7 +12,7 @@ using Blauhaus.TestHelpers.PropertiesChanged.PropertiesChanged;
 using Moq;
 using NUnit.Framework;
 
-namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.ExecutingNoValueCommandTests
+namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.ExecutingNoParameterCommandTests
 {
     public class ExecutingObservableCommandTests : BaseExecutingCommandTest<ExecutingObservableCommand<int>>
     {
@@ -45,8 +45,8 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
         {
             return base.ConstructSut()
                 .WithObservable(_observable)
-                .WithOnNext(_onNext)
-                .WithOnCompleted(_onCompleted)
+                .OnNext(_onNext)
+                .OnCompleted(_onCompleted)
                 .WithCanExecute(_canExecute)
                 .WithAnalyticsOperationName(_operationName);
         }
