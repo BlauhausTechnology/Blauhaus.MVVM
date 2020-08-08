@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Blauhaus.Analytics.Abstractions.Operation;
 using Blauhaus.Analytics.Abstractions.Service;
@@ -21,6 +22,7 @@ namespace Blauhaus.MVVM.ExecutingCommands._Base
         private IAnalyticsOperation? _analyticsOperation;
         private bool _isPageView = false;
         private object? _sender;
+        private string _caller = typeof(TExecutingCommand).Name;
         protected object Sender => _sender ??= this;
 
         protected BaseExecutingCommand(IErrorHandler errorHandler, IAnalyticsService analyticsService)
@@ -35,15 +37,17 @@ namespace Blauhaus.MVVM.ExecutingCommands._Base
             return (TExecutingCommand) this;
         }
         
-        public TExecutingCommand AnalyticsOperation(object sender, string operationName)
+        public TExecutingCommand AnalyticsOperation(object sender, string operationName, [CallerMemberName] string caller = "")
         {
+            _caller = caller;
             _sender = sender;
             AnalyticsOperationName = operationName;
             return (TExecutingCommand) this;
         }
 
-        public TExecutingCommand PageView(object page)
+        public TExecutingCommand PageView(object page,  [CallerMemberName] string caller = "")
         {
+            _caller = caller;
             _sender = page;
             _isPageView = true;
             return (TExecutingCommand) this;
@@ -87,12 +91,12 @@ namespace Blauhaus.MVVM.ExecutingCommands._Base
 
             if (_isPageView)
             {
-                _analyticsOperation = AnalyticsService.StartPageViewOperation(Sender);
+                _analyticsOperation = AnalyticsService.StartPageViewOperation(Sender, Sender.GetType().Name, null, _caller);
             }
             else if (AnalyticsOperationName != null && AnalyticsOperationName != string.Empty)
             {
                 var properties = new Dictionary<string, object> { ["Command"] = typeof(TExecutingCommand).Name };
-                _analyticsOperation = AnalyticsService.StartOperation(Sender, AnalyticsOperationName, properties);
+                _analyticsOperation = AnalyticsService.StartOperation(Sender, AnalyticsOperationName, properties, _caller);
             }
         }
 
