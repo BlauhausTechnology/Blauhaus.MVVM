@@ -15,14 +15,7 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands._Base
             : base(errorHandler, analyticsService)
         {
         }
-
-        protected BaseExecutingNoParameterCommand(
-            IErrorHandler errorHandler, 
-            IAnalyticsService analyticsService,
-            Func<bool>? canExecute = null) 
-            : base(errorHandler, analyticsService, canExecute)
-        {
-        }
+         
 
         public override void Execute(object parameter) => Execute();
         public abstract void Execute();

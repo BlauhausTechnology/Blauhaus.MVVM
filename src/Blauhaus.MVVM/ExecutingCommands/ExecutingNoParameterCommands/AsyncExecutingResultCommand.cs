@@ -16,13 +16,7 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands
             : base(errorHandler, analyticsService)
         {
         }
-
-        public AsyncExecutingResultCommand(IErrorHandler errorHandler, IAnalyticsService analyticsService, Func<Task<Result>> task, Func<Task>? onSuccess = null, Func<bool>? canExecute = null) 
-            : base(errorHandler, analyticsService, canExecute)
-        {
-            _task = task;
-            _onSuccess = onSuccess;
-        }
+         
         
         public AsyncExecutingResultCommand WithOnSuccess(Func<Task> onSuccess)
         {
@@ -37,39 +31,21 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands
         }
 
         
-        public override void Execute()
+        public override async void Execute()
         {
-            if (CanExecute())
+            await TryExecuteAsync(_task, async () =>
             {
-                if (_task == null)
+                var result = await _task!.Invoke();
+                if (result.IsFailure)
                 {
-                    throw new InvalidOperationException("the action for this command has not been set");
+                    await ErrorHandler.HandleErrorAsync(result.Error);
                 }
-                Task.Run(async () =>
+
+                if (_onSuccess != null)
                 {
-                    try
-                    {
-                        Start();
-
-                        var result = await _task.Invoke().ConfigureAwait(true);
-                        if (result.IsFailure)
-                        {
-                            await ErrorHandler.HandleErrorAsync(result.Error);
-                        }
-
-                        if (_onSuccess != null)
-                        {
-                            await _onSuccess.Invoke();
-                        }
-
-                        Finish();
-                    }
-                    catch (Exception e)
-                    {
-                        Fail(this, e);
-                    }
-                });
-            }
+                    await _onSuccess.Invoke();
+                }
+            }); 
         } 
     }
 }

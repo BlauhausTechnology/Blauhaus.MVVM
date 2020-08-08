@@ -15,43 +15,18 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands
         {
         }
 
-        public AsyncExecutingCommand(IErrorHandler errorHandler, IAnalyticsService analyticsService, Func<Task> task, Func<bool>? canExecute = null) 
-            : base(errorHandler, analyticsService, canExecute)
-        {
-            _task = task;
-        }
-
         public AsyncExecutingCommand WithTask(Func<Task> task)
         {
             _task = task;
             return this;
         }
          
-        public override void Execute()
+        public override async void Execute()
         {
-            if (CanExecute())
+            await TryExecuteAsync(_task, async () =>
             {
-                if (_task == null)
-                {
-                    throw new InvalidOperationException("the action for this command has not been set");
-                }
-                Task.Run(async () =>
-                {
-                    try
-                    {
-                        Start();
-
-                        await _task.Invoke().ConfigureAwait(true);
-
-                        Finish();
-                    }
-                    catch (Exception e)
-                    {
-                        Fail(this, e);
-                    }
-                });
-            }
-           
+                await _task!.Invoke();
+            });
         }
     }
 }

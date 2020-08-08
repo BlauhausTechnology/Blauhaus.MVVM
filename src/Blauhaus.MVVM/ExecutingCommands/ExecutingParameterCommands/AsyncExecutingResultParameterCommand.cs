@@ -19,19 +19,7 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingParameterCommands
             : base(errorHandler, analyticsService)
         {
         }
-
-        public AsyncExecutingResultParameterCommand(
-            IErrorHandler errorHandler, 
-            IAnalyticsService analyticsService, 
-            Func<TParameter, Task<Result>> task, 
-            Func<Task>? onSuccess = null, 
-            Func<bool>? canExecute = null) 
-            : base(errorHandler, analyticsService, canExecute)
-        {
-            _task = task;
-            _onSuccess = onSuccess;
-        }
-        
+         
         public AsyncExecutingResultParameterCommand<TParameter> WithTask(Func<TParameter, Task<Result>> task)
         {
             _task = task;
@@ -44,46 +32,22 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingParameterCommands
             return this;
         }
 
-        public override void Execute(object parameter)
+        public override async void Execute(object parameter)
         {
-            
-
-
-            if (CanExecute())
+            await TryExecuteAsync(_task, async () =>
             {
-                if (_task == null)
+                var value = ConvertParameter(parameter);
+                var result = await _task!.Invoke(value).ConfigureAwait(true);
+                if (result.IsFailure)
                 {
-                    throw new InvalidOperationException("the action for this command has not been set");
+                    await ErrorHandler.HandleErrorAsync(result.Error);
                 }
 
-                Task.Run(async () =>
+                if (_onSuccess != null)
                 {
-                    try
-                    {
-                        Start();
-
-                        var value = ConvertParameter(parameter);
-                        var result = await _task.Invoke(value).ConfigureAwait(true);
-                        if (result.IsFailure)
-                        {
-                            await ErrorHandler.HandleErrorAsync(result.Error);
-                        }
-
-                        if (_onSuccess != null)
-                        {
-                            await _onSuccess.Invoke();
-                        }
-
-                        Finish();
-                    }
-                    catch (Exception e)
-                    {
-                        Fail(this, e);
-                    }
-                });
-            }
-
-           
+                    await _onSuccess.Invoke();
+                }
+            });
         }
     }
 }

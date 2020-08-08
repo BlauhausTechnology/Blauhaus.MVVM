@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Blauhaus.Analytics.Abstractions.Operation;
 using Blauhaus.Analytics.Abstractions.Service;
 using Blauhaus.Common.Utils.NotifyPropertyChanged;
@@ -24,14 +25,7 @@ namespace Blauhaus.MVVM.ExecutingCommands._Base
             ErrorHandler = errorHandler;
             AnalyticsService = analyticsService;
         }
-
-        protected BaseExecutingCommand(IErrorHandler errorHandler,  IAnalyticsService analyticsService, Func<bool>? canExecute)
-        {
-            AnalyticsService = analyticsService;
-            ErrorHandler = errorHandler;
-            _canExecute = canExecute;
-        }
-
+         
         public TExecutingCommand WithCanExecute(Func<bool> canExecute)
         {
             _canExecute = canExecute;
@@ -98,6 +92,50 @@ namespace Blauhaus.MVVM.ExecutingCommands._Base
             IsExecuting = false;
             _analyticsOperation?.Dispose();
             ErrorHandler.HandleExceptionAsync(sender, e); 
+        }
+
+        protected void TryExecute(object? action, Action act)
+        {
+            if (CanExecute())
+            {
+                if (action == null)
+                {
+                    throw new InvalidOperationException("the action for this command has not been set");
+                }
+
+                try
+                {
+                    Start();
+                    act.Invoke();
+                    Finish();
+                }
+                catch (Exception e)
+                {
+                    Fail(this, e);
+                }
+            }
+        }
+
+        protected async Task TryExecuteAsync(object? action, Func<Task> act)
+        {
+            if (CanExecute())
+            {
+                if (action == null)
+                {
+                    throw new InvalidOperationException("the action for this command has not been set");
+                }
+
+                try
+                {
+                    Start();
+                    await act.Invoke();
+                    Finish();
+                }
+                catch (Exception e)
+                {
+                    Fail(this, e);
+                }
+            }
         }
 
     }
