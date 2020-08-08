@@ -48,7 +48,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
                 .OnNext(_onNext)
                 .OnCompleted(_onCompleted)
                 .WithCanExecute(_canExecute)
-                .WithAnalyticsOperationName(_operationName);
+                .AnalyticsOperation(this, _operationName);
         }
 
         [Test]

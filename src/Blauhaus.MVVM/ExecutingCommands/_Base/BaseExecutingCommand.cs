@@ -18,8 +18,10 @@ namespace Blauhaus.MVVM.ExecutingCommands._Base
 
         protected readonly IErrorHandler ErrorHandler;
         protected readonly IAnalyticsService AnalyticsService;
-        private IAnalyticsOperation _analyticsOperation;
-        private object? _page;
+        private IAnalyticsOperation? _analyticsOperation;
+        private bool _isPageView = false;
+        private object? _sender;
+        protected object Sender => _sender ??= this;
 
         protected BaseExecutingCommand(IErrorHandler errorHandler, IAnalyticsService analyticsService)
         {
@@ -33,15 +35,17 @@ namespace Blauhaus.MVVM.ExecutingCommands._Base
             return (TExecutingCommand) this;
         }
         
-        public TExecutingCommand WithAnalyticsOperationName(string operationName)
+        public TExecutingCommand AnalyticsOperation(object sender, string operationName)
         {
+            _sender = sender;
             AnalyticsOperationName = operationName;
             return (TExecutingCommand) this;
         }
 
-        public TExecutingCommand IsPageView(object page)
+        public TExecutingCommand PageView(object page)
         {
-            _page = page;
+            _sender = page;
+            _isPageView = true;
             return (TExecutingCommand) this;
         }
 
@@ -81,12 +85,14 @@ namespace Blauhaus.MVVM.ExecutingCommands._Base
         {
             IsExecuting = true;
 
-            if (AnalyticsOperationName != null && AnalyticsOperationName != string.Empty)
+            if (_isPageView)
+            {
+                _analyticsOperation = AnalyticsService.StartPageViewOperation(Sender);
+            }
+            else if (AnalyticsOperationName != null && AnalyticsOperationName != string.Empty)
             {
                 var properties = new Dictionary<string, object> { ["Command"] = typeof(TExecutingCommand).Name };
-                _analyticsOperation = _page == null 
-                    ? AnalyticsService.StartOperation(this, AnalyticsOperationName, properties)
-                    : AnalyticsService.StartPageViewOperation(_page);
+                _analyticsOperation = AnalyticsService.StartOperation(Sender, AnalyticsOperationName, properties);
             }
         }
 
@@ -103,7 +109,7 @@ namespace Blauhaus.MVVM.ExecutingCommands._Base
             ErrorHandler.HandleExceptionAsync(sender, e); 
         }
 
-        protected void TryExecute(object sender, object? action, Action act)
+        protected void TryExecute(object? action, Action act)
         {
             if (CanExecute())
             {
@@ -119,12 +125,12 @@ namespace Blauhaus.MVVM.ExecutingCommands._Base
                 }
                 catch (Exception e)
                 {
-                    Fail(sender, e);
+                    Fail(Sender, e);
                 }
             }
         }
 
-        protected async Task TryExecuteAsync(object sender, object? action, Func<Task> act)
+        protected async Task TryExecuteAsync(object? action, Func<Task> act)
         {
             if (CanExecute())
             {
@@ -141,7 +147,7 @@ namespace Blauhaus.MVVM.ExecutingCommands._Base
                 }
                 catch (Exception e)
                 {
-                    Fail(sender, e);
+                    Fail(Sender, e);
                 }
             }
         }

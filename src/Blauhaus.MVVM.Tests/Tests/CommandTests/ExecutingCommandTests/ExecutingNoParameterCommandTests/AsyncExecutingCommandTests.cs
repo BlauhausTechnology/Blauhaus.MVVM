@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands;
 using Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests._Base;
 using Blauhaus.TestHelpers.PropertiesChanged.CanExecuteChanged;
 using Blauhaus.TestHelpers.PropertiesChanged.PropertiesChanged;
+using Moq;
 using NUnit.Framework;
 
 namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.ExecutingNoParameterCommandTests
@@ -50,6 +52,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
                 Assert.AreEqual(true, canExecuteChanges[0]);
             }
         }
+
         [Test]
         public async Task IF_CanExecute_is_given_And_returns_false_SHOULD_not_execute()
         {
@@ -88,7 +91,6 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
             //Assert
             Assert.AreEqual(1, result);
         }
-        
 
         [Test]
         public void IF_ErrorHandlingService_is_provided_and_task_throws_exception_SHOULD_handle_and_reset_IsExecuting()
@@ -107,6 +109,27 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
                 Assert.AreEqual(false, Sut.IsExecuting);
             }
         }
+
+        [Test]
+        public void IF_AnalyticsOperation_is_providedSHOULD_log()
+        {
+            //Arrange 
+            using (var isExecutingChanges = Sut.SubscribeToPropertyChanged(x => x.IsExecuting))
+            {
+                //Arrange
+                Sut.AnalyticsOperation(this, "ops");
+
+                //Act
+                Sut.Execute();
+                isExecutingChanges.WaitForChangeCount(2);
+
+                //Assert
+                MockAnalyticsService.Mock.Verify(x => x.StartOperation(
+                    It.Is<object>(y => y.GetType() == typeof(AsyncExecutingCommandTests)), 
+                    "ops", It.IsAny<Dictionary<string, object>>(), It.IsAny<string>()));
+            }
+        }
          
+
     }
 }
