@@ -25,7 +25,7 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingParameterCommands
 
         public override async void Execute(object parameter)
         {
-            await TryExecuteAsync(_task, async () =>
+            await TryExecuteAsync(this, _task, async () =>
             {
                 var value = ConvertParameter(parameter);
                 await _task!.Invoke(value).ConfigureAwait(true);

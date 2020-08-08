@@ -43,9 +43,9 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands
         }
 
         
-        public override async void Execute()
+        public override async void Execute(object parameter)
         {
-            await TryExecuteAsync(_task, async () =>
+            await TryExecuteAsync(this, _task, async () =>
             {
                 var result = await _task!.Invoke();
                 if (result.IsFailure)

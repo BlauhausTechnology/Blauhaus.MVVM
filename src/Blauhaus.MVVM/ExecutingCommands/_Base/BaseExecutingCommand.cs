@@ -19,6 +19,7 @@ namespace Blauhaus.MVVM.ExecutingCommands._Base
         protected readonly IErrorHandler ErrorHandler;
         protected readonly IAnalyticsService AnalyticsService;
         private IAnalyticsOperation _analyticsOperation;
+        private object? _page;
 
         protected BaseExecutingCommand(IErrorHandler errorHandler, IAnalyticsService analyticsService)
         {
@@ -35,6 +36,12 @@ namespace Blauhaus.MVVM.ExecutingCommands._Base
         public TExecutingCommand WithAnalyticsOperationName(string operationName)
         {
             AnalyticsOperationName = operationName;
+            return (TExecutingCommand) this;
+        }
+
+        public TExecutingCommand IsPageView(object page)
+        {
+            _page = page;
             return (TExecutingCommand) this;
         }
 
@@ -77,7 +84,9 @@ namespace Blauhaus.MVVM.ExecutingCommands._Base
             if (AnalyticsOperationName != null && AnalyticsOperationName != string.Empty)
             {
                 var properties = new Dictionary<string, object> { ["Command"] = typeof(TExecutingCommand).Name };
-                _analyticsOperation = AnalyticsService.StartOperation(this, AnalyticsOperationName, properties);
+                _analyticsOperation = _page == null 
+                    ? AnalyticsService.StartOperation(this, AnalyticsOperationName, properties)
+                    : AnalyticsService.StartPageViewOperation(_page);
             }
         }
 
@@ -94,7 +103,7 @@ namespace Blauhaus.MVVM.ExecutingCommands._Base
             ErrorHandler.HandleExceptionAsync(sender, e); 
         }
 
-        protected void TryExecute(object? action, Action act)
+        protected void TryExecute(object sender, object? action, Action act)
         {
             if (CanExecute())
             {
@@ -102,7 +111,6 @@ namespace Blauhaus.MVVM.ExecutingCommands._Base
                 {
                     throw new InvalidOperationException("the action for this command has not been set");
                 }
-
                 try
                 {
                     Start();
@@ -111,12 +119,12 @@ namespace Blauhaus.MVVM.ExecutingCommands._Base
                 }
                 catch (Exception e)
                 {
-                    Fail(this, e);
+                    Fail(sender, e);
                 }
             }
         }
 
-        protected async Task TryExecuteAsync(object? action, Func<Task> act)
+        protected async Task TryExecuteAsync(object sender, object? action, Func<Task> act)
         {
             if (CanExecute())
             {
@@ -133,7 +141,7 @@ namespace Blauhaus.MVVM.ExecutingCommands._Base
                 }
                 catch (Exception e)
                 {
-                    Fail(this, e);
+                    Fail(sender, e);
                 }
             }
         }

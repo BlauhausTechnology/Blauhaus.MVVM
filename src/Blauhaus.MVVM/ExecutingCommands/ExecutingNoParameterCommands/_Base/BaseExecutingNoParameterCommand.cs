@@ -18,7 +18,6 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands._Base
          
 
         public override void Execute(object parameter) => Execute();
-        public abstract void Execute();
 
     }
 }

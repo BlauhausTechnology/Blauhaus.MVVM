@@ -21,9 +21,9 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands
             return this;
         }
          
-        public override void Execute()
+        public override void Execute(object parameter)
         {
-            TryExecute(_action, () =>
+            TryExecute(this, _action, () =>
             {
                 _action?.Invoke();
             });

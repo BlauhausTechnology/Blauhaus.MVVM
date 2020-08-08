@@ -35,7 +35,7 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands
             return this;
         }
 
-        public override void Execute()
+        public override void Execute(object parameter)
         {
             if (CanExecute())
             {

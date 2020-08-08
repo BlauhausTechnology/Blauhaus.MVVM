@@ -20,11 +20,10 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingParameterCommands
             : base(errorHandler, analyticsService)
         {
         }
-         
 
         public override void Execute(object parameter)
         {
-            TryExecute(_action, () =>
+            TryExecute(this, _action, () =>
             {
                 var value = ConvertParameter(parameter);
                 _action?.Invoke(value);
