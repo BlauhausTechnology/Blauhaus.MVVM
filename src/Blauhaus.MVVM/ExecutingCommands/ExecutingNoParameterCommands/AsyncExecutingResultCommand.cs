@@ -39,15 +39,13 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands
         
         public override void Execute()
         {
-            Task.Run(async () =>
+            if (CanExecute())
             {
-                
                 if (_task == null)
                 {
                     throw new InvalidOperationException("the action for this command has not been set");
                 }
-
-                if (CanExecute())
+                Task.Run(async () =>
                 {
                     try
                     {
@@ -70,9 +68,8 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands
                     {
                         Fail(this, e);
                     }
-                }
-            });
+                });
+            }
         } 
-
     }
 }

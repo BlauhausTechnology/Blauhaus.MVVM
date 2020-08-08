@@ -31,7 +31,6 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands
         {
             if (CanExecute())
             {
-                
                 if (_action == null)
                 {
                     throw new InvalidOperationException("the action for this command has not been set");
