@@ -10,11 +10,15 @@ namespace Blauhaus.MVVM._Ioc
         {
             services.AddTransient<AsyncExecutingCommand>();
             services.AddTransient<AsyncExecutingResultCommand>();
+            services.AddTransient(typeof(AsyncExecutingValueResultCommand<>));
             services.AddTransient<ExecutingCommand>();
+
+
             services.AddTransient(typeof(ExecutingObservableCommand<>));
 
             services.AddTransient(typeof(AsyncExecutingParameterCommand<>));
             services.AddTransient(typeof(AsyncExecutingResultParameterCommand<>));
+            services.AddTransient(typeof(AsyncExecutingValueResultParameterCommand<,>));
             services.AddTransient(typeof(ExecutingParameterCommand<>));
 
             return services;
