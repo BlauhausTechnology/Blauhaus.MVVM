@@ -58,7 +58,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests._Base
         {
             //Arrange 
             _mockOperation = MockAnalyticsService.Where_StartOperation_returns_operation();
-            Sut.AnalyticsOperation(this, "MyOp");
+            Sut.LogOperation(this, "MyOp");
 
             //Act
             Sut.Execute();
@@ -75,7 +75,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests._Base
         {
             //Arrange 
             _mockOperation = MockAnalyticsService.Where_StartPageViewOperation_returns_operation();
-            Sut.PageView(this);
+            Sut.LogPageView(this);
 
             //Act
             Sut.Execute();

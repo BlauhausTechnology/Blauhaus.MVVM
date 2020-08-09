@@ -37,7 +37,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
         {
             return base.ConstructSut()
                 .OnSuccess(_onSuccess)
-                .WithTask(_task)
+                .WithExecute(_task)
                 .WithCanExecute(_canExecute);
         }
          

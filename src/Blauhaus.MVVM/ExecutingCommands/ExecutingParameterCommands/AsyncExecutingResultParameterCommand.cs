@@ -25,7 +25,7 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingParameterCommands
         {
         }
          
-        public AsyncExecutingResultParameterCommand<TParameter> WithTask(Func<TParameter, Task<Result>> task)
+        public AsyncExecutingResultParameterCommand<TParameter> WithExecute(Func<TParameter, Task<Result>> task)
         {
             _task = task;
             return this;

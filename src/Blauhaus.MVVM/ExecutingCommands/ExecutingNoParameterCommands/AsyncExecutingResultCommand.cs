@@ -23,7 +23,7 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands
         }
          
         
-        public AsyncExecutingResultCommand WithTask(Func<Task<Result>> task)
+        public AsyncExecutingResultCommand WithExecute(Func<Task<Result>> task)
         {
             _task = task;
             return this;

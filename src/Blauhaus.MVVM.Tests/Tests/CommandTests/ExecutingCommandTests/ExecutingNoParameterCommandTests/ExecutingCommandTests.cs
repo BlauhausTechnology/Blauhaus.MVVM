@@ -23,7 +23,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
         protected override ExecutingCommand ConstructSut()
         {
             return base.ConstructSut()
-                .WithAction(_action)
+                .WithExecute(_action)
                 .WithCanExecute(_canExecute);
         }
 

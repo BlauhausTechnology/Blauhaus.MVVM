@@ -37,7 +37,7 @@ namespace Blauhaus.MVVM.ExecutingCommands._Base
             return (TExecutingCommand) this;
         }
         
-        public TExecutingCommand AnalyticsOperation(object sender, string operationName, [CallerMemberName] string caller = "")
+        public TExecutingCommand LogOperation(object sender, string operationName, [CallerMemberName] string caller = "")
         {
             _caller = caller;
             _sender = sender;
@@ -45,7 +45,7 @@ namespace Blauhaus.MVVM.ExecutingCommands._Base
             return (TExecutingCommand) this;
         }
 
-        public TExecutingCommand PageView(object page,  [CallerMemberName] string caller = "")
+        public TExecutingCommand LogPageView(object page,  [CallerMemberName] string caller = "")
         {
             _caller = caller;
             _sender = page;

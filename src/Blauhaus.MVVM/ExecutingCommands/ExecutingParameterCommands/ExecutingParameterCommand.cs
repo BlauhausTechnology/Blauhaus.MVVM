@@ -8,7 +8,7 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingParameterCommands
     public class ExecutingParameterCommand<TParameter> : BaseExecutingParameterCommand<ExecutingParameterCommand<TParameter>, TParameter>
     {
         private Action<TParameter>? _action;
-        public ExecutingParameterCommand<TParameter> WithAction(Action<TParameter> action)
+        public ExecutingParameterCommand<TParameter> WithExecute(Action<TParameter> action)
         {
             _action = action;
             return this;

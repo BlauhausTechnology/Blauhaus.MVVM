@@ -15,7 +15,7 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands
         {
         }
          
-        public ExecutingCommand WithAction(Action action)
+        public ExecutingCommand WithExecute(Action action)
         {
             _action = action;
             return this;

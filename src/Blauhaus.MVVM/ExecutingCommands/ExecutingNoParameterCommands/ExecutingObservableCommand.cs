@@ -17,7 +17,7 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands
         {
         }
          
-        public ExecutingObservableCommand<T> WithObservable(IObservable<T> observable)
+        public ExecutingObservableCommand<T> Observe(IObservable<T> observable)
         {
             _observable = observable;
             return this;

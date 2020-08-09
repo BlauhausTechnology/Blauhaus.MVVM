@@ -44,11 +44,11 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
         protected override ExecutingObservableCommand<int> ConstructSut()
         {
             return base.ConstructSut()
-                .WithObservable(_observable)
+                .Observe(_observable)
                 .OnNext(_onNext)
                 .OnCompleted(_onCompleted)
                 .WithCanExecute(_canExecute)
-                .AnalyticsOperation(this, _operationName);
+                .LogOperation(this, _operationName);
         }
 
         [Test]

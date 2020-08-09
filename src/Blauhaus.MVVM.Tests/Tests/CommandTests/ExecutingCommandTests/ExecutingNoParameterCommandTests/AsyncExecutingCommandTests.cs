@@ -26,7 +26,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
         {
             return base.ConstructSut()
                 .WithCanExecute(_canExecute)
-                .WithTask(_task);
+                .WithExecute(_task);
         }
         
         [Test]
@@ -117,7 +117,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
             using (var isExecutingChanges = Sut.SubscribeToPropertyChanged(x => x.IsExecuting))
             {
                 //Arrange
-                Sut.AnalyticsOperation(this, "ops");
+                Sut.LogOperation(this, "ops");
 
                 //Act
                 Sut.Execute();

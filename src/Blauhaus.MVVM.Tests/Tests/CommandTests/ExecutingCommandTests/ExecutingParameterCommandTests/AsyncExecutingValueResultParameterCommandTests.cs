@@ -35,7 +35,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
         protected override AsyncExecutingValueResultParameterCommand<string, int> ConstructSut()
         {
             return base.ConstructSut()
-                .WithTask(_task)
+                .WithExecute(_task)
                 .OnSuccess(_onSuccess)
                 .WithCanExecute(_canExecute);
         }
