@@ -1,6 +1,5 @@
 ﻿using System;
-using Blauhaus.MVVM.Xamarin.Extensions;
-using Blauhaus.MVVM.Xamarin.ViewElements.Sync;
+using Blauhaus.Domain.Client.Sync.Client;
 using Xamarin.Forms;
 using Xamarin.Forms.Markup;
 
@@ -22,8 +21,8 @@ namespace Blauhaus.MVVM.Xamarin.Controls.Sync
 
         public SyncCollectionDetailPanel Bind(string collectionName)
         {
-            _stateLabel.Bind($"{collectionName}.SyncStats.{nameof(SyncStats.State)}");
-            _messageLabel.Bind($"{collectionName}.SyncStats.{nameof(SyncStats.StatusMessage)}");
+            _stateLabel.Bind($"{collectionName}.SyncStatusHandler.{nameof(SyncStatusHandler.State)}");
+            _messageLabel.Bind($"{collectionName}.SyncStatusHandler.{nameof(SyncStatusHandler.StatusMessage)}");
             
             return this;
         }

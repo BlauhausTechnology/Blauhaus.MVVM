@@ -1,7 +1,5 @@
-﻿using System;
-using System.Linq.Expressions;
+﻿using Blauhaus.MVVM.Abstractions.Contracts;
 using Blauhaus.MVVM.Xamarin.Converters;
-using Blauhaus.MVVM.Xamarin.ViewElements.Sync;
 using Xamarin.Forms;
 
 namespace Blauhaus.MVVM.Xamarin.Extensions
@@ -10,8 +8,8 @@ namespace Blauhaus.MVVM.Xamarin.Extensions
     {
         public static RefreshView BindSyncCollection(this RefreshView refreshView, string nameOfSyncCollection)
         {
-            refreshView.SetBinding(RefreshView.CommandProperty, new Binding(nameOfSyncCollection + ".LoadNewFromServerCommand")); 
-            refreshView.SetBinding(RefreshView.IsRefreshingProperty, new Binding(nameOfSyncCollection + ".SyncStats.State", BindingMode.OneWay, new SyncCollectionIsRunningConverter())); 
+            refreshView.SetBinding(RefreshView.CommandProperty, new Binding(nameof(IReload.ReloadCommand))); 
+            refreshView.SetBinding(RefreshView.IsRefreshingProperty, new Binding(nameOfSyncCollection + ".SyncStatusHandler.State", BindingMode.OneWay, new SyncCollectionIsRunningConverter())); 
 
             return refreshView;
         }

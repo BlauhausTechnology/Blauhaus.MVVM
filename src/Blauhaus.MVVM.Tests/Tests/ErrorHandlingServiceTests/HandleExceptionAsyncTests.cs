@@ -1,20 +1,16 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Blauhaus.Auth.Abstractions.Errors;
+using Blauhaus.Common.ValueObjects.BuildConfigs;
+using Blauhaus.Errors;
 using Blauhaus.MVVM.Tests.Tests._Base;
 using Blauhaus.MVVM.Xamarin.ErrorHandling;
 using NUnit.Framework;
 
 namespace Blauhaus.MVVM.Tests.Tests.ErrorHandlingServiceTests
 {
-    public class HandleExceptionAsyncTests : BaseMvvmTest<ErrorHandlingService>
-    {
-        protected override ErrorHandlingService ConstructSut()
-        {
-            return new ErrorHandlingService(
-                MockDialogService.Object,
-                MockAnalyticsService.Object);
-        }
-
+    public class HandleExceptionAsyncTests : BaseMvvmTest<ErrorHandler>
+    { 
         [Test]
         public async Task SHOULD_log_exception()
         {
@@ -28,9 +24,11 @@ namespace Blauhaus.MVVM.Tests.Tests.ErrorHandlingServiceTests
             MockAnalyticsService.VerifyLogException(exception);
         }
 
-        [Test] public async Task SHOULD_show_alert()
+        [Test] 
+        public async Task IF_Release_SHOULD_Show_generic_message()
         {
             //Arrange
+            Config = BuildConfig.Release;
             var exception = new Exception("failio");
 
             //Act
@@ -38,6 +36,32 @@ namespace Blauhaus.MVVM.Tests.Tests.ErrorHandlingServiceTests
 
             //Assert
             MockDialogService.Mock.Verify(x => x.DisplayAlertAsync("Error", "An unexpected error has occured", "OK"));
+        }
+
+        [Test] 
+        public async Task IF_Debug_SHOULD_Show_exception_message()
+        {
+            //Arrange
+            Config = BuildConfig.Debug;
+            var exception = new Exception("failio");
+
+            //Act
+            await Sut.HandleExceptionAsync(this, exception);
+
+            //Assert
+            MockDialogService.Mock.Verify(x => x.DisplayAlertAsync("Error", "failio", "OK"));
+        }
+
+        [Test] public async Task IF_Exception_is_ErrorException_SHOULD_show_Description()
+        {
+            //Arrange
+            var exception = new ErrorException(AuthErrors.NotAuthorized);
+
+            //Act
+            await Sut.HandleExceptionAsync(this, exception);
+
+            //Assert
+            MockDialogService.Mock.Verify(x => x.DisplayAlertAsync("Error", AuthErrors.NotAuthorized.Description, "OK"));
         }
     }
 

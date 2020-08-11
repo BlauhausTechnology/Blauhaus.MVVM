@@ -4,7 +4,6 @@ using Blauhaus.MVVM.Abstractions.Commands;
 using Blauhaus.MVVM.Tests.TestObjects;
 using Blauhaus.MVVM.Tests.Tests.ViewTests._Base;
 using Blauhaus.TestHelpers.MockBuilders;
-using Moq;
 using NUnit.Framework;
 
 namespace Blauhaus.MVVM.Tests.Tests.ViewTests.BaseAppearingContentPageTests

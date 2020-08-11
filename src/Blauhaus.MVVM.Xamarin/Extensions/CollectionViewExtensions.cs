@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq.Expressions;
-using Blauhaus.MVVM.Xamarin.ViewElements.Sync;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 
 namespace Blauhaus.MVVM.Xamarin.Extensions
 {
