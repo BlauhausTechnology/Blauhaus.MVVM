@@ -1,6 +1,7 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using Blauhaus.Common.ValueObjects.BuildConfigs;
+using Blauhaus.Ioc.Abstractions;
+using Blauhaus.Ioc.DotNetCoreIocService;
 using Blauhaus.MVVM.Abstractions.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -16,8 +17,7 @@ namespace Blauhaus.MVVM.Xamarin.App
 
         protected BaseFormsApp(IServiceCollection? platformServices)
         {
-            if(platformServices == null)
-                platformServices = new ServiceCollection();
+            platformServices ??= new ServiceCollection();
 
             var serviceProvider = new HostBuilder()
                 .UseContentRoot(Directory.GetCurrentDirectory())
@@ -28,6 +28,7 @@ namespace Blauhaus.MVVM.Xamarin.App
 
                     CurrentBuildConfig = GetBuildConfig();
                     services.AddSingleton(CurrentBuildConfig);
+                    services.AddTransient<IServiceLocator, DotNetCoreServiceLocator>();
                     
                     //do this last to give platform services a chance to override defaults
                     foreach (var platformService in platformServices)
@@ -36,6 +37,7 @@ namespace Blauhaus.MVVM.Xamarin.App
                     }
 
                 }).Build().Services;
+             
 
             AppServices.SetProvider(serviceProvider);
             

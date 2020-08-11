@@ -1,22 +1,23 @@
 ﻿using System.Windows.Input;
 using Blauhaus.MVVM.Abstractions.Commands;
+using Blauhaus.MVVM.Abstractions.Contracts;
 using Blauhaus.MVVM.Abstractions.ViewModels;
 
 namespace Blauhaus.MVVM.Tests.TestObjects
 {
-    public class TestAppearingViewModel : BaseViewModel, IAppearing
+    public class TestAppearingViewModel : BaseViewModel, IAppear
     {
 
         public TestAppearingViewModel(
             IExecutingCommand appearingCommand, 
             ICommand disappearingCommand)
         {
-            AppearingCommand = appearingCommand;
+            AppearCommand = appearingCommand;
             DisappearingCommand = disappearingCommand;
         }
 
 
-        public IExecutingCommand AppearingCommand { get; }
+        public IExecutingCommand AppearCommand { get; }
         public ICommand DisappearingCommand { get; }
     }
 }

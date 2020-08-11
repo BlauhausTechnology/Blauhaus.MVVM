@@ -3,9 +3,7 @@ using Blauhaus.MVVM.Abstractions.Navigation;
 using Blauhaus.MVVM.Tests.TestObjects;
 using Blauhaus.MVVM.Tests.Tests.FormsNavigationServiceTests._Base;
 using Blauhaus.MVVM.Xamarin.Views;
-using Moq;
 using NUnit.Framework;
-using Xamarin.Forms;
 
 namespace Blauhaus.MVVM.Tests.Tests.FormsNavigationServiceTests
 {

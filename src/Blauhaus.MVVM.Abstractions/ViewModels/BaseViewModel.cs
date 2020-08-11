@@ -1,4 +1,4 @@
-﻿using Blauhaus.MVVM.Abstractions.Bindable;
+﻿using Blauhaus.Common.Utils.NotifyPropertyChanged;
 
 namespace Blauhaus.MVVM.Abstractions.ViewModels
 {

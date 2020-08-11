@@ -1,7 +1,8 @@
-﻿using Blauhaus.MVVM.Abstractions.Bindable;
+﻿using Blauhaus.Common.Utils.NotifyPropertyChanged;
 
 namespace Blauhaus.MVVM.Tests.TestObjects
 {
+    //todo this has moved to Blauhaus.Common.Utils
     public class TestBindableObject : BaseBindableObject
     {
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using Blauhaus.MVVM.Abstractions.Contracts;
 using Blauhaus.MVVM.Abstractions.Navigation;
 using Blauhaus.MVVM.Abstractions.ViewModels;
 using Blauhaus.TestHelpers.MockBuilders;
@@ -35,14 +36,25 @@ namespace Blauhaus.MVVM.TestHelpers.MockBuilders.Services
             Mock.Verify(x => x.ShowMainViewAsync<TViewModel>(), Times.Never);
         }
 
-        public void Verify_ShowAndInitializeViewAsync<TViewModel, TParameter>(TParameter parameter) where TViewModel : IViewModel, IInitializing<TParameter>
+        public void Verify_ShowAndInitializeViewAsync<TViewModel, TParameter>(TParameter parameter) where TViewModel : IViewModel, IInitialize<TParameter>
         {
             Mock.Verify(x => x.ShowAndInitializeViewAsync<TViewModel, TParameter>(parameter));
         }
         
-        public void Verify_ShowAndInitializeViewAsync_NOT_called<TViewModel, TParameter>() where TViewModel : IViewModel, IInitializing<TParameter>
+        public void Verify_ShowAndInitializeViewAsync_NOT_called<TViewModel, TParameter>() where TViewModel : IViewModel, IInitialize<TParameter>
         {
             Mock.Verify(x => x.ShowAndInitializeViewAsync<TViewModel, TParameter>(It.IsAny<TParameter>()), Times.Never);
+        }
+
+        
+        public void Verify_GoBackAsync(Times times)
+        {
+            Mock.Verify(x => x.GoBackAsync(), times);
+        }
+
+        public void Verify_GoBackAsync()
+        {
+            Mock.Verify(x => x.GoBackAsync());
         }
     }
 }
