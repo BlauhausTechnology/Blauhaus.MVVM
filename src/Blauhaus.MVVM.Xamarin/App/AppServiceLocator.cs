@@ -3,7 +3,11 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Blauhaus.MVVM.Xamarin.App
 {
-    public static class AppServices
+
+    /// <summary>
+    /// A static holder for the ServiceLocator to reference from classes that are not part of the Dependency Injection world, eg Android MainActivity
+    /// </summary>
+    public static class AppServiceLocator
     {
         public static IServiceProvider Instance;
 
@@ -12,7 +16,7 @@ namespace Blauhaus.MVVM.Xamarin.App
             Instance = serviceProvider;
         }
 
-        public static T GetService<T>()
+        public static T Resolve<T>()
         {
             if (Instance == null)
             {

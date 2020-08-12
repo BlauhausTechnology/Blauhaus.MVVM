@@ -39,9 +39,9 @@ namespace Blauhaus.MVVM.Xamarin.App
                 }).Build().Services;
              
 
-            AppServices.SetProvider(serviceProvider);
+            AppServiceLocator.SetProvider(serviceProvider);
             
-            MainPage = AppServices.GetService<TStartupPage>();
+            MainPage = AppServiceLocator.Resolve<TStartupPage>();
 
         }
 
