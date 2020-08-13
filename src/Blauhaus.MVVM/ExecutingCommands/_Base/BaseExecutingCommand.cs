@@ -15,7 +15,6 @@ namespace Blauhaus.MVVM.ExecutingCommands._Base
     {
         protected string? AnalyticsOperationName;
         private Func<bool>? _canExecute;
-        private bool _isExecuting;
 
         protected readonly IErrorHandler ErrorHandler;
         protected readonly IAnalyticsService AnalyticsService;
@@ -67,8 +66,8 @@ namespace Blauhaus.MVVM.ExecutingCommands._Base
 
         public bool IsExecuting
         {
-            get => _isExecuting;
-            set => SetProperty(ref _isExecuting, value, RaiseCanExecuteChanged);
+            get => GetProperty<bool>();
+            set => SetProperty(value, RaiseCanExecuteChanged);
         }
         
         public void Execute()
