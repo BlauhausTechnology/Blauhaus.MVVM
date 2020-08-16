@@ -1,7 +1,4 @@
-﻿using Blauhaus.Domain.Client.Sync.Collection;
-using Blauhaus.Domain.Common.CommandHandlers.Sync;
-using Blauhaus.Domain.Common.Entities;
-using Blauhaus.Errors.Handler;
+﻿using Blauhaus.Errors.Handler;
 using Blauhaus.MVVM.Abstractions.Dialogs;
 using Blauhaus.MVVM.Abstractions.Navigation;
 using Blauhaus.MVVM.Abstractions.ViewModels;
