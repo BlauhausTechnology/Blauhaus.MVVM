@@ -14,7 +14,7 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingParameterCommands
     public class AsyncExecutingValueResultParameterCommand<TParameter, TValue> : BaseExecutingParameterCommand<AsyncExecutingValueResultParameterCommand<TParameter, TValue>, TParameter>
     {
         private Func<TParameter, Task<Result<TValue>>>? _task;
-        private Func<TValue, Task> _successHandler;
+        private Func<TValue, Task>? _successHandler;
         private Dictionary<Error, Func<Error, Task>>? _errorHandlers;
 
 
@@ -56,7 +56,7 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingParameterCommands
                     }
                 }
 
-                if (_successHandler != null)
+                else if (_successHandler != null)
                 {
                     await _successHandler.Invoke(result.Value);
                 }

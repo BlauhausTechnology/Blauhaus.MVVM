@@ -14,7 +14,7 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands
     public class AsyncExecutingValueResultCommand<TValue> : BaseExecutingNoParameterCommand<AsyncExecutingValueResultCommand<TValue>>
     {
         private Func<Task<Result<TValue>>>? _task;
-        private Func<TValue, Task> _successHandler;
+        private Func<TValue, Task>? _successHandler;
         private Dictionary<Error, Func<Error, Task>>? _errorHandlers;
         
         public AsyncExecutingValueResultCommand(IErrorHandler errorHandler, IAnalyticsService analyticsService) 
@@ -56,7 +56,7 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands
                     }
                 }
 
-                if (_successHandler != null)
+                else if (_successHandler != null)
                 {
                     await _successHandler.Invoke(result.Value);
                 }

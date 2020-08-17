@@ -56,7 +56,7 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingParameterCommands
                     }
                 }
 
-                if (_successHandler != null)
+                else if (_successHandler != null)
                 {
                     await _successHandler.Invoke();
                 }

@@ -123,6 +123,25 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
             //Assert
             Assert.AreEqual("hi", result);
         }
+        
+        [Test]
+        public async Task IF_OnSuccess_is_given_SHOULD_NOT_invoke_if_action_returns_fail()
+        {
+            //Arrange
+            _result = Result.Failure("oops");
+            var onSuccess = "notCalled";
+            _onSuccess = async () =>
+            {
+                onSuccess = "called";
+                await Task.CompletedTask;
+            };
+
+            //Act
+            Sut.Execute("hi"); 
+
+            //Assert
+            Assert.That(onSuccess, Is.EqualTo("notCalled"));
+        }
 
         [Test]
         public void IF_task_throws_exception_SHOULD_handle_and_reset_IsExecuting()

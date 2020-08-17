@@ -8,6 +8,7 @@ using Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests._Base;
 using Blauhaus.TestHelpers.PropertiesChanged.CanExecuteChanged;
 using Blauhaus.TestHelpers.PropertiesChanged.PropertiesChanged;
 using CSharpFunctionalExtensions;
+using Moq;
 using NUnit.Framework;
 
 namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.ExecutingNoParameterCommandTests
@@ -124,6 +125,30 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
             //Assert
             Assert.AreEqual("hi 1", result);
         }
+
+        
+        [Test]
+        public async Task IF_OnSuccess_is_given_SHOULD_NOT_invoke_if_action_returns_fail()
+        {
+            //Arrange
+            _result = Result.Failure<int>("oops");
+            var onSuccess = "notCalled";
+            _onSuccess = async (i) =>
+            {
+                onSuccess = "called";
+                await Task.CompletedTask;
+            };
+
+            //Act
+            await Task.Delay(10);
+            Sut.Execute("hi"); 
+
+            //Assert
+            Assert.That(onSuccess, Is.EqualTo("notCalled"));
+            MockErrorHandler.Mock.Verify(x => x.HandleExceptionAsync(It.IsAny<object>(), It.Is<Exception>(y =>
+                y.Message.StartsWith("You attempted to access"))), Times.Never);
+        }
+
 
         [Test]
         public void IF_task_throws_exception_SHOULD_handle_and_reset_IsExecuting()
