@@ -36,17 +36,15 @@ namespace Blauhaus.MVVM.ExecutingCommands._Base
             return (TExecutingCommand) this;
         }
         
-        public TExecutingCommand LogOperation(object sender, string operationName, [CallerMemberName] string caller = "")
+        public TExecutingCommand LogOperation(object sender, string operationName)
         {
-            _caller = caller;
             _sender = sender;
             AnalyticsOperationName = operationName;
             return (TExecutingCommand) this;
         }
 
-        public TExecutingCommand LogPageView(object page,  [CallerMemberName] string caller = "")
+        public TExecutingCommand LogPageView(object page)
         {
-            _caller = caller;
             _sender = page;
             _isPageView = true;
             return (TExecutingCommand) this;
@@ -105,11 +103,11 @@ namespace Blauhaus.MVVM.ExecutingCommands._Base
             _analyticsOperation?.Dispose();
         }
 
-        protected void Fail(object sender, Exception e)
+        protected async void Fail(object sender, Exception e)
         {
             IsExecuting = false;
-            _analyticsOperation?.Dispose();
-            ErrorHandler.HandleExceptionAsync(sender, e); 
+            await ErrorHandler.HandleExceptionAsync(sender, e); 
+            _analyticsOperation?.Dispose(); //dispose after handling error else analytics logged without operation
         }
 
         protected void TryExecute(object? action, Action act)
