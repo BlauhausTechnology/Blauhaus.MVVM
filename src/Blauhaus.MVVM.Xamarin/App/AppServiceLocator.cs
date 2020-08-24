@@ -1,4 +1,5 @@
 ﻿using System;
+using Blauhaus.Ioc.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Blauhaus.MVVM.Xamarin.App
@@ -9,21 +10,21 @@ namespace Blauhaus.MVVM.Xamarin.App
     /// </summary>
     public static class AppServiceLocator
     {
-        public static IServiceProvider Instance;
+        public static IServiceLocator? Instance;
 
-        public static void SetProvider(IServiceProvider serviceProvider)
+        public static void Initialize(IServiceLocator serviceLocator)
         {
-            Instance = serviceProvider;
+            Instance = serviceLocator;
         }
 
-        public static T Resolve<T>()
+        public static T Resolve<T>() where T : class
         {
             if (Instance == null)
             {
-                throw new Exception("Service Provider has not been initialized");
+                throw new Exception("ServiceLocator instance has not been initialized");
             }
 
-            var service = Instance.GetService<T>();
+            var service = Instance.Resolve<T>();
             if (service == null)
             {
                 throw new Exception($"The type {typeof(T)} is not registered with the IOC container");

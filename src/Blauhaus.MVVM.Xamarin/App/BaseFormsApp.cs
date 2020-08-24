@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Blauhaus.Common.ValueObjects.BuildConfigs;
 using Blauhaus.Ioc.Abstractions;
 using Blauhaus.Ioc.DotNetCoreIocService;
@@ -13,9 +14,9 @@ namespace Blauhaus.MVVM.Xamarin.App
     public abstract class BaseFormsApp<TStartupPage> : Application 
         where TStartupPage : Page, IView
     {
-        protected IBuildConfig CurrentBuildConfig;
+        protected IBuildConfig CurrentBuildConfig = null!;
 
-        protected BaseFormsApp(IServiceCollection? platformServices)
+        protected BaseFormsApp(IServiceCollection? platformServices, Action<Page>? mainPageHandler = null)
         {
             platformServices ??= new ServiceCollection();
 
@@ -28,7 +29,7 @@ namespace Blauhaus.MVVM.Xamarin.App
 
                     CurrentBuildConfig = GetBuildConfig();
                     services.AddSingleton(CurrentBuildConfig);
-                    services.AddTransient<IServiceLocator, DotNetCoreServiceLocator>();
+                    services.AddSingleton<IServiceLocator, DotNetCoreServiceLocator>();
                     
                     //do this last to give platform services a chance to override defaults
                     foreach (var platformService in platformServices)
@@ -39,9 +40,16 @@ namespace Blauhaus.MVVM.Xamarin.App
                 }).Build().Services;
              
 
-            AppServiceLocator.SetProvider(serviceProvider);
-            
-            MainPage = AppServiceLocator.Resolve<TStartupPage>();
+            AppServiceLocator.Initialize(serviceProvider.GetRequiredService<IServiceLocator>());
+
+            if (mainPageHandler == null)
+            {
+                MainPage = AppServiceLocator.Resolve<TStartupPage>();
+            }
+            else
+            {
+                mainPageHandler.Invoke(MainPage);
+            }
 
         }
 
