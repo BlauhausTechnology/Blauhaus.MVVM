@@ -11,11 +11,15 @@ using Xamarin.Forms;
 
 namespace Blauhaus.MVVM.Xamarin.App
 {
-    
-    
-    
-    
-    public abstract class BaseFormsApp : Application 
+
+    public abstract class BaseFormsApp : BaseFormsApp<DotNetCoreServiceLocator> 
+    {
+        protected BaseFormsApp(IServiceCollection? platformServices) : base(platformServices)
+        {
+        }
+    }
+
+    public abstract class BaseFormsApp<TServiceLocator> : Application where TServiceLocator : class, IServiceLocator
     {
         protected IBuildConfig CurrentBuildConfig = null!;
 
@@ -32,7 +36,7 @@ namespace Blauhaus.MVVM.Xamarin.App
 
                     CurrentBuildConfig = GetBuildConfig();
                     services.AddSingleton(CurrentBuildConfig);
-                    services.AddSingleton<IServiceLocator, DotNetCoreServiceLocator>();
+                    services.AddSingleton<IServiceLocator, TServiceLocator>();
                     
                     //do this last to give platform services a chance to override defaults
                     foreach (var platformService in platformServices)
