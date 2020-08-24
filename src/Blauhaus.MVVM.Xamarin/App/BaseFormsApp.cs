@@ -16,7 +16,7 @@ namespace Blauhaus.MVVM.Xamarin.App
     {
         protected IBuildConfig CurrentBuildConfig = null!;
 
-        protected BaseFormsApp(IServiceCollection? platformServices, Action<Page>? mainPageHandler = null)
+        protected BaseFormsApp(IServiceCollection? platformServices)
         {
             platformServices ??= new ServiceCollection();
 
@@ -41,20 +41,17 @@ namespace Blauhaus.MVVM.Xamarin.App
              
 
             AppServiceLocator.Initialize(serviceProvider.GetRequiredService<IServiceLocator>());
-
-            if (mainPageHandler == null)
-            {
-                MainPage = AppServiceLocator.Resolve<TStartupPage>();
-            }
-            else
-            {
-                mainPageHandler.Invoke(MainPage);
-            }
-
+             
         }
 
         protected override void OnStart()
         {
+            LoadMainPage();
+        }
+
+        protected virtual void LoadMainPage()
+        {
+            MainPage = AppServiceLocator.Resolve<TStartupPage>();
         }
 
         protected abstract IBuildConfig GetBuildConfig();
