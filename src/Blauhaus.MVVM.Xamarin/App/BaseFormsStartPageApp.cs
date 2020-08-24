@@ -11,15 +11,12 @@ using Xamarin.Forms;
 
 namespace Blauhaus.MVVM.Xamarin.App
 {
-    
-    
-    
-    
-    public abstract class BaseFormsApp : Application 
+    public abstract class BaseFormsStartPageApp<TStartupPage> : Application 
+        where TStartupPage : Page, IView
     {
         protected IBuildConfig CurrentBuildConfig = null!;
 
-        protected BaseFormsApp(IServiceCollection? platformServices)
+        protected BaseFormsStartPageApp(IServiceCollection? platformServices)
         {
             platformServices ??= new ServiceCollection();
 
@@ -42,13 +39,21 @@ namespace Blauhaus.MVVM.Xamarin.App
 
                 }).Build().Services;
              
+
             AppServiceLocator.Initialize(serviceProvider.GetRequiredService<IServiceLocator>());
+             
         }
 
         protected override void OnStart()
         {
+            LoadMainPage();
         }
-         
+
+        protected virtual void LoadMainPage()
+        {
+            MainPage = AppServiceLocator.Resolve<TStartupPage>();
+        }
+
         protected abstract IBuildConfig GetBuildConfig();
 
         protected abstract void ConfigureServices(IServiceCollection services);
