@@ -1,5 +1,5 @@
 ﻿using System;
-using Blauhaus.Domain.Common.Entities;
+using Blauhaus.Domain.Abstractions.Entities;
 
 namespace Blauhaus.MVVM.Tests.TestObjects
 {
