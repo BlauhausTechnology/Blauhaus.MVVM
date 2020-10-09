@@ -52,5 +52,10 @@ namespace Blauhaus.MVVM.Xamarin.ErrorHandling
             }
             await _dialogService.DisplayAlertAsync("Error", errorMessage);
         }
+
+        public async Task HandleErrorAsync(Error error)
+        {
+            await _dialogService.DisplayAlertAsync("Error", error.Description);
+        }
     }
 }

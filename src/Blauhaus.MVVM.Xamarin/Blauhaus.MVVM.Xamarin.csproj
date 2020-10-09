@@ -7,12 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Blauhaus.Analytics.Xamarin" Version="1.0.10" />
+    <PackageReference Include="Blauhaus.Analytics.Xamarin" Version="1.1.1" />
     <PackageReference Include="Blauhaus.Common.Config" Version="1.7.10" />
     <PackageReference Include="Blauhaus.Common.Utils" Version="1.7.10" />
     <PackageReference Include="Blauhaus.DeviceServices.Abstractions" Version="0.7.13" />
-    <PackageReference Include="Blauhaus.Domain.Client" Version="0.12.4" />
-    <PackageReference Include="Blauhaus.Errors" Version="0.1.6" />
+    <PackageReference Include="Blauhaus.Domain.Client" Version="0.12.8" />
+    <PackageReference Include="Blauhaus.Errors" Version="0.2.6" />
     <PackageReference Include="Blauhaus.Ioc.DotNetCoreIocService" Version="1.2.2" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.8" />
     <PackageReference Include="Xamarin.Forms" Version="4.8.0.1269" />

@@ -5,6 +5,7 @@ using Blauhaus.Errors.Extensions;
 using Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands;
 using Blauhaus.MVVM.Tests.TestObjects;
 using Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests._Base;
+using Blauhaus.Responses;
 using Blauhaus.TestHelpers.PropertiesChanged.CanExecuteChanged;
 using Blauhaus.TestHelpers.PropertiesChanged.PropertiesChanged;
 using CSharpFunctionalExtensions;
@@ -13,10 +14,10 @@ using NUnit.Framework;
 
 namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.ExecutingNoParameterCommandTests
 {
-    public class AsyncExecutingValueResultCommandTests : BaseExecutingCommandTest<AsyncExecutingValueResultCommand<int>>
+    public class AsyncExecutingValueResponseCommandTests : BaseExecutingCommandTest<AsyncExecutingValueResponseCommand<int>>
     {
-        private Func<Task<Result<int>>> _task;
-        private Result<int> _result;
+        private Func<Task<Response<int>>> _task;
+        private Response<int> _result;
         private Func<bool> _canExecute;
         private Func<int, Task> _onSuccess;
 
@@ -24,7 +25,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
         {
             base.Setup();
 
-            _result = Result.Success(1);
+            _result = Response.Success(1);
             _task = async () =>
             {
                 await Task.CompletedTask;
@@ -34,7 +35,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
             _onSuccess = null;
         }
 
-        protected override AsyncExecutingValueResultCommand<int> ConstructSut()
+        protected override AsyncExecutingValueResponseCommand<int> ConstructSut()
         {
             return base.ConstructSut()
                 .OnSuccess(_onSuccess)
@@ -76,7 +77,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
             {
                 await Task.CompletedTask;
                 wasCalled = true;
-                return Result.Success(1);
+                return Response.Success(1);
             };
 
             //Act
@@ -96,7 +97,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
             {
                 await Task.CompletedTask;
                 tcs.SetResult(1);
-                return Result.Success(1);
+                return Response.Success(1);
             };
 
             //Act
@@ -131,7 +132,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
         public async Task IF_OnSuccess_is_given_SHOULD_NOT_invoke_if_action_returns_fail()
         {
             //Arrange
-            _result = Result.Failure<int>("oops");
+            _result = Response.Failure<int>(Error.Create("oops"));
             var onSuccess = "notCalled";
             _onSuccess = async (i) =>
             {
@@ -172,7 +173,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
         public void IF_task_returns_fail_SHOULD_handle_and_reset_IsExecuting()
         {
             //Arrange
-            _result = Result.Failure<int>("oops");
+            _result = Response.Failure<int>(Error.Create("oops"));
             
             using (var isExecutingChanges = Sut.SubscribeToPropertyChanged(x => x.IsExecuting))
             {
@@ -181,7 +182,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
                 isExecutingChanges.WaitForChangeCount(2);
 
                 //Assert
-                MockErrorHandler.Verify_HandleErrorMessage("oops");
+                MockErrorHandler.Verify_HandleError("oops");
                 Assert.AreEqual(false, Sut.IsExecuting);
             }
         }
@@ -196,7 +197,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
                 result = x;
                 return Task.CompletedTask;
             });
-            _result = Result.Failure<int>(TestErrors.Fail().ToString());
+            _result = Response.Failure<int>(TestErrors.Fail());
             
             using (var isExecutingChanges = Sut.SubscribeToPropertyChanged(x => x.IsExecuting))
             {

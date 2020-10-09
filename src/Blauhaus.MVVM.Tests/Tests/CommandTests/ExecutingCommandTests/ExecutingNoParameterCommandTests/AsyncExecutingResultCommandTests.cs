@@ -175,7 +175,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
                 isExecutingChanges.WaitForChangeCount(2);
 
                 //Assert
-                MockErrorHandler.Verify_HandleError("oops");
+                MockErrorHandler.Verify_HandleErrorMessage("oops");
                 Assert.AreEqual(false, Sut.IsExecuting);
             }
         }
@@ -201,7 +201,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
                 //Assert
                 Assert.That(result == TestErrors.Fail());
                 Assert.AreEqual(false, Sut.IsExecuting);
-                MockErrorHandler.Verify_HandleError_not_called();
+                MockErrorHandler.Verify_HandleErrorMessage_not_called();
             }
         }
          
