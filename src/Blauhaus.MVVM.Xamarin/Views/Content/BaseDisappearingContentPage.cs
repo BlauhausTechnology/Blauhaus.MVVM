@@ -1,8 +1,7 @@
 ﻿using System;
 using Blauhaus.MVVM.Abstractions.Contracts;
-using Blauhaus.MVVM.Abstractions.ViewModels;
 
-namespace Blauhaus.MVVM.Xamarin.Views
+namespace Blauhaus.MVVM.Xamarin.Views.Content
 {
     public abstract class BaseDisappearingContentPage<TViewModel> : BaseAppearingContentPage<TViewModel> 
         where TViewModel : IAppear, IDisappear

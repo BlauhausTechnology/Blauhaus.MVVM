@@ -2,7 +2,7 @@
 using Blauhaus.MVVM.Abstractions.Navigation;
 using Blauhaus.MVVM.Tests.TestObjects;
 using Blauhaus.MVVM.Tests.Tests.FormsNavigationServiceTests._Base;
-using Blauhaus.MVVM.Xamarin.Views;
+using Blauhaus.MVVM.Xamarin.Views.Navigation;
 using NUnit.Framework;
 
 namespace Blauhaus.MVVM.Tests.Tests.FormsNavigationServiceTests

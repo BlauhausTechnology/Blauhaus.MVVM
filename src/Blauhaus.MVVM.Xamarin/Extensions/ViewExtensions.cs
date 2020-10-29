@@ -1,5 +1,4 @@
 ﻿using Blauhaus.MVVM.Abstractions.Contracts;
-using Blauhaus.MVVM.Abstractions.ViewModels;
 using Blauhaus.MVVM.Xamarin.Converters;
 using Xamarin.Forms;
 

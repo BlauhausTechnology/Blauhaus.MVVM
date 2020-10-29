@@ -1,7 +1,7 @@
 ﻿using Blauhaus.MVVM.Abstractions.Views;
 using Xamarin.Forms;
 
-namespace Blauhaus.MVVM.Xamarin.Views
+namespace Blauhaus.MVVM.Xamarin.Views.Content
 {
     public abstract class BaseContentPage<TViewModel> : ContentPage, IView
     {

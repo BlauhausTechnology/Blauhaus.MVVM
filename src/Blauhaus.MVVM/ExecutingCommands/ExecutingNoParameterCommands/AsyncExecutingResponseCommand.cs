@@ -7,7 +7,6 @@ using Blauhaus.Errors.Handler;
 using Blauhaus.MVVM.ExecutingCommands._Base;
 using Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands._Base;
 using Blauhaus.Responses;
-using CSharpFunctionalExtensions;
 
 namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands
 {

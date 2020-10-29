@@ -2,7 +2,7 @@
 using Blauhaus.MVVM.Abstractions.Views;
 using Xamarin.Forms;
 
-namespace Blauhaus.MVVM.Xamarin.Views
+namespace Blauhaus.MVVM.Xamarin.Views.Navigation
 {
     public class NavigationView : NavigationPage, INavigationView
     {

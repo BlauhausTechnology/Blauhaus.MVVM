@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using Blauhaus.Common.ValueObjects.BuildConfigs;
 using Blauhaus.Ioc.Abstractions;
 using Blauhaus.Ioc.DotNetCoreIocService;

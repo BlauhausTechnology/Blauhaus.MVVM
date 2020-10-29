@@ -1,6 +1,5 @@
 ﻿using System;
 using Blauhaus.Ioc.Abstractions;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Blauhaus.MVVM.Xamarin.App
 {

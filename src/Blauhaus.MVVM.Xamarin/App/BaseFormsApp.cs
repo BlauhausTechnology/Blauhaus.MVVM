@@ -1,10 +1,8 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using Blauhaus.Common.ValueObjects.BuildConfigs;
 using Blauhaus.Ioc.Abstractions;
 using Blauhaus.Ioc.DotNetCoreIocService;
 using Blauhaus.MVVM.Abstractions.Application;
-using Blauhaus.MVVM.Abstractions.Views;
 using Blauhaus.MVVM.AppLifecycle;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

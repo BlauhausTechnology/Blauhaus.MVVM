@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Blauhaus.Errors;
-using Blauhaus.Errors.Extensions;
 using Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands;
 using Blauhaus.MVVM.Tests.TestObjects;
 using Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests._Base;
 using Blauhaus.Responses;
 using Blauhaus.TestHelpers.PropertiesChanged.CanExecuteChanged;
 using Blauhaus.TestHelpers.PropertiesChanged.PropertiesChanged;
-using CSharpFunctionalExtensions;
 using NUnit.Framework;
 
 namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.ExecutingNoParameterCommandTests
