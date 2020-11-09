@@ -17,7 +17,7 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
         private readonly IFormsApplicationProxy _application;
         private readonly IThreadService _threadService;
 
-        private NavigationPage _currentNavigationPage;
+        private NavigationPage? _currentNavigationPage;
         protected NavigationPage CurrentNavigationPage => _currentNavigationPage ??= new NavigationPage();
 
         public FormsNavigationService(
@@ -38,10 +38,11 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
             await ShowMainPageAsync(page);
         }
 
-        public async Task ShowViewAsync<TViewModel>() where TViewModel : IViewModel
+        public Task ShowViewAsync<TViewModel>() where TViewModel : IViewModel
         {
             var page = GetPageForViewModel<Page>(typeof(TViewModel));
-            await CurrentNavigationPage.PushAsync(page, true);
+            return NavigateToAsync(page);
+
         }
 
         public async Task ShowAndInitializeViewAsync<TViewModel, T>(T parameter) where TViewModel : IViewModel, IInitialize<T>
@@ -50,17 +51,18 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
 
             var viewModel = (TViewModel)page.BindingContext;
             await viewModel.InitializeAsync(parameter);
-
-            await CurrentNavigationPage.PushAsync(page, true);
+            
+            await NavigateToAsync(page);
         }
 
-        public async Task GoBackAsync()
+        public Task GoBackAsync()
         {
             if (_currentNavigationPage != null)
             {
-                //have not worked out how to test this
-                await _currentNavigationPage.PopAsync();
-            }
+                return _threadService.InvokeOnMainThreadAsync(async () => 
+                    await _currentNavigationPage.PopAsync());
+            };
+            return Task.CompletedTask;
         }
 
         public void SetCurrentNavigationView(INavigationView navigationView)
@@ -68,11 +70,18 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
             _currentNavigationPage = (NavigationPage) navigationView;
         }
 
-        private async Task ShowMainPageAsync(Page page)
+        private Task ShowMainPageAsync(Page page)
         {
-            await _threadService.InvokeOnMainThreadAsync(() =>
+            return _threadService.InvokeOnMainThreadAsync(() =>
             {
                 _application.SetMainPage(page);
+            });
+        }
+        private Task NavigateToAsync(Page page)
+        {
+            return _threadService.InvokeOnMainThreadAsync(() =>
+            {
+                CurrentNavigationPage.PushAsync(page, true);
             });
         }
           
