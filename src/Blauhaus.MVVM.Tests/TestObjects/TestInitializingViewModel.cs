@@ -12,9 +12,10 @@ namespace Blauhaus.MVVM.Tests.TestObjects
 
         public Guid InitializedValue { get; private set; }
          
-        public void Initialize(Guid initialValue)
+        public Task InitializeAsync(Guid initialValue)
         {
             InitializedValue = initialValue;
+            return Task.CompletedTask;
         }
     }
 }
