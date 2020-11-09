@@ -5,6 +5,6 @@ namespace Blauhaus.MVVM.Abstractions.Contracts
 {
     public interface IInitialize<in T>
     {
-        Task InitializeAsync(T initialValue);
+        void Initialize(T initialValue);
     }
 }

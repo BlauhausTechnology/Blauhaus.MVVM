@@ -49,7 +49,7 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
             var page = GetPageForViewModel<Page>(typeof(TViewModel));
 
             var viewModel = (TViewModel)page.BindingContext;
-            await viewModel.InitializeAsync(parameter);
+            viewModel.Initialize(parameter);
 
             await CurrentNavigationPage.PushAsync(page, true);
         }
