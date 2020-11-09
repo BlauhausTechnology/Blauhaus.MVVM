@@ -49,7 +49,6 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands
                 var result = await _task!.Invoke();
                 if (result.IsFailure)
                 {
-                    //todo change back to error
                     if(!await _errorHandlers.TryHandle(result.Error))
                     {
                         await ErrorHandler.HandleErrorAsync(result.Error);

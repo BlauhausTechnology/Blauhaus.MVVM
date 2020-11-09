@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Blauhaus.Common.Utils.NotifyPropertyChanged;
 using Blauhaus.MVVM.Abstractions.Contracts;
 using Blauhaus.MVVM.Abstractions.ViewModels;
+using Blauhaus.Responses;
 
 namespace Blauhaus.MVVM.Tests.TestObjects
 {
@@ -9,10 +11,11 @@ namespace Blauhaus.MVVM.Tests.TestObjects
     {
 
         public Guid InitializedValue { get; private set; }
-
-        public void Initialize(Guid initialValue)
+         
+        public Task InitializeAsync(Guid initialValue)
         {
             InitializedValue = initialValue;
+            return Task.CompletedTask;
         }
     }
 }

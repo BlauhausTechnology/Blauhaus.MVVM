@@ -11,14 +11,14 @@
   <ItemGroup>
     <PackageReference Include="Blauhaus.Auth.Abstractions" Version="0.10.1" />
     <PackageReference Include="Blauhaus.DeviceServices.TestHelpers" Version="0.8.0" />
-    <PackageReference Include="Blauhaus.Domain.TestHelpers" Version="0.13.2" />
-    <PackageReference Include="Blauhaus.TestHelpers" Version="1.0.32" />
+    <PackageReference Include="Blauhaus.Domain.TestHelpers" Version="0.13.4" />
+    <PackageReference Include="Blauhaus.TestHelpers" Version="1.0.34" />
     <PackageReference Include="nunit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.17.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.0" />
   </ItemGroup>
 
   <ItemGroup>
