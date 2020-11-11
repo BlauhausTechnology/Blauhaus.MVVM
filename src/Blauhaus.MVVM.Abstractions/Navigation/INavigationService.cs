@@ -10,8 +10,12 @@ namespace Blauhaus.MVVM.Abstractions.Navigation
         Task ShowMainViewAsync<TViewModel>() where TViewModel : IViewModel;
         Task ShowViewAsync<TViewModel>() where TViewModel : IViewModel;
         Task ShowAndInitializeViewAsync<TViewModel, T>(T parameter) where TViewModel : IViewModel, IInitialize<T>;
-        Task GoBackAsync();
-        void SetCurrentNavigationView(INavigationView navigationView);
+        
+        Task ShowDetailViewAsync<TViewModel>() where TViewModel : IViewModel;
 
+        void SetCurrentNavigationView(INavigationView navigationView);
+        void SetCurrentFlyoutView(IFlyoutView flyoutView);
+
+        Task GoBackAsync();
     }
 }

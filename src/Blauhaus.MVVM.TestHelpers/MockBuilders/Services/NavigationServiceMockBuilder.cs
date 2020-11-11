@@ -17,6 +17,17 @@ namespace Blauhaus.MVVM.TestHelpers.MockBuilders.Services
             return this;
         }
         
+        public void Verify_ShowDetailViewAsync<TViewModel>() where TViewModel : IViewModel
+        {
+            Mock.Verify(x => x.ShowDetailViewAsync<TViewModel>());
+        }
+        
+        public void Verify_ShowDetailViewAsync_NOT_called<TViewModel>() where TViewModel : IViewModel
+        {
+            Mock.Verify(x => x.ShowDetailViewAsync<TViewModel>(), Times.Never);
+        }
+
+
         public void Verify_ShowViewAsync<TViewModel>() where TViewModel : IViewModel
         {
             Mock.Verify(x => x.ShowViewAsync<TViewModel>());

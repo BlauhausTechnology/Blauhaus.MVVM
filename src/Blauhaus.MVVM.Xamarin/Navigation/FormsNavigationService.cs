@@ -18,7 +18,7 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
         private readonly IThreadService _threadService;
 
         private NavigationPage? _currentNavigationPage;
-        protected NavigationPage CurrentNavigationPage => _currentNavigationPage ??= new NavigationPage();
+        private IFlyoutView? _currentFlyoutPage;
 
         public FormsNavigationService(
             IServiceProvider serviceProvider,
@@ -55,6 +55,28 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
             await NavigateToAsync(page);
         }
 
+        public Task ShowDetailViewAsync<TViewModel>() where TViewModel : IViewModel
+        {
+            if (_currentFlyoutPage == null)
+            {
+                throw new InvalidOperationException("No Flyout Page has been set");
+            }
+            
+            var page = GetPageForViewModel<Page>(typeof(TViewModel));
+            if (page is IView view)
+            {
+                return _threadService.InvokeOnMainThreadAsync(() => 
+                    _currentFlyoutPage.ShowDetail(view));
+            }
+
+            throw new InvalidOperationException("Detail Page must implement IView");
+        }
+
+        public void SetCurrentFlyoutView(IFlyoutView flyoutView)
+        {
+            _currentFlyoutPage = flyoutView;
+        }
+
         public Task GoBackAsync()
         {
             if (_currentNavigationPage != null)
@@ -79,9 +101,13 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
         }
         private Task NavigateToAsync(Page page)
         {
+            if (_currentNavigationPage == null)
+            {
+                throw new InvalidOperationException("No NavigationPage has been set");
+            }
             return _threadService.InvokeOnMainThreadAsync(() =>
             {
-                CurrentNavigationPage.PushAsync(page, true);
+                _currentNavigationPage.PushAsync(page, true);
             });
         }
           

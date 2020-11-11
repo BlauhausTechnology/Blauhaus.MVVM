@@ -3,23 +3,35 @@ using System.Threading.Tasks;
 using Blauhaus.MVVM.Abstractions.Navigation;
 using Blauhaus.MVVM.Tests.TestObjects;
 using Blauhaus.MVVM.Tests.Tests.FormsNavigationServiceTests._Base;
+using Blauhaus.MVVM.Xamarin.Views.MasterDetail;
 using Blauhaus.MVVM.Xamarin.Views.Navigation;
 using NUnit.Framework;
+using NUnit.Framework.Internal;
+using Xamarin.Forms;
+using Xamarin.Forms.Mocks;
 
 namespace Blauhaus.MVVM.Tests.Tests.FormsNavigationServiceTests
 {
-    public class ShowViewAsyncTests : BaseFormsNavigationServiceTest
+    public class ShowDetailViewAsyncTests : BaseFormsNavigationServiceTest
     {
-
+        private TestFlyoutViewModel _testFlyoutViewModel;
+        private TestViewModel _testViewModel;
         private TestView _testView;
-        private NavigationView _testNavigationView;
+        private FlyoutPage<TestFlyoutViewModel, TestMenuView, TestView> _testFlyoutPage;
+        private TestMenuView _testMenuView;
 
         public override  void Setup()
         {
             base.Setup();
 
+            MockForms.Init();
+
+            _testViewModel = new TestViewModel();
             _testView = new TestView(new TestViewModel());
-            _testNavigationView = new NavigationView(MockNavigationService.Object, _testView);
+            
+            _testMenuView = new TestMenuView(_testViewModel);
+            _testFlyoutViewModel = new TestFlyoutViewModel();
+            _testFlyoutPage = new FlyoutPage<TestFlyoutViewModel, TestMenuView, TestView>(_testFlyoutViewModel, MockNavigationService.Object, _testMenuView, _testView);
 
             MockNavigationLookup.Where_GetViewType_returns<TestViewModel>(typeof(TestView));
             MockServiceProvider.Where_GetService_returns(_testView, typeof(TestView));
@@ -29,10 +41,10 @@ namespace Blauhaus.MVVM.Tests.Tests.FormsNavigationServiceTests
         public async Task SHOULD_get_page_type_from_lookup_and_resolve_from_service_provider()
         {
             //Arrange
-            Sut.SetCurrentNavigationView(_testNavigationView);
+            Sut.SetCurrentFlyoutView(_testFlyoutPage);
 
             //Act
-            await Sut.ShowViewAsync<TestViewModel>();
+            await Sut.ShowDetailViewAsync<TestViewModel>();
 
             //Assert
             MockServiceProvider.Verify_GetService_was_called_with_Type(typeof(TestView));
@@ -42,13 +54,15 @@ namespace Blauhaus.MVVM.Tests.Tests.FormsNavigationServiceTests
         public async Task SHOULD_set_currentPage_on_current_navigation_page()
         {
             //Arrange
-            Sut.SetCurrentNavigationView(_testNavigationView);
+            Sut.SetCurrentFlyoutView(_testFlyoutPage);
+            _testFlyoutPage.Detail = new ContentPage();
 
             //Act
-            await Sut.ShowViewAsync<TestViewModel>();
+            await Sut.ShowDetailViewAsync<TestViewModel>();
+
 
             //Assert
-            Assert.AreEqual(_testNavigationView.CurrentPage as TestView, _testView);
+            Assert.AreEqual(_testFlyoutPage.Detail as TestView, _testView);
         }
         
         [Test]

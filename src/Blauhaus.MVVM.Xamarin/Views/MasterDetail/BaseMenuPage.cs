@@ -7,12 +7,12 @@ using Xamarin.Forms;
 
 namespace Blauhaus.MVVM.Xamarin.Views.MasterDetail
 {
-    public abstract class BaseMasterPage<TViewModel> : BaseAppearingContentPage<TViewModel>, IMasterView 
+    public abstract class BaseMenuPage<TViewModel> : BaseAppearingContentPage<TViewModel>, IMasterView 
         where TViewModel : IViewModel, IAppear
     {
         private MasterDetailPage? _container;
 
-        protected BaseMasterPage(TViewModel viewModel, string title) : base(viewModel)
+        protected BaseMenuPage(TViewModel viewModel, string title) : base(viewModel)
         {
             Title = title;
         }
