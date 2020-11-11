@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Input;
 using Blauhaus.MVVM.Abstractions.Contracts;
 using Blauhaus.MVVM.Abstractions.ViewModels;
 using Blauhaus.MVVM.Xamarin.Views.Content;
@@ -31,6 +32,11 @@ namespace Blauhaus.MVVM.Xamarin.Views.MasterDetail
             }
             _container.Detail = page;
             _container.IsPresented = false;
+        }
+
+        protected ICommand ShowDetailCommand(Page page)
+        {
+            return new Command(() => ShowDetailPage(page));
         }
     }
 }
