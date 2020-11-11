@@ -27,5 +27,6 @@ namespace Blauhaus.MVVM.Xamarin.Views.MasterDetail
             Master = masterView;
             Detail = detailView;  
         }
+
     }
 }
