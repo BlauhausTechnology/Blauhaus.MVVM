@@ -4,7 +4,7 @@ using Blauhaus.MVVM.Xamarin.Views.Content;
 
 namespace Blauhaus.MVVM.Tests.TestObjects
 {
-    public class TestView : BaseContentPage<TestViewModel>, IView
+    public class TestView : BasePage<TestViewModel>, IView
     {
         public TestView(TestViewModel viewModel) : base(viewModel)
         {

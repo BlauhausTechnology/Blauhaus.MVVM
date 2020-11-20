@@ -2,41 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using Blauhaus.MVVM.Abstractions.Contracts;
-using Blauhaus.MVVM.Abstractions.ViewModels;
-using Blauhaus.MVVM.Abstractions.Views;
 using Blauhaus.MVVM.Xamarin.Converters;
 using Xamarin.Forms;
 
 namespace Blauhaus.MVVM.Xamarin.Views.Content
 {
-
-    public abstract class BaseUpdateContentPage<TViewModel> : BaseUpdateContentPage where TViewModel: IViewModel, IUpdate
-    {
-        protected readonly TViewModel ViewModel;
-
-        protected BaseUpdateContentPage(TViewModel viewModel)
-        {
-            ViewModel = viewModel;
-            BindingContext = ViewModel;
-        }
-
-        protected override void OnAppearing()
-        {
-            if (ViewModel is IAppear appearViewModel)
-            {
-                appearViewModel.AppearCommand.Execute();
-            }
-        }
-    }
-
-
-    public abstract class BaseUpdateContentPage : ContentPage, IView
+    public abstract class BaseUpdateContentPage : ContentPage
     {
         private readonly Dictionary<Type, Action<object>> _handlers = new Dictionary<Type, Action<object>>();
 
-        protected BaseUpdateContentPage()
+        protected BaseUpdateContentPage(bool isUpdatable = false)
         {
-            SetBinding(UpdateProperty, new Binding(nameof(IUpdate.Update), BindingMode.OneWay, new ActionConverter<object>(OnUpdated)));
+            if (isUpdatable)
+            {
+                SetBinding(UpdateProperty, new Binding(nameof(IUpdate.Update), BindingMode.OneWay, new ActionConverter<object>(OnUpdated)));
+            }
         }
 
         private void OnUpdated(object? update)
