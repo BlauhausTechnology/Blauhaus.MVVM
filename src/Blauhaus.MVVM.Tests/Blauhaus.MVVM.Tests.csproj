@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Blauhaus.Auth.Abstractions" Version="0.10.4" />
-    <PackageReference Include="Blauhaus.DeviceServices.TestHelpers" Version="0.8.2" />
+    <PackageReference Include="Blauhaus.DeviceServices.TestHelpers" Version="0.8.3" />
     <PackageReference Include="Blauhaus.Domain.TestHelpers" Version="0.14.1" />
     <PackageReference Include="Blauhaus.TestHelpers" Version="1.1.2" />
     <PackageReference Include="nunit" Version="3.12.0" />
