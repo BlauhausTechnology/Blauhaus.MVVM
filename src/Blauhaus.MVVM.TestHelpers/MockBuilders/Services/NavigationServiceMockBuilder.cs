@@ -1,4 +1,5 @@
 ﻿using System;
+using Blauhaus.Common.Utils.Contracts;
 using Blauhaus.MVVM.Abstractions.Contracts;
 using Blauhaus.MVVM.Abstractions.Navigation;
 using Blauhaus.MVVM.Abstractions.ViewModels;
