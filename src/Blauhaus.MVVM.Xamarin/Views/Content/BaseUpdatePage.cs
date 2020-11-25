@@ -25,7 +25,7 @@ namespace Blauhaus.MVVM.Xamarin.Views.Content
             {
                 Device.BeginInvokeOnMainThread(() =>
                 { 
-                    foreach (var handler in _handlers.Where(handler => update.GetType() == handler.Key))
+                    foreach (var handler in _handlers.Where(handler => update.GetType() == handler.Key || handler.Key.IsInstanceOfType(update)))
                     {
                         handler.Value.Invoke(update);
                     }

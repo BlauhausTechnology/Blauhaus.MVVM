@@ -11,7 +11,7 @@
     <PackageReference Include="Blauhaus.Common.Config" Version="1.8.2" />
     <PackageReference Include="Blauhaus.Common.Utils" Version="1.8.2" />
     <PackageReference Include="Blauhaus.DeviceServices.Abstractions" Version="0.8.3" />
-    <PackageReference Include="Blauhaus.Domain.Client" Version="0.14.1" />
+    <PackageReference Include="Blauhaus.Domain.Client" Version="0.14.3" />
     <PackageReference Include="Blauhaus.Errors" Version="0.3.2" />
     <PackageReference Include="Blauhaus.Ioc.DotNetCoreIocService" Version="1.2.4" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
