@@ -60,9 +60,15 @@ namespace Blauhaus.MVVM.Xamarin._Ioc
             return services;
         }
 
+        public static IServiceCollection AddContentView<TView>(this IServiceCollection services) 
+            where TView : BaseContentView, IView 
+        {
+            services.AddTransient<TView>();
+            return services;
+        }
         
         public static IServiceCollection AddContentView<TView, TViewModel>(this IServiceCollection services) 
-            where TView : BaseContentView<TViewModel>, IView 
+            where TView : BaseContentView, IView 
             where TViewModel : class, IViewModel
         {
             services.AddTransient<TView>();
