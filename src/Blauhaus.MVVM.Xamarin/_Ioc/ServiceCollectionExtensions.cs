@@ -7,6 +7,8 @@ using Blauhaus.MVVM.Xamarin.Dialogs;
 using Blauhaus.MVVM.Xamarin.ErrorHandling;
 using Blauhaus.MVVM.Xamarin.Navigation;
 using Blauhaus.MVVM.Xamarin.Navigation.FormsApplicationProxy;
+using Blauhaus.MVVM.Xamarin.Views.Content;
+using Blauhaus.MVVM.Xamarin.Views.ContentViews;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Xamarin.Forms;
@@ -32,8 +34,8 @@ namespace Blauhaus.MVVM.Xamarin._Ioc
             return services;
         }
          
-        public static IServiceCollection AddViewSingleton<TView, TViewModel>(this IServiceCollection services) 
-            where TView : Element, IView 
+        public static IServiceCollection AddPageSingleton<TView, TViewModel>(this IServiceCollection services) 
+            where TView : Page, IView 
             where TViewModel : class, IViewModel
         {
             services.TryAddSingleton<INavigationLookup>(NavigationLookup);
@@ -44,21 +46,28 @@ namespace Blauhaus.MVVM.Xamarin._Ioc
             NavigationLookup.Register<TView, TViewModel>();
             return services;
         }
-         
 
-        public static IServiceCollection AddView<TView, TViewModel>(this IServiceCollection services) 
-            where TView : Element, IView 
+        public static IServiceCollection AddPage<TPage, TViewModel>(this IServiceCollection services) 
+            where TPage : BasePage<TViewModel>, IView 
             where TViewModel : class, IViewModel
         {
             services.TryAddSingleton<INavigationLookup>(NavigationLookup);
             
-            services.AddTransient<TView>();
+            services.AddTransient<TPage>();
             services.AddTransient<TViewModel>();
 
-            NavigationLookup.Register<TView, TViewModel>();
+            NavigationLookup.Register<TPage, TViewModel>();
             return services;
         }
-         
-         
+
+        
+        public static IServiceCollection AddContentView<TView, TViewModel>(this IServiceCollection services) 
+            where TView : BaseContentView<TViewModel>, IView 
+            where TViewModel : class, IViewModel
+        {
+            services.AddTransient<TView>();
+            services.AddTransient<TViewModel>();
+            return services;
+        }
     }
 }
