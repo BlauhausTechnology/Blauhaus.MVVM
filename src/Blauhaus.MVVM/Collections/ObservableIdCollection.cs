@@ -53,9 +53,18 @@ namespace Blauhaus.MVVM.Collections
                         InsertItem(i, newItem);
                     }
 
-                    else if (IndexOf(existingItem) != i)
+                    else
                     {
-                        Move(IndexOf(existingItem), i);
+
+                        if (existingItem is IAsyncReloadable reloadable)
+                        {
+                            await reloadable.ReloadAsync();
+                        }
+
+                        if (IndexOf(existingItem) != i)
+                        {
+                            Move(IndexOf(existingItem), i);
+                        }
                     }
 
                 }

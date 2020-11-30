@@ -16,7 +16,7 @@ namespace Blauhaus.MVVM.Tests.Tests.ObservableIdCollectionTests
    
     public class UpdateAsyncGuidTests : BaseMvvmTest<ObservableIdCollection<UpdateAsyncGuidTests.IOutputObject, Guid>>
     {
-        public interface IOutputObject : IHasId<Guid>, IAsyncInitializable<Guid>
+        public interface IOutputObject : IHasId<Guid>, IAsyncInitializable<Guid>, IAsyncReloadable
         {
         }
 
@@ -82,6 +82,9 @@ namespace Blauhaus.MVVM.Tests.Tests.ObservableIdCollectionTests
             _outputObject1.Mock.Verify(x => x.InitializeAsync(g1), Times.Once);
             _outputObject2.Mock.Verify(x => x.InitializeAsync(g2), Times.Once);
             _outputObject3.Mock.Verify(x => x.InitializeAsync(g3), Times.Once);
+            _outputObject1.Mock.Verify(x => x.ReloadAsync(), Times.Never);
+            _outputObject2.Mock.Verify(x => x.ReloadAsync(), Times.Once);
+            _outputObject3.Mock.Verify(x => x.ReloadAsync(), Times.Never);
         }
 
         [Test]

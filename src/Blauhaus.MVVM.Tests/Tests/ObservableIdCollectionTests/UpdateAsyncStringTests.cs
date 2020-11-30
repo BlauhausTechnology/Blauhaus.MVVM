@@ -15,7 +15,7 @@ namespace Blauhaus.MVVM.Tests.Tests.ObservableIdCollectionTests
    
     public class UpdateAsyncStringTests : BaseMvvmTest<ObservableIdCollection<UpdateAsyncStringTests.IOutputObject, string>>
     {
-        public interface IOutputObject : IHasId<string>, IAsyncInitializable<string>
+        public interface IOutputObject : IHasId<string>, IAsyncInitializable<string>, IAsyncReloadable
         {
         } 
 
@@ -56,7 +56,7 @@ namespace Blauhaus.MVVM.Tests.Tests.ObservableIdCollectionTests
         }
 
         [Test]
-        public async Task WHEN_items_exist_already_SHOULD_only_add_new_ones_in_correct_place()
+        public async Task WHEN_items_exist_already_SHOULD_reload_and_only_add_new_ones_in_correct_place()
         {
             //Arrange
             
@@ -78,6 +78,9 @@ namespace Blauhaus.MVVM.Tests.Tests.ObservableIdCollectionTests
             _outputObject1.Mock.Verify(x => x.InitializeAsync("1"), Times.Once);
             _outputObject2.Mock.Verify(x => x.InitializeAsync("2"), Times.Once);
             _outputObject3.Mock.Verify(x => x.InitializeAsync("3"), Times.Once);
+            _outputObject1.Mock.Verify(x => x.ReloadAsync(), Times.Never);
+            _outputObject2.Mock.Verify(x => x.ReloadAsync(), Times.Once);
+            _outputObject3.Mock.Verify(x => x.ReloadAsync(), Times.Never);
         }
 
         [Test]
