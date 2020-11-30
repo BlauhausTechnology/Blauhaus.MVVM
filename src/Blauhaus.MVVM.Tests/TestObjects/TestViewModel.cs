@@ -6,7 +6,7 @@ using Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands;
 
 namespace Blauhaus.MVVM.Tests.TestObjects
 {
-    public class TestViewModel : BaseBindableObject, IViewModel, IAppear
+    public class TestViewModel : BaseBindableObject, IViewModel, IAppearingViewModel
     {
 
         public IExecutingCommand AppearCommand { get; }

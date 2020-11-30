@@ -1,6 +1,6 @@
 ﻿namespace Blauhaus.MVVM.Abstractions.Contracts
 {
-    public interface IVisible
+    public interface IIsVisible
     {
         bool IsVisible { get; set; }
     }

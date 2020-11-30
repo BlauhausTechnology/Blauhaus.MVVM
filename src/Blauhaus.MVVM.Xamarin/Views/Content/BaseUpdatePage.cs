@@ -15,7 +15,7 @@ namespace Blauhaus.MVVM.Xamarin.Views.Content
         {
             if (isUpdatable)
             {
-                SetBinding(UpdateProperty, new Binding(nameof(IUpdate.Update), BindingMode.OneWay, new ActionConverter<object>(OnUpdated)));
+                SetBinding(UpdateProperty, new Binding(nameof(INotifyUpdates.Update), BindingMode.OneWay, new ActionConverter<object>(OnUpdated)));
             }
         }
 

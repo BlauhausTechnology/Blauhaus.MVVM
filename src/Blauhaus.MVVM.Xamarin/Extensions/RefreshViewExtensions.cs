@@ -8,7 +8,7 @@ namespace Blauhaus.MVVM.Xamarin.Extensions
     {
         public static RefreshView BindSyncCollection(this RefreshView refreshView, string nameOfSyncCollection)
         {
-            refreshView.SetBinding(RefreshView.CommandProperty, new Binding(nameof(IReload.ReloadCommand))); 
+            refreshView.SetBinding(RefreshView.CommandProperty, new Binding(nameof(IReloadableViewModel.ReloadCommand))); 
             refreshView.SetBinding(RefreshView.IsRefreshingProperty, new Binding(nameOfSyncCollection + ".SyncStatusHandler.State", BindingMode.OneWay, new SyncCollectionIsRunningConverter())); 
 
             return refreshView;

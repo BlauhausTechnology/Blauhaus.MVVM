@@ -2,7 +2,7 @@
 
 namespace Blauhaus.MVVM.Abstractions.Contracts
 {
-    public interface IReload
+    public interface IReloadableViewModel
     {
         IExecutingCommand ReloadCommand { get; }
     }

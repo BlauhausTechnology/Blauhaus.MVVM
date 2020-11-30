@@ -3,7 +3,7 @@ using Blauhaus.MVVM.Abstractions.Commands;
 
 namespace Blauhaus.MVVM.Abstractions.Contracts
 {
-    public interface IDisappear : IAppear
+    public interface IDisappearingViewModel : IAppearingViewModel
     {
         IExecutingCommand DisappearCommand { get; }
     }

@@ -1,6 +1,6 @@
 ﻿namespace Blauhaus.MVVM.Abstractions.Contracts
 {
-    public interface IExecute
+    public interface IIsExecuting
     {
         bool IsExecuting { get; }
     }

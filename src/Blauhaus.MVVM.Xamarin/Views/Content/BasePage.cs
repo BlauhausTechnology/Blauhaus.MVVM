@@ -10,7 +10,7 @@ namespace Blauhaus.MVVM.Xamarin.Views.Content
         protected readonly TViewModel ViewModel;
 
         protected BasePage(TViewModel viewModel) 
-            : base(viewModel is IUpdate)
+            : base(viewModel is INotifyUpdates)
         {
             ViewModel = viewModel;
             BindingContext = ViewModel;
@@ -18,7 +18,7 @@ namespace Blauhaus.MVVM.Xamarin.Views.Content
 
         protected override void OnAppearing()
         {
-            if (ViewModel is IAppear appearViewModel)
+            if (ViewModel is IAppearingViewModel appearViewModel)
             {
                 appearViewModel.AppearCommand.Execute();
             }
@@ -26,7 +26,7 @@ namespace Blauhaus.MVVM.Xamarin.Views.Content
 
         protected override void OnDisappearing()
         {
-            if (ViewModel is IDisappear disappearViewModel)
+            if (ViewModel is IDisappearingViewModel disappearViewModel)
             {
                 disappearViewModel.DisappearCommand.Execute();
             }

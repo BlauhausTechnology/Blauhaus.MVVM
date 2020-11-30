@@ -6,7 +6,7 @@ namespace Blauhaus.MVVM.Xamarin.Extensions
 {
     public static class ViewExtensions
     {
-        private const string IsExecuting = nameof(IExecute.IsExecuting);
+        private const string IsExecuting = nameof(IIsExecuting.IsExecuting);
 
         public static TVisualElement BindIsVisibleToIsExecuting<TVisualElement>(this TVisualElement visualElement, string propertyName) 
             where TVisualElement : View
