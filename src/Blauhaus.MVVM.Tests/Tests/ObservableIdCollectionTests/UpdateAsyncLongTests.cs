@@ -15,7 +15,7 @@ namespace Blauhaus.MVVM.Tests.Tests.ObservableIdCollectionTests
    
     public class UpdateAsyncLongTests : BaseMvvmTest<ObservableIdCollection<UpdateAsyncLongTests.IOutputObject, long>>
     {
-        public interface IOutputObject : IId<long>, IInitialize<long>
+        public interface IOutputObject : IHasId<long>, IAsyncInitializable<long>
         {
         } 
 

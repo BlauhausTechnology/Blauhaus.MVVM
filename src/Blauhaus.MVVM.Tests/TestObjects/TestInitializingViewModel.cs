@@ -8,7 +8,7 @@ using Blauhaus.Responses;
 
 namespace Blauhaus.MVVM.Tests.TestObjects
 {
-    public class TestInitializingViewModel : BaseBindableObject, IViewModel, IInitialize<Guid>
+    public class TestInitializingViewModel : BaseBindableObject, IViewModel, IAsyncInitializable<Guid>
     {
 
         public Guid InitializedValue { get; private set; }

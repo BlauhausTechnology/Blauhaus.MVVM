@@ -10,7 +10,7 @@ using Blauhaus.MVVM.Abstractions.Contracts;
 namespace Blauhaus.MVVM.Collections
 {
 
-    public class ObservableIdCollection<T, TId> : ObservableCollection<T> where T : class, IId<TId>, IInitialize<TId>
+    public class ObservableIdCollection<T, TId> : ObservableCollection<T> where T : class, IHasId<TId>, IAsyncInitializable<TId>
     {
         private readonly IServiceLocator _serviceLocator;
         private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1);

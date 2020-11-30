@@ -16,7 +16,7 @@ namespace Blauhaus.MVVM.Tests.Tests.ObservableIdCollectionTests
    
     public class UpdateAsyncGuidTests : BaseMvvmTest<ObservableIdCollection<UpdateAsyncGuidTests.IOutputObject, Guid>>
     {
-        public interface IOutputObject : IId<Guid>, IInitialize<Guid>
+        public interface IOutputObject : IHasId<Guid>, IAsyncInitializable<Guid>
         {
         }
 

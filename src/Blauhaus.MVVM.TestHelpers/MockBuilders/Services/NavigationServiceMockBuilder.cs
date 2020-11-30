@@ -48,12 +48,12 @@ namespace Blauhaus.MVVM.TestHelpers.MockBuilders.Services
             Mock.Verify(x => x.ShowMainViewAsync<TViewModel>(), Times.Never);
         }
 
-        public void Verify_ShowAndInitializeViewAsync<TViewModel, TParameter>(TParameter parameter) where TViewModel : IViewModel, IInitialize<TParameter>
+        public void Verify_ShowAndInitializeViewAsync<TViewModel, TParameter>(TParameter parameter) where TViewModel : IViewModel, IAsyncInitializable<TParameter>
         {
             Mock.Verify(x => x.ShowAndInitializeViewAsync<TViewModel, TParameter>(parameter));
         }
         
-        public void Verify_ShowAndInitializeViewAsync_NOT_called<TViewModel, TParameter>() where TViewModel : IViewModel, IInitialize<TParameter>
+        public void Verify_ShowAndInitializeViewAsync_NOT_called<TViewModel, TParameter>() where TViewModel : IViewModel, IAsyncInitializable<TParameter>
         {
             Mock.Verify(x => x.ShowAndInitializeViewAsync<TViewModel, TParameter>(It.IsAny<TParameter>()), Times.Never);
         }

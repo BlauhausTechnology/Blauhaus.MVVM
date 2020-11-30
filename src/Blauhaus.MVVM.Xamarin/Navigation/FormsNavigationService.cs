@@ -46,7 +46,7 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
 
         }
 
-        public async Task ShowAndInitializeViewAsync<TViewModel, T>(T parameter) where TViewModel : IViewModel, IInitialize<T>
+        public async Task ShowAndInitializeViewAsync<TViewModel, T>(T parameter) where TViewModel : IViewModel, IAsyncInitializable<T>
         {
             var page = GetPageForViewModel<Page>(typeof(TViewModel));
 

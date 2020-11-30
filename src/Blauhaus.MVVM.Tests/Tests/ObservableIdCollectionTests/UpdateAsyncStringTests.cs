@@ -15,7 +15,7 @@ namespace Blauhaus.MVVM.Tests.Tests.ObservableIdCollectionTests
    
     public class UpdateAsyncStringTests : BaseMvvmTest<ObservableIdCollection<UpdateAsyncStringTests.IOutputObject, string>>
     {
-        public interface IOutputObject : IId<string>, IInitialize<string>
+        public interface IOutputObject : IHasId<string>, IAsyncInitializable<string>
         {
         } 
 
