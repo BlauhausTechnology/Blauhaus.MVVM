@@ -1,7 +1,6 @@
 ﻿using Blauhaus.MVVM.Abstractions.Commands;
-using Blauhaus.MVVM.Abstractions.ViewModels;
 
-namespace Blauhaus.MVVM.Abstractions.Contracts
+namespace Blauhaus.MVVM.Abstractions.ViewModels
 {
     public interface IAppearingViewModel : IViewModel
     {

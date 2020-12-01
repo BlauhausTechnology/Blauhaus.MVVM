@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Blauhaus.MVVM.Abstractions.Contracts;
+using Blauhaus.MVVM.Abstractions.ViewModels;
 using Blauhaus.MVVM.Xamarin.Converters;
 using Blauhaus.MVVM.Xamarin.Views.Content;
 using Xamarin.Forms;
