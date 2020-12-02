@@ -88,6 +88,18 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
             return Task.CompletedTask;
         }
 
+        public Task GoBackToRootAsync()
+        {
+            if (_currentNavigationPage != null)
+            {
+                return _threadService.InvokeOnMainThreadAsync(async () =>
+                {
+                    await _currentNavigationPage.PopToRootAsync();
+                });
+            };
+            return Task.CompletedTask;
+        }
+
         public void SetCurrentNavigationView(INavigationView navigationView)
         {
             _currentNavigationPage = (NavigationPage) navigationView;

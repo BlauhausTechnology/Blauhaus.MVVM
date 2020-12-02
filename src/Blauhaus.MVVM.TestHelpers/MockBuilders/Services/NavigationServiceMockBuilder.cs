@@ -68,5 +68,10 @@ namespace Blauhaus.MVVM.TestHelpers.MockBuilders.Services
         {
             Mock.Verify(x => x.GoBackAsync());
         }
+        
+        public void Verify_GoBackToRootAsync()
+        {
+            Mock.Verify(x => x.GoBackToRootAsync());
+        }
     }
 }

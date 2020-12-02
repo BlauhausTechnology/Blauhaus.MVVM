@@ -18,5 +18,6 @@ namespace Blauhaus.MVVM.Abstractions.Navigation
         void SetCurrentFlyoutView(IFlyoutView flyoutView);
 
         Task GoBackAsync();
+        Task GoBackToRootAsync();
     }
 }
