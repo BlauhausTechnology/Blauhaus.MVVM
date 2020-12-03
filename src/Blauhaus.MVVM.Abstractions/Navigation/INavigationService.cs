@@ -15,6 +15,7 @@ namespace Blauhaus.MVVM.Abstractions.Navigation
         Task ShowDetailViewAsync<TViewModel>() where TViewModel : IViewModel;
 
         void SetCurrentNavigationView(INavigationView navigationView);
+        void SetCurrentNavigationView(string navigationStackName);
         void SetCurrentFlyoutView(IFlyoutView flyoutView);
 
         Task GoBackAsync();

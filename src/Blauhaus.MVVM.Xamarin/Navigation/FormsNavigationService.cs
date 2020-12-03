@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Blauhaus.Common.Utils.Contracts;
 using Blauhaus.DeviceServices.Abstractions.Thread;
@@ -18,7 +20,18 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
         private readonly IFormsApplicationProxy _application;
         private readonly IThreadService _threadService;
 
-        private NavigationPage? _currentNavigationPage;
+
+        private Dictionary<string, INavigationView> _navigationViews = new Dictionary<string, INavigationView>();
+
+        protected NavigationPage? CurrentNavigationPage
+        {
+            get
+            {
+                var currentNavigationView = _navigationViews.Values.FirstOrDefault(x => x.IsCurrent);
+                return (NavigationPage?) currentNavigationView;
+            }
+        }
+
         private IFlyoutView? _currentFlyoutPage;
 
         public FormsNavigationService(
@@ -43,7 +56,6 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
         {
             var page = GetPageForViewModel<Page>(typeof(TViewModel));
             return NavigateToAsync(page);
-
         }
 
         public async Task ShowAndInitializeViewAsync<TViewModel, T>(T parameter) where TViewModel : IViewModel, IAsyncInitializable<T>
@@ -73,6 +85,20 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
             throw new InvalidOperationException("Detail Page must implement IView");
         }
 
+        public void SetCurrentNavigationView(string navigationStackName)
+        {
+            if (!_navigationViews.ContainsKey(navigationStackName))
+            {
+                throw new InvalidOperationException("No navigation page exists for " + navigationStackName);
+            }
+
+            foreach (var navigationView in _navigationViews.Values)
+            {
+                navigationView.IsCurrent = navigationView.StackName == navigationStackName;
+            }
+
+        }
+
         public void SetCurrentFlyoutView(IFlyoutView flyoutView)
         {
             _currentFlyoutPage = flyoutView;
@@ -80,21 +106,21 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
 
         public Task GoBackAsync()
         {
-            if (_currentNavigationPage != null)
+            if (CurrentNavigationPage != null)
             {
                 return _threadService.InvokeOnMainThreadAsync(async () => 
-                    await _currentNavigationPage.PopAsync());
+                    await CurrentNavigationPage.PopAsync());
             };
             return Task.CompletedTask;
         }
 
         public Task GoBackToRootAsync()
         {
-            if (_currentNavigationPage != null)
+            if (CurrentNavigationPage != null)
             {
                 return _threadService.InvokeOnMainThreadAsync(async () =>
                 {
-                    await _currentNavigationPage.PopToRootAsync();
+                    await CurrentNavigationPage.PopToRootAsync();
                 });
             };
             return Task.CompletedTask;
@@ -102,7 +128,8 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
 
         public void SetCurrentNavigationView(INavigationView navigationView)
         {
-            _currentNavigationPage = (NavigationPage) navigationView;
+            navigationView.IsCurrent = true;
+            _navigationViews[navigationView.StackName] = navigationView;
         }
 
         private Task ShowMainPageAsync(Page page)
@@ -114,13 +141,13 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
         }
         private Task NavigateToAsync(Page page)
         {
-            if (_currentNavigationPage == null)
+            if (CurrentNavigationPage == null)
             {
                 throw new InvalidOperationException("No NavigationPage has been set");
             }
             return _threadService.InvokeOnMainThreadAsync(() =>
             {
-                _currentNavigationPage.PushAsync(page, true);
+                CurrentNavigationPage.PushAsync(page, true);
             });
         }
           
