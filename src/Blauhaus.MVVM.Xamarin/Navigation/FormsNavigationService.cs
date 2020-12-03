@@ -21,7 +21,7 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
         private readonly IThreadService _threadService;
 
 
-        private Dictionary<string, INavigationView> _navigationViews = new Dictionary<string, INavigationView>();
+        private readonly Dictionary<string, INavigationView> _navigationViews = new Dictionary<string, INavigationView>();
 
         protected NavigationPage? CurrentNavigationPage
         {
@@ -52,14 +52,25 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
             await ShowMainPageAsync(page);
         }
 
-        public Task ShowViewAsync<TViewModel>() where TViewModel : IViewModel
+        public Task ShowViewAsync<TViewModel>(string navigationStackName = "") where TViewModel : IViewModel
         {
+            if (navigationStackName != "")
+            {
+                SetCurrentNavigationView(navigationStackName);
+            }
+
             var page = GetPageForViewModel<Page>(typeof(TViewModel));
             return NavigateToAsync(page);
         }
 
-        public async Task ShowAndInitializeViewAsync<TViewModel, T>(T parameter) where TViewModel : IViewModel, IAsyncInitializable<T>
+        public async Task ShowAndInitializeViewAsync<TViewModel, T>(T parameter, string navigationStackName = "") where TViewModel : IViewModel, IAsyncInitializable<T>
         {
+            
+            if (navigationStackName != "")
+            {
+                SetCurrentNavigationView(navigationStackName);
+            }
+
             var page = GetPageForViewModel<Page>(typeof(TViewModel));
 
             var viewModel = (TViewModel)page.BindingContext;

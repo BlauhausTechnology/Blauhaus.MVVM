@@ -9,8 +9,10 @@ namespace Blauhaus.MVVM.Abstractions.Navigation
     public interface INavigationService
     {
         Task ShowMainViewAsync<TViewModel>() where TViewModel : IViewModel;
-        Task ShowViewAsync<TViewModel>() where TViewModel : IViewModel;
-        Task ShowAndInitializeViewAsync<TViewModel, T>(T parameter) where TViewModel : IViewModel, IAsyncInitializable<T>;
+
+
+        Task ShowViewAsync<TViewModel>(string navigationStackName = "") where TViewModel : IViewModel;
+        Task ShowAndInitializeViewAsync<TViewModel, T>(T parameter, string navigationStackName = "") where TViewModel : IViewModel, IAsyncInitializable<T>;
         
         Task ShowDetailViewAsync<TViewModel>() where TViewModel : IViewModel;
 

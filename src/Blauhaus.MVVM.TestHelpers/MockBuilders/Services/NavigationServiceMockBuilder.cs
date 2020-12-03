@@ -31,12 +31,12 @@ namespace Blauhaus.MVVM.TestHelpers.MockBuilders.Services
 
         public void Verify_ShowViewAsync<TViewModel>() where TViewModel : IViewModel
         {
-            Mock.Verify(x => x.ShowViewAsync<TViewModel>());
+            Mock.Verify(x => x.ShowViewAsync<TViewModel>(It.IsAny<string>()));
         }
         
         public void Verify_ShowViewAsync_NOT_called<TViewModel>() where TViewModel : IViewModel
         {
-            Mock.Verify(x => x.ShowViewAsync<TViewModel>(), Times.Never);
+            Mock.Verify(x => x.ShowViewAsync<TViewModel>(It.IsAny<string>()), Times.Never);
         }
 
         public void Verify_NavigateMain_was_called_with_ViewModelType<TViewModel>() where TViewModel : IViewModel
@@ -50,12 +50,12 @@ namespace Blauhaus.MVVM.TestHelpers.MockBuilders.Services
 
         public void Verify_ShowAndInitializeViewAsync<TViewModel, TParameter>(TParameter parameter) where TViewModel : IViewModel, IAsyncInitializable<TParameter>
         {
-            Mock.Verify(x => x.ShowAndInitializeViewAsync<TViewModel, TParameter>(parameter));
+            Mock.Verify(x => x.ShowAndInitializeViewAsync<TViewModel, TParameter>(parameter, It.IsAny<string>()));
         }
         
         public void Verify_ShowAndInitializeViewAsync_NOT_called<TViewModel, TParameter>() where TViewModel : IViewModel, IAsyncInitializable<TParameter>
         {
-            Mock.Verify(x => x.ShowAndInitializeViewAsync<TViewModel, TParameter>(It.IsAny<TParameter>()), Times.Never);
+            Mock.Verify(x => x.ShowAndInitializeViewAsync<TViewModel, TParameter>(It.IsAny<TParameter>(), It.IsAny<string>()), Times.Never);
         }
 
         
