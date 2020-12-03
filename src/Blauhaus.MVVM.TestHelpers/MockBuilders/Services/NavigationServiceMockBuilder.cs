@@ -21,8 +21,7 @@ namespace Blauhaus.MVVM.TestHelpers.MockBuilders.Services
         public void Verify_ShowDetailViewAsync<TViewModel>() where TViewModel : IViewModel
         {
             Mock.Verify(x => x.ShowDetailViewAsync<TViewModel>());
-        }
-        
+        } 
         public void Verify_ShowDetailViewAsync_NOT_called<TViewModel>() where TViewModel : IViewModel
         {
             Mock.Verify(x => x.ShowDetailViewAsync<TViewModel>(), Times.Never);
@@ -33,7 +32,10 @@ namespace Blauhaus.MVVM.TestHelpers.MockBuilders.Services
         {
             Mock.Verify(x => x.ShowViewAsync<TViewModel>(It.IsAny<string>()));
         }
-        
+        public void Verify_ShowViewAsync<TViewModel>(string navigationStackName) where TViewModel : IViewModel
+        {
+            Mock.Verify(x => x.ShowViewAsync<TViewModel>(navigationStackName));
+        }
         public void Verify_ShowViewAsync_NOT_called<TViewModel>() where TViewModel : IViewModel
         {
             Mock.Verify(x => x.ShowViewAsync<TViewModel>(It.IsAny<string>()), Times.Never);
@@ -51,8 +53,11 @@ namespace Blauhaus.MVVM.TestHelpers.MockBuilders.Services
         public void Verify_ShowAndInitializeViewAsync<TViewModel, TParameter>(TParameter parameter) where TViewModel : IViewModel, IAsyncInitializable<TParameter>
         {
             Mock.Verify(x => x.ShowAndInitializeViewAsync<TViewModel, TParameter>(parameter, It.IsAny<string>()));
-        }
-        
+        } 
+        public void Verify_ShowAndInitializeViewAsync<TViewModel, TParameter>(TParameter parameter, string navigationStackName) where TViewModel : IViewModel, IAsyncInitializable<TParameter>
+        {
+            Mock.Verify(x => x.ShowAndInitializeViewAsync<TViewModel, TParameter>(parameter, navigationStackName));
+        } 
         public void Verify_ShowAndInitializeViewAsync_NOT_called<TViewModel, TParameter>() where TViewModel : IViewModel, IAsyncInitializable<TParameter>
         {
             Mock.Verify(x => x.ShowAndInitializeViewAsync<TViewModel, TParameter>(It.IsAny<TParameter>(), It.IsAny<string>()), Times.Never);
