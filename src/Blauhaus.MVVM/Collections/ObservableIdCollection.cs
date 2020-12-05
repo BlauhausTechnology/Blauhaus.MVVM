@@ -5,12 +5,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using Blauhaus.Common.Utils.Contracts;
 using Blauhaus.Ioc.Abstractions;
-using Blauhaus.MVVM.Abstractions.Contracts;
 
 namespace Blauhaus.MVVM.Collections
 {
 
-    public class ObservableIdCollection<T, TId> : ObservableCollection<T> where T : class, IHasId<TId>, IAsyncInitializable<TId>
+    public class ObservableIdCollection<T, TId> : ObservableCollection<T> 
+        where T : class, IHasId<TId>, IAsyncInitializable<TId>
     {
         private readonly IServiceLocator _serviceLocator;
         private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1);
@@ -20,11 +20,13 @@ namespace Blauhaus.MVVM.Collections
             _serviceLocator = serviceLocator;
         }
 
-        public async Task UpdateAsync(TId[] sourceIds)
+        public async Task UpdateAsync(IReadOnlyList<TId> sourceIds)
         {
             await _semaphore.WaitAsync();
             try
             {
+                var tasks = new List<Task>();
+
                 var itemsToRemove = new List<T>();
                 foreach (var existingItem in this)
                 {
@@ -41,7 +43,7 @@ namespace Blauhaus.MVVM.Collections
                     Remove(itemToRemove);
                 }
 
-                for (var i = 0; i < sourceIds.Length; i++)
+                for (var i = 0; i < sourceIds.Count; i++)
                 {
 
                     var existingItem = this.FirstOrDefault(x => x.Id != null && x.Id.Equals(sourceIds[i]));
@@ -49,7 +51,7 @@ namespace Blauhaus.MVVM.Collections
                     if (existingItem == null)
                     {
                         var newItem = _serviceLocator.Resolve<T>();
-                        await newItem.InitializeAsync(sourceIds[i]);
+                        tasks.Add(newItem.InitializeAsync(sourceIds[i]));
                         InsertItem(i, newItem);
                     }
 
@@ -58,7 +60,7 @@ namespace Blauhaus.MVVM.Collections
 
                         if (existingItem is IAsyncReloadable reloadable)
                         {
-                            await reloadable.ReloadAsync();
+                            tasks.Add(reloadable.ReloadAsync());
                         }
 
                         if (IndexOf(existingItem) != i)
@@ -67,6 +69,11 @@ namespace Blauhaus.MVVM.Collections
                         }
                     }
 
+                }
+
+                if (tasks.Any())
+                {
+                    await Task.WhenAll(tasks);
                 }
             }
             finally
