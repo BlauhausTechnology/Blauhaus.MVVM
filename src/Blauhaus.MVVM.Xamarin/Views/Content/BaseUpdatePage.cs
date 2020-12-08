@@ -33,7 +33,7 @@ namespace Blauhaus.MVVM.Xamarin.Views.Content
             }
         }
          
-        protected void Subscribe<TUpdate>(Action<TUpdate> handler)
+        protected virtual void Subscribe<TUpdate>(Action<TUpdate> handler)
         {
             _handlers[typeof(TUpdate)] = obj => handler.Invoke((TUpdate) obj);
         }

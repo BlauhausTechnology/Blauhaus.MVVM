@@ -1,4 +1,5 @@
-﻿using Blauhaus.MVVM.Abstractions.Contracts;
+﻿using System;
+using Blauhaus.MVVM.Abstractions.Contracts;
 using Blauhaus.MVVM.Abstractions.ViewModels;
 using Blauhaus.MVVM.Abstractions.Views;
 using Blauhaus.MVVM.Xamarin.Converters;
@@ -15,6 +16,16 @@ namespace Blauhaus.MVVM.Xamarin.Views.Content
         {
             ViewModel = viewModel;
             BindingContext = ViewModel;
+        }
+
+        protected override void Subscribe<TUpdate>(Action<TUpdate> handler)
+        {
+            base.Subscribe(handler);
+
+            if(ViewModel is INotifyUpdates notifyViewModel && notifyViewModel.Update != null)
+            {
+                handler.Invoke((TUpdate) notifyViewModel.Update);
+            }
         }
 
         protected override void OnAppearing()
