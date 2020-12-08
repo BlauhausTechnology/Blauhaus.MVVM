@@ -18,16 +18,6 @@ namespace Blauhaus.MVVM.Xamarin.Views.Content
             BindingContext = ViewModel;
         }
 
-        protected override void Subscribe<TUpdate>(Action<TUpdate> handler)
-        {
-            base.Subscribe(handler);
-
-            if(ViewModel is INotifyUpdates notifyViewModel && notifyViewModel.Update != null)
-            {
-                handler.Invoke((TUpdate) notifyViewModel.Update);
-            }
-        }
-
         protected override void OnAppearing()
         {
             if (ViewModel is IAppearingViewModel appearViewModel)
