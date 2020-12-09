@@ -8,6 +8,10 @@ namespace Blauhaus.MVVM.Xamarin.Views.ContentViews
     {
         private TapGestureRecognizer? _tgr;
 
+        protected BaseSelectableContentView(bool isUpdatable = true) : base(isUpdatable)
+        {
+            
+        }
         protected override void OnBindingContextChanged()
         {
             if (_tgr == null)
