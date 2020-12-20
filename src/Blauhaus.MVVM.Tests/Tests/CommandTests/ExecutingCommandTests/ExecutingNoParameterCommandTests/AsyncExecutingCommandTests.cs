@@ -129,6 +129,26 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
                     "ops", It.IsAny<Dictionary<string, object>>(), It.IsAny<string>()));
             }
         }
+        
+        [Test]
+        public void IF_AnalyticsOperation_is_provided_without_name_SHOULD_log_Command_name()
+        {
+            //Arrange 
+            using (var isExecutingChanges = Sut.SubscribeToPropertyChanged(x => x.IsExecuting))
+            {
+                //Arrange
+                Sut.LogOperation(this);
+
+                //Act
+                Sut.Execute();
+                isExecutingChanges.WaitForChangeCount(2);
+
+                //Assert
+                MockAnalyticsService.Mock.Verify(x => x.StartOperation(
+                    It.Is<object>(y => y.GetType() == typeof(AsyncExecutingCommandTests)), 
+                    "ops", It.IsAny<Dictionary<string, object>>(), It.IsAny<string>()));
+            }
+        }
          
 
     }

@@ -35,7 +35,7 @@ namespace Blauhaus.MVVM.ExecutingCommands._Base
             return (TExecutingCommand) this;
         }
         
-        public TExecutingCommand LogOperation(object sender, string operationName)
+        public TExecutingCommand LogOperation(object sender, string operationName = "")
         {
             _sender = sender;
             AnalyticsOperationName = operationName;
