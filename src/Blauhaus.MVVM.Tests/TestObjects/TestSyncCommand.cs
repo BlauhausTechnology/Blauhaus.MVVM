@@ -1,4 +1,4 @@
-﻿using Blauhaus.Domain.Abstractions.CommandHandlers.Sync;
+﻿using Blauhaus.Domain.Abstractions.Sync;
 
 namespace Blauhaus.MVVM.Tests.TestObjects
 {
