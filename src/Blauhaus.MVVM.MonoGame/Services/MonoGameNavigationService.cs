@@ -30,10 +30,10 @@ namespace Blauhaus.MVVM.MonoGame.Services
             _sceneGame = sceneGame;
         }
         
-        public Task ShowMainViewAsync<TViewModel>() where TViewModel : IViewModel
+        public Task ShowMainViewAsync<TViewModel>() where TViewModel : class, IViewModel
         {
             var scene = GetSceneForViewModel<TViewModel>();
-            
+            _sceneGame.ChangeScene(scene);
             return Task.CompletedTask;
         }
 
