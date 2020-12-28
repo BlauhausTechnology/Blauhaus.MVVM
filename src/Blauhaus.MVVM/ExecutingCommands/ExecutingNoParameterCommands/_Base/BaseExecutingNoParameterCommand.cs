@@ -1,5 +1,4 @@
-﻿using System;
-using Blauhaus.Analytics.Abstractions.Service;
+﻿using Blauhaus.Analytics.Abstractions.Service;
 using Blauhaus.Errors.Handler;
 using Blauhaus.MVVM.ExecutingCommands._Base;
 

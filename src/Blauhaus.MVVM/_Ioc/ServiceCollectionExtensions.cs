@@ -1,4 +1,5 @@
-﻿using Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands;
+﻿using Blauhaus.MVVM.Collections;
+using Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands;
 using Blauhaus.MVVM.ExecutingCommands.ExecutingParameterCommands;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,16 +10,25 @@ namespace Blauhaus.MVVM._Ioc
         public static IServiceCollection AddExecutingCommands(this IServiceCollection services)
         {
             services.AddTransient<AsyncExecutingCommand>();
-            services.AddTransient<AsyncExecutingResultCommand>();
-            services.AddTransient(typeof(AsyncExecutingValueResultCommand<>));
+            services.AddTransient<AsyncExecutingResponseCommand>();
+            services.AddTransient(typeof(AsyncExecutingValueResponseCommand<>));
             services.AddTransient<ExecutingCommand>();
 
             services.AddTransient(typeof(ExecutingObservableCommand<>));
 
             services.AddTransient(typeof(AsyncExecutingParameterCommand<>));
-            services.AddTransient(typeof(AsyncExecutingResultParameterCommand<>));
-            services.AddTransient(typeof(AsyncExecutingValueResultParameterCommand<,>));
+            services.AddTransient(typeof(AsyncExecutingResponseParameterCommand<>));
+            services.AddTransient(typeof(AsyncExecutingValueResponseParameterCommand<,>));
             services.AddTransient(typeof(ExecutingParameterCommand<>));
+
+            return services;
+        }
+
+        public static IServiceCollection AddObservableIdCollections(this IServiceCollection services)
+        {
+            services.AddTransient(typeof(ObservableGuidCollection<>));
+            services.AddTransient(typeof(ObservableLongCollection<>));
+            services.AddTransient(typeof(ObservableStringCollection<>));
 
             return services;
         }

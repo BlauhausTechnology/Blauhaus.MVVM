@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using Blauhaus.Analytics.Abstractions.Operation;
 using Blauhaus.MVVM.ExecutingCommands._Base;
 using Blauhaus.MVVM.Tests.Tests._Base;

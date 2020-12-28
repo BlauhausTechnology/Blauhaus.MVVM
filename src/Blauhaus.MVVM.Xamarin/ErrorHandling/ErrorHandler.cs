@@ -26,8 +26,6 @@ namespace Blauhaus.MVVM.Xamarin.ErrorHandling
         }
 
 
-        //todo subclass and handle AuthError.NotAuthenticated
-
         public Task HandleExceptionAsync(object sender, Exception exception)
         {
 
@@ -53,6 +51,11 @@ namespace Blauhaus.MVVM.Xamarin.ErrorHandling
                 errorMessage = error.Description;
             }
             await _dialogService.DisplayAlertAsync("Error", errorMessage);
+        }
+
+        public async Task HandleErrorAsync(Error error)
+        {
+            await _dialogService.DisplayAlertAsync("Error", error.Description);
         }
     }
 }
