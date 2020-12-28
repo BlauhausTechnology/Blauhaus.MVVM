@@ -5,7 +5,7 @@ using Blauhaus.MVVM.Abstractions.ViewModels;
 
 namespace Blauhaus.MVVM.Tests.TestObjects
 {
-    public class TestAppearingViewModel : BaseViewModel, IAppear
+    public class TestAppearingViewModel : BaseViewModel, IAppearingViewModel
     {
 
         public TestAppearingViewModel(

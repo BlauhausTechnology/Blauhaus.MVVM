@@ -1,6 +1,5 @@
 ﻿using System;
 using Blauhaus.Analytics.Abstractions.Service;
-using Blauhaus.Analytics.TestHelpers;
 using Blauhaus.Analytics.TestHelpers.MockBuilders;
 using Blauhaus.Common.ValueObjects.BuildConfigs;
 using Blauhaus.DeviceServices.Abstractions.Connectivity;
@@ -11,8 +10,8 @@ using Blauhaus.MVVM.Abstractions.Navigation;
 using Blauhaus.MVVM.TestHelpers.MockBuilders.Services;
 using Blauhaus.MVVM.Tests.MockBuilders;
 using Blauhaus.MVVM.Xamarin.Navigation.FormsApplicationProxy;
+using Blauhaus.Responses;
 using Blauhaus.TestHelpers.BaseTests;
-using CSharpFunctionalExtensions;
 using NUnit.Framework;
 
 namespace Blauhaus.MVVM.Tests.Tests._Base
@@ -27,7 +26,7 @@ namespace Blauhaus.MVVM.Tests.Tests._Base
             Config = BuildConfig.Release;
 
             var threadService = new ThreadServiceMockBuilder();
-            threadService.Setup<Result>();
+            threadService.Setup<Response>();
 
             AddService(x => MockNavigationLookup.Object);
             AddService(x => MockFormsApplicationProxy.Object);

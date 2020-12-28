@@ -20,5 +20,18 @@ namespace Blauhaus.MVVM.ExecutingCommands._Base
             }
             return false;
         }
+
+        internal static async Task<bool> TryHandle(this Dictionary<Error, Func<Error, Task>>? errorHandlers, Error error)
+        {
+            if (errorHandlers != null)
+            {
+                if (errorHandlers.TryGetValue(error, out var errorHandler))
+                {
+                    await errorHandler.Invoke(error);
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

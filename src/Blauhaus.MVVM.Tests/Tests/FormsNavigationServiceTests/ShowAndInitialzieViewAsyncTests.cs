@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Blauhaus.MVVM.Abstractions.Navigation;
 using Blauhaus.MVVM.Tests.TestObjects;
 using Blauhaus.MVVM.Tests.Tests.FormsNavigationServiceTests._Base;
-using Blauhaus.MVVM.Xamarin.Views;
+using Blauhaus.MVVM.Xamarin.Views.Navigation;
 using NUnit.Framework;
 
 namespace Blauhaus.MVVM.Tests.Tests.FormsNavigationServiceTests
@@ -51,18 +51,14 @@ namespace Blauhaus.MVVM.Tests.Tests.FormsNavigationServiceTests
 
             //Assert
             Assert.AreEqual(_testNavigationView.CurrentPage as TestInitializingView, _testView);
-        }
-        
+        } 
+
         [Test]
-        public async Task IF_no_navigation_page_has_been_set_SHOULD_set_one()
+        public void IF_no_navigation_page_has_been_set_SHOULD_throw()
         {
             //Act
-            await Sut.ShowAndInitializeViewAsync<TestInitializingViewModel, Guid>(_parameter);
-
-            //Assert
-            Assert.That(_testView.Navigation, Is.Not.Null);
+            Assert.ThrowsAsync<InvalidOperationException>(async () => await Sut.ShowAndInitializeViewAsync<TestInitializingViewModel, Guid>(_parameter));
         }
-
 
         [Test]
         public async Task SHOULD_set_parameter()

@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Blauhaus.Common.Utils.Contracts;
 using Blauhaus.DeviceServices.Abstractions.Thread;
 using Blauhaus.MVVM.Abstractions.Contracts;
 using Blauhaus.MVVM.Abstractions.Navigation;
@@ -17,8 +20,19 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
         private readonly IFormsApplicationProxy _application;
         private readonly IThreadService _threadService;
 
-        private NavigationPage _currentNavigationPage;
-        protected NavigationPage CurrentNavigationPage => _currentNavigationPage ??= new NavigationPage();
+
+        private readonly Dictionary<string, INavigationView> _navigationViews = new Dictionary<string, INavigationView>();
+
+        protected NavigationPage? CurrentNavigationPage
+        {
+            get
+            {
+                var currentNavigationView = _navigationViews.Values.FirstOrDefault(x => x.IsCurrent);
+                return (NavigationPage?) currentNavigationView;
+            }
+        }
+
+        private IFlyoutView? _currentFlyoutPage;
 
         public FormsNavigationService(
             IServiceProvider serviceProvider,
@@ -38,41 +52,113 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
             await ShowMainPageAsync(page);
         }
 
-        public async Task ShowViewAsync<TViewModel>() where TViewModel : IViewModel
+        public Task ShowViewAsync<TViewModel>(string navigationStackName = "") where TViewModel : IViewModel
         {
+            if (navigationStackName != "")
+            {
+                SetCurrentNavigationView(navigationStackName);
+            }
+
             var page = GetPageForViewModel<Page>(typeof(TViewModel));
-            await CurrentNavigationPage.PushAsync(page, true);
+            return NavigateToAsync(page);
         }
 
-        public async Task ShowAndInitializeViewAsync<TViewModel, T>(T parameter) where TViewModel : IViewModel, IInitialize<T>
+        public async Task ShowAndInitializeViewAsync<TViewModel, T>(T parameter, string navigationStackName = "") where TViewModel : IViewModel, IAsyncInitializable<T>
         {
+            
+            if (navigationStackName != "")
+            {
+                SetCurrentNavigationView(navigationStackName);
+            }
+
             var page = GetPageForViewModel<Page>(typeof(TViewModel));
 
             var viewModel = (TViewModel)page.BindingContext;
-            viewModel.Initialize(parameter);
-
-            await CurrentNavigationPage.PushAsync(page, true);
+            await viewModel.InitializeAsync(parameter);
+            
+            await NavigateToAsync(page);
         }
 
-        public async Task GoBackAsync()
+        public Task ShowDetailViewAsync<TViewModel>() where TViewModel : IViewModel
         {
-            if (_currentNavigationPage != null)
+            if (_currentFlyoutPage == null)
             {
-                //have not worked out how to test this
-                await _currentNavigationPage.PopAsync();
+                throw new InvalidOperationException("No Flyout Page has been set");
             }
+            
+            var page = GetPageForViewModel<Page>(typeof(TViewModel));
+            if (page is IView view)
+            {
+                return _threadService.InvokeOnMainThreadAsync(() => 
+                    _currentFlyoutPage.ShowDetail(view));
+            }
+
+            throw new InvalidOperationException("Detail Page must implement IView");
+        }
+
+        public void SetCurrentNavigationView(string navigationStackName)
+        {
+            if (!_navigationViews.ContainsKey(navigationStackName))
+            {
+                throw new InvalidOperationException("No navigation page exists for " + navigationStackName);
+            }
+
+            foreach (var navigationView in _navigationViews.Values)
+            {
+                navigationView.IsCurrent = navigationView.StackName == navigationStackName;
+            }
+
+        }
+
+        public void SetCurrentFlyoutView(IFlyoutView flyoutView)
+        {
+            _currentFlyoutPage = flyoutView;
+        }
+
+        public Task GoBackAsync()
+        {
+            if (CurrentNavigationPage != null)
+            {
+                return _threadService.InvokeOnMainThreadAsync(async () => 
+                    await CurrentNavigationPage.PopAsync());
+            };
+            return Task.CompletedTask;
+        }
+
+        public Task GoBackToRootAsync()
+        {
+            if (CurrentNavigationPage != null)
+            {
+                return _threadService.InvokeOnMainThreadAsync(async () =>
+                {
+                    await CurrentNavigationPage.PopToRootAsync();
+                });
+            };
+            return Task.CompletedTask;
         }
 
         public void SetCurrentNavigationView(INavigationView navigationView)
         {
-            _currentNavigationPage = (NavigationPage) navigationView;
+            navigationView.IsCurrent = true;
+            _navigationViews[navigationView.StackName] = navigationView;
         }
 
-        private async Task ShowMainPageAsync(Page page)
+        private Task ShowMainPageAsync(Page page)
         {
-            await _threadService.InvokeOnMainThreadAsync(() =>
+            return _threadService.InvokeOnMainThreadAsync(() =>
             {
                 _application.SetMainPage(page);
+            });
+        }
+        private Task NavigateToAsync(Page page)
+        {
+            if (CurrentNavigationPage == null)
+            {
+                throw new InvalidOperationException("No NavigationPage has been set");
+            }
+            return _threadService.InvokeOnMainThreadAsync(() =>
+            {
+                CurrentNavigationPage.PushAsync(page, true);
             });
         }
           

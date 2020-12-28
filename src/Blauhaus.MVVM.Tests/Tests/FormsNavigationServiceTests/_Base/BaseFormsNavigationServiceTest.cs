@@ -1,6 +1,7 @@
 ﻿using Blauhaus.DeviceServices.TestHelpers.MockBuilders;
 using Blauhaus.MVVM.Tests.Tests._Base;
 using Blauhaus.MVVM.Xamarin.Navigation;
+using Xamarin.Forms.Mocks;
 
 namespace Blauhaus.MVVM.Tests.Tests.FormsNavigationServiceTests._Base
 {
@@ -9,6 +10,7 @@ namespace Blauhaus.MVVM.Tests.Tests.FormsNavigationServiceTests._Base
 
         protected override FormsNavigationService ConstructSut()
         {
+
             var thread = new ThreadServiceMockBuilder();
 
             return new FormsNavigationService(
