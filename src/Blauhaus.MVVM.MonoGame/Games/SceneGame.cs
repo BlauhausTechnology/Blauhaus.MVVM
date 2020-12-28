@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Blauhaus.MVVM.MonoGame.Games
 {
-    public abstract class BaseSceneGame : BaseGame
+    public abstract class BaseSceneGame : Game, ISceneGame
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch = null!;
@@ -16,7 +16,7 @@ namespace Blauhaus.MVVM.MonoGame.Games
 
         protected Color BackgroundColour = Color.AliceBlue;
          
-        protected BaseSceneGame(IServiceCollection? platformServices) : base(platformServices)
+        protected BaseSceneGame() 
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -61,7 +61,8 @@ namespace Blauhaus.MVVM.MonoGame.Games
                 _nextScene = next;
             }
         }
-        
+
+
         private void TransitionScene()
         {
             _activeScene?.UnloadContent();

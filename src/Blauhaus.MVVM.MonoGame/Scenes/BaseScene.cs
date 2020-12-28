@@ -1,31 +1,44 @@
-﻿using Blauhaus.MVVM.MonoGame.Games;
+﻿using Blauhaus.MVVM.Abstractions.ViewModels;
+using Blauhaus.MVVM.MonoGame.Games;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Blauhaus.MVVM.MonoGame.Scenes
 {
-    public abstract class BaseScene<TGame> : IScene
-        where TGame : BaseSceneGame
+    public abstract class BaseScene<TViewModel> : IScene
     {
-        protected TGame Game;
-        protected ContentManager? ScrenContent;
-        protected ContentManager GameContent;
-
-        protected BaseScene(TGame game)
-        {
-            Game = game;
-            GameContent = Game.Content;
-        }
+        protected readonly TViewModel ViewModel;
         
-        public virtual void Initialize()
-        {
-            ScrenContent = new ContentManager(Game.Services)
+        protected ISceneGame Game;
+
+
+        private ContentManager? _screenContent;
+        protected ContentManager ScreenContent =>
+            _screenContent ??= new ContentManager(Game.Services)
             {
                 RootDirectory = Game.Content.RootDirectory
             };
-            
+
+        protected ContentManager GameContent;
+        protected GraphicsDevice GraphicsDevice;
+        
+        protected BaseScene(ISceneGame game, TViewModel viewModel)
+        {
+            Game = game;
+            ViewModel = viewModel;
+            GameContent = Game.Content;
+            GraphicsDevice = Game.GraphicsDevice;
+        }
+        
+        public virtual void Initialize()
+        { 
             LoadContent();
+
+            if (ViewModel is IAppearingViewModel appearingViewModel)
+            {
+                appearingViewModel.AppearCommand.Execute();
+            }
         }
 
         public virtual void LoadContent()
@@ -38,7 +51,7 @@ namespace Blauhaus.MVVM.MonoGame.Scenes
         
         public virtual void BeforeDraw(SpriteBatch spriteBatch, Color clearColor)
         {
-            Game.GraphicsDevice.Clear(clearColor);
+            GraphicsDevice.Clear(clearColor);
             spriteBatch.Begin();
         }
         
@@ -51,8 +64,8 @@ namespace Blauhaus.MVVM.MonoGame.Scenes
         
         public virtual void UnloadContent() 
         {
-            ScrenContent?.Unload();
-            ScrenContent = null;
+            _screenContent?.Unload();
+            _screenContent = null;
         }
     }
 }

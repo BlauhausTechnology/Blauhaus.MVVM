@@ -26,10 +26,8 @@ namespace Blauhaus.MVVM.Xamarin._Ioc
                 .AddSingleton<IDialogService, FormsDialogService>()
                 .AddSingleton<INavigationService, FormsNavigationService>()
                 .AddSingleton<IFormsApplicationProxy, FormsApplicationProxy>()
-                .AddSingleton<INavigationLookup>(x => NavigationLookup);
-
-            services
-                .AddTransient<IErrorHandler, ErrorHandler>();
+                .AddSingleton<INavigationLookup>(x => NavigationLookup)
+                .AddSingleton<IErrorHandler, ErrorHandler>();
             
             return services;
         }

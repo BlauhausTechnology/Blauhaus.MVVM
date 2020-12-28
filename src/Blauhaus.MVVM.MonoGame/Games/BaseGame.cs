@@ -5,6 +5,7 @@ using Blauhaus.Ioc.Abstractions;
 using Blauhaus.Ioc.DotNetCoreIocService;
 using Blauhaus.MVVM.Abstractions.Application;
 using Blauhaus.MVVM.AppLifecycle;
+using Blauhaus.MVVM.MonoGame.Scenes;
 using Blauhaus.MVVM.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -13,7 +14,7 @@ using Microsoft.Xna.Framework;
 
 namespace Blauhaus.MVVM.MonoGame.Games
 {
-    public abstract class BaseGame : Game
+    public abstract class BaseGame<TStartScene> : BaseSceneGame where TStartScene : class, IScene
     {
         protected IBuildConfig CurrentBuildConfig = null!;
         private readonly AppLifecycleService _appLifeCycleService;
@@ -35,6 +36,7 @@ namespace Blauhaus.MVVM.MonoGame.Games
                     services.AddSingleton(CurrentBuildConfig);
                     services.AddSingleton<IServiceLocator, DotNetCoreServiceLocator>();
                     services.AddSingleton<IAppLifecycleService, AppLifecycleService>();
+                    services.AddSingleton<ISceneGame>(this);
                     
                     //do this last to give platform services a chance to override defaults
                     foreach (var platformService in platformServices)
@@ -56,6 +58,8 @@ namespace Blauhaus.MVVM.MonoGame.Games
 
             _hasStarted = true;
             _appLifeCycleService.NotifyAppStarting();
+
+            ChangeScene(AppServiceLocator.Resolve<TStartScene>());
         }
 
         protected override void OnActivated(object sender, EventArgs args)

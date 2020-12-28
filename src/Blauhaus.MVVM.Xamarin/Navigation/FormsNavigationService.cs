@@ -46,7 +46,7 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
             _threadService = threadService;
         }
 
-        public async Task ShowMainViewAsync<TViewModel>() where TViewModel : IViewModel
+        public async Task ShowMainViewAsync<TViewModel>() where TViewModel : class, IViewModel
         {
             var page = GetPageForViewModel<Page>(typeof(TViewModel));
             await ShowMainPageAsync(page);
