@@ -1,7 +1,7 @@
 ﻿using System;
 using Blauhaus.Ioc.Abstractions;
 
-namespace Blauhaus.MVVM.Xamarin.App
+namespace Blauhaus.MVVM.Services
 {
 
     /// <summary>
