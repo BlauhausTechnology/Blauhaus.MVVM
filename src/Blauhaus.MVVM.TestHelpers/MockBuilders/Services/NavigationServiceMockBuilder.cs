@@ -11,7 +11,7 @@ namespace Blauhaus.MVVM.TestHelpers.MockBuilders.Services
     public class NavigationServiceMockBuilder : BaseMockBuilder<NavigationServiceMockBuilder, INavigationService>
     {
 
-        public NavigationServiceMockBuilder Where_NavigateMain_throws<TViewModel>(Exception e) where TViewModel : IViewModel
+        public NavigationServiceMockBuilder Where_NavigateMain_throws<TViewModel>(Exception e) where TViewModel : class, IViewModel
         {
             Mock.Setup(x => x.ShowMainViewAsync<TViewModel>())
                 .Throws(e);
@@ -41,11 +41,11 @@ namespace Blauhaus.MVVM.TestHelpers.MockBuilders.Services
             Mock.Verify(x => x.ShowViewAsync<TViewModel>(It.IsAny<string>()), Times.Never);
         }
 
-        public void Verify_NavigateMain_was_called_with_ViewModelType<TViewModel>() where TViewModel : IViewModel
+        public void Verify_NavigateMain_was_called_with_ViewModelType<TViewModel>() where TViewModel : class, IViewModel
         {
             Mock.Verify(x => x.ShowMainViewAsync<TViewModel>());
         }
-        public void Verify_NavigateMain_was_NOT_called_with_ViewModelType<TViewModel>() where TViewModel : IViewModel
+        public void Verify_NavigateMain_was_NOT_called_with_ViewModelType<TViewModel>() where TViewModel : class, IViewModel
         {
             Mock.Verify(x => x.ShowMainViewAsync<TViewModel>(), Times.Never);
         }
