@@ -12,7 +12,8 @@ namespace Blauhaus.MVVM.MonoGame.Scenes
         
         protected ISceneGame Game;
 
-
+        protected Color BackgroundColour = Color.Black;
+        
         private ContentManager? _screenContent;
         protected ContentManager ScreenContent =>
             _screenContent ??= new ContentManager(Game.Services)
@@ -49,9 +50,9 @@ namespace Blauhaus.MVVM.MonoGame.Scenes
         {
         }
         
-        public virtual void BeforeDraw(SpriteBatch spriteBatch, Color clearColor)
+        public virtual void BeforeDraw(SpriteBatch spriteBatch)
         {
-            GraphicsDevice.Clear(clearColor);
+            GraphicsDevice.Clear(BackgroundColour);
             spriteBatch.Begin();
         }
         

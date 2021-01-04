@@ -16,6 +16,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\..\..\Blauhaus.MonoGame\src\Blauhaus.MonoGame\Blauhaus.MonoGame.csproj" />
 	  <ProjectReference Include="..\Blauhaus.MVVM\Blauhaus.MVVM.csproj" />
 	</ItemGroup>
 

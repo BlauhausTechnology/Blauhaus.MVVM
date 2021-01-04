@@ -8,17 +8,21 @@ namespace Blauhaus.MVVM.MonoGame.Games
 {
     public abstract class BaseSceneGame : Game, ISceneGame
     {
-        private GraphicsDeviceManager _graphics;
+        protected GraphicsDeviceManager GraphicsDeviceManager;
         private SpriteBatch _spriteBatch = null!;
         
         private IScene? _activeScene;
         private IScene? _nextScene;
 
-        protected Color BackgroundColour = Color.AliceBlue;
          
         protected BaseSceneGame() 
         {
-            _graphics = new GraphicsDeviceManager(this);
+            GraphicsDeviceManager = new GraphicsDeviceManager(this)
+            {
+                //otherwise have to use short instead of int for IndexBuffer so no more than 32k indices
+                GraphicsProfile = GraphicsProfile.HiDef
+            };
+            
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
@@ -46,7 +50,7 @@ namespace Blauhaus.MVVM.MonoGame.Games
         {
             if(_activeScene != null)
             {
-                _activeScene.BeforeDraw(_spriteBatch, BackgroundColour);
+                _activeScene.BeforeDraw(_spriteBatch);
                 _activeScene.Draw(_spriteBatch);
                 _activeScene.AfterDraw(_spriteBatch);
             }

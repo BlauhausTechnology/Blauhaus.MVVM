@@ -11,7 +11,7 @@ namespace Blauhaus.MVVM.MonoGame.Scenes
 
         public void Update(GameTime gameTime);
 
-        public void BeforeDraw(SpriteBatch spriteBatch, Color clearColor);
+        public void BeforeDraw(SpriteBatch spriteBatch);
         public void Draw(SpriteBatch spriteBatch);
         public void AfterDraw(SpriteBatch spriteBatch);
 
