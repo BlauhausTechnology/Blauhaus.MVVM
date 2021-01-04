@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Blauhaus.MVVM.MonoGame.Scenes
 {
-    public class Base3DScene<TViewModel> : BaseScene<TViewModel>
+    public class Base3DScreen<TViewModel> : BaseScreen<TViewModel>
     {
         
         protected Matrix WorldMatrix = Matrix.Identity;
@@ -19,7 +19,7 @@ namespace Blauhaus.MVVM.MonoGame.Scenes
 
         protected SpriteFont DefaultFont;
         
-        public Base3DScene(ISceneGame game, TViewModel viewModel) : base(game, viewModel)
+        public Base3DScreen(IScreenGame game, TViewModel viewModel) : base(game, viewModel)
         {
         }
 

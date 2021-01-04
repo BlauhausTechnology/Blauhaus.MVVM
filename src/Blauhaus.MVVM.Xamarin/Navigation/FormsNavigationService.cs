@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Blauhaus.Common.Utils.Contracts;
 using Blauhaus.DeviceServices.Abstractions.Thread;
+using Blauhaus.Ioc.Abstractions;
 using Blauhaus.MVVM.Abstractions.Contracts;
 using Blauhaus.MVVM.Abstractions.Navigation;
 using Blauhaus.MVVM.Abstractions.ViewModels;
@@ -15,7 +16,7 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
 {
     public class FormsNavigationService : INavigationService
     {
-        private readonly IServiceProvider _serviceProvider;
+        private readonly IServiceLocator _serviceLocator;
         private readonly INavigationLookup _navigationLookup;
         private readonly IFormsApplicationProxy _application;
         private readonly IThreadService _threadService;
@@ -35,21 +36,26 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
         private IFlyoutView? _currentFlyoutPage;
 
         public FormsNavigationService(
-            IServiceProvider serviceProvider,
+            IServiceLocator serviceLocator,
             INavigationLookup navigationLookup,
             IFormsApplicationProxy application, 
             IThreadService threadService)
         {
-            _serviceProvider = serviceProvider;
+            _serviceLocator = serviceLocator;
             _navigationLookup = navigationLookup;
             _application = application;
             _threadService = threadService;
         }
 
-        public async Task ShowMainViewAsync<TViewModel>() where TViewModel : class, IViewModel
+        public Task ShowMainViewAsync<TViewModel>() where TViewModel : class, IViewModel
         {
-            var page = GetPageForViewModel<Page>(typeof(TViewModel));
-            await ShowMainPageAsync(page);
+            return ShowMainViewAsync(typeof(TViewModel));
+        }
+
+        public Task ShowMainViewAsync(Type viewModelType)
+        {
+            var page = GetPageForViewModel<Page>(viewModelType);
+            return ShowMainPageAsync(page);
         }
 
         public Task ShowViewAsync<TViewModel>(string navigationStackName = "") where TViewModel : IViewModel
@@ -170,7 +176,7 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
                 throw new NavigationException($"No view is registered for {viewModelType.Name}");
             }
 
-            var view = _serviceProvider.GetService(viewType);
+            var view = _serviceLocator.Resolve(viewType);
             if (view == null)
             {
                 throw new NavigationException($"No View of type {viewType.Name} has been registered with the Ioc container");

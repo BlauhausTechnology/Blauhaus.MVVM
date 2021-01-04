@@ -24,7 +24,7 @@ namespace Blauhaus.MVVM.Tests.Tests.FormsNavigationServiceTests
             _testNavigationView = new NavigationView(MockNavigationService.Object, _testView);
 
             MockNavigationLookup.Where_GetViewType_returns<TestInitializingViewModel>(typeof(TestInitializingView));
-            MockServiceProvider.Where_GetService_returns(_testView, typeof(TestInitializingView));
+            MockServiceLocator.Where_Resolve_returns(_testView, typeof(TestInitializingView));
         }
 
         [Test]
@@ -37,7 +37,7 @@ namespace Blauhaus.MVVM.Tests.Tests.FormsNavigationServiceTests
             await Sut.ShowAndInitializeViewAsync<TestInitializingViewModel, Guid>(_parameter);
 
             //Assert
-            MockServiceProvider.Verify_GetService_was_called_with_Type(typeof(TestInitializingView));
+            MockServiceLocator.Mock.Verify(x => x.Resolve(typeof(TestInitializingView)));
         }
 
         [Test]
@@ -88,7 +88,7 @@ namespace Blauhaus.MVVM.Tests.Tests.FormsNavigationServiceTests
         public void IF_service_provider_returns_null_SHOULD_throw()
         {
             //Arrange
-            MockServiceProvider.Where_GetService_returns(null, typeof(TestInitializingView));
+            MockServiceLocator.Where_Resolve_returns(null, typeof(TestInitializingView));
 
             //Act
             Assert.ThrowsAsync<NavigationException>(async () => await 
@@ -101,7 +101,7 @@ namespace Blauhaus.MVVM.Tests.Tests.FormsNavigationServiceTests
         {
             //Arrange
             MockNavigationLookup.Where_GetViewType_returns<TestInitializingViewModel>(typeof(FakeView));
-            MockServiceProvider.Where_GetService_returns(new FakeView(), typeof(FakeView));
+            MockServiceLocator.Where_Resolve_returns(new FakeView(), typeof(FakeView));
 
             //Act
             Assert.ThrowsAsync<NavigationException>(async () => await 

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Blauhaus.Common.Utils.Contracts;
 using Blauhaus.MVVM.Abstractions.Contracts;
 using Blauhaus.MVVM.Abstractions.ViewModels;
@@ -9,6 +10,7 @@ namespace Blauhaus.MVVM.Abstractions.Navigation
     public interface INavigationService
     {
         Task ShowMainViewAsync<TViewModel>() where TViewModel : class, IViewModel;
+        Task ShowMainViewAsync(Type viewModelType);
 
 
         Task ShowViewAsync<TViewModel>(string navigationStackName = "") where TViewModel : IViewModel;

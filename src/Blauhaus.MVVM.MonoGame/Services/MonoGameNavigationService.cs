@@ -16,24 +16,29 @@ namespace Blauhaus.MVVM.MonoGame.Services
         private readonly IServiceLocator _serviceLocator;
         private readonly INavigationLookup _navigationLookup;
         private readonly IThreadService _threadService;
-        private readonly ISceneGame _sceneGame;
+        private readonly IScreenGame _screenGame;
 
         public MonoGameNavigationService(
             IServiceLocator serviceLocator,
             INavigationLookup navigationLookup,
             IThreadService threadService,
-            ISceneGame sceneGame)
+            IScreenGame screenGame)
         {
             _serviceLocator = serviceLocator;
             _navigationLookup = navigationLookup;
             _threadService = threadService;
-            _sceneGame = sceneGame;
+            _screenGame = screenGame;
         }
         
         public Task ShowMainViewAsync<TViewModel>() where TViewModel : class, IViewModel
         {
-            var scene = GetSceneForViewModel<TViewModel>();
-            _sceneGame.ChangeScene(scene);
+            return ShowMainViewAsync(typeof(TViewModel));
+        }
+
+        public Task ShowMainViewAsync(Type viewModelType)
+        {
+            var scene = GetScreenForViewModel(viewModelType);
+            _screenGame.ChangeScene(scene);
             return Task.CompletedTask;
         }
 
@@ -78,27 +83,26 @@ namespace Blauhaus.MVVM.MonoGame.Services
         }
         
         
-        private IScene GetSceneForViewModel<TViewModel>() 
-            where TViewModel : class
+        private IGameScreen GetScreenForViewModel(Type viewModelType) 
         {
-            var viewType = _navigationLookup.GetViewType(typeof(TViewModel));
+            var viewType = _navigationLookup.GetViewType(viewModelType);
             if (viewType == null)
             {
-                throw new NavigationException($"No view is registered for {typeof(TViewModel).Name}");
+                throw new NavigationException($"No view is registered for {viewModelType.Name}");
             }
 
-            var view = _serviceLocator.Resolve<TViewModel>();
+            var view = _serviceLocator.Resolve(viewModelType);
             if (view == null)
             {
                 throw new NavigationException($"No View of type {viewType.Name} has been registered with the Ioc container");
             }
             
-            if (!(view is IScene page))
+            if (!(view is IGameScreen screen))
             {
                 throw new NavigationException($"View type {viewType.Name} is not an IScene");
             }
 
-            return page;
+            return screen;
         }
     }
 }
