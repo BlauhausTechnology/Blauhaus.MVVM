@@ -28,4 +28,4 @@ jobs:
         dotnet nuget push /home/runner/work/Blauhaus.MVVM/Blauhaus.MVVM/Blauhaus.MVVM.TestHelpers.${VERSION_NAME}.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
         dotnet nuget push /home/runner/work/Blauhaus.MVVM/Blauhaus.MVVM/Blauhaus.MVVM.Xamarin.${VERSION_NAME}.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
         dotnet nuget push /home/runner/work/Blauhaus.MVVM/Blauhaus.MVVM/Blauhaus.MVVM.${VERSION_NAME}.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
-        dotnet nuget push /home/runner/work/Blauhaus.MVVM/Blauhaus.MVVM/Blauhaus.MVVM.MonoGame${VERSION_NAME}.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
+        dotnet nuget push /home/runner/work/Blauhaus.MVVM/Blauhaus.MVVM/Blauhaus.MVVM.MonoGame.${VERSION_NAME}.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
