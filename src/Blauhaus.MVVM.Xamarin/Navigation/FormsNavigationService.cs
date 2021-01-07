@@ -60,6 +60,8 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
 
         public Task ShowViewAsync<TViewModel>(string navigationStackName = "") where TViewModel : IViewModel
         {
+            
+            
             if (navigationStackName != "")
             {
                 SetCurrentNavigationView(navigationStackName);
@@ -104,6 +106,8 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
 
         public void SetCurrentNavigationView(string navigationStackName)
         {
+            //todo consider registering view models with their navigation stack in the first place so we don't need to remember to do this all the time
+            
             if (!_navigationViews.ContainsKey(navigationStackName))
             {
                 throw new InvalidOperationException("No navigation page exists for " + navigationStackName);

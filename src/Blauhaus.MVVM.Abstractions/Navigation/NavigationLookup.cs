@@ -9,7 +9,6 @@ namespace Blauhaus.MVVM.Abstractions.Navigation
     {
 
         private readonly Dictionary<string, Type> _viewTypes = new Dictionary<string, Type>();
-        private readonly Dictionary<string, Type> _navigationViewTypes = new Dictionary<string, Type>();
 
         public void Register<TView, TViewModel>()
             where TView : IView
