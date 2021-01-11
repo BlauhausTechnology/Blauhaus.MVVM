@@ -5,6 +5,7 @@ using Blauhaus.Common.ValueObjects.BuildConfigs;
 using Blauhaus.DeviceServices.Abstractions.Connectivity;
 using Blauhaus.DeviceServices.TestHelpers.MockBuilders;
 using Blauhaus.Errors.Handler;
+using Blauhaus.Ioc.TestHelpers;
 using Blauhaus.MVVM.Abstractions.Dialogs;
 using Blauhaus.MVVM.Abstractions.Navigation;
 using Blauhaus.MVVM.TestHelpers.MockBuilders.Services;
@@ -30,7 +31,7 @@ namespace Blauhaus.MVVM.Tests.Tests._Base
 
             AddService(x => MockNavigationLookup.Object);
             AddService(x => MockFormsApplicationProxy.Object);
-            AddService(x => MockServiceProvider.Object);
+            //AddService(x => MockServiceProvider.Object);
             AddService(x => MockAnalyticsService.Object);
             AddService(x => MockErrorHandler.Object);
             AddService(x => threadService.Object);
@@ -45,7 +46,7 @@ namespace Blauhaus.MVVM.Tests.Tests._Base
         protected NavigationServiceMockBuilder MockNavigationService => Mocks.AddMock<NavigationServiceMockBuilder, INavigationService>().Invoke();
         protected NavigationLookupMockBuilder MockNavigationLookup => Mocks.AddMock<NavigationLookupMockBuilder, INavigationLookup>().Invoke();
         protected FormsApplicationProxyMockBuilder MockFormsApplicationProxy => Mocks.AddMock<FormsApplicationProxyMockBuilder, IFormsApplicationProxy>().Invoke();
-        protected ServiceProviderMockBuilder MockServiceProvider => Mocks.AddMock<ServiceProviderMockBuilder, IServiceProvider>().Invoke();
+        //protected ServiceProviderMockBuilder MockServiceProvider => Mocks.AddMock<ServiceProviderMockBuilder, IServiceProvider>().Invoke();
         protected AnalyticsServiceMockBuilder MockAnalyticsService => Mocks.AddMock<AnalyticsServiceMockBuilder, IAnalyticsService>().Invoke();
         protected ErrorHandlerMockBuilder MockErrorHandler => Mocks.AddMock<ErrorHandlerMockBuilder, IErrorHandler>().Invoke();
         protected ConnectivityServiceMockBuilder MockConnectivityService => Mocks.AddMock<ConnectivityServiceMockBuilder, IConnectivityService>().Invoke();

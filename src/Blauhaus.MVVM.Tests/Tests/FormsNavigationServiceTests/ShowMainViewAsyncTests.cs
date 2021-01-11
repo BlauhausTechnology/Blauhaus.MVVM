@@ -19,7 +19,7 @@ namespace Blauhaus.MVVM.Tests.Tests.FormsNavigationServiceTests
 
             _testView = new TestView(new TestViewModel());
             MockNavigationLookup.Where_GetViewType_returns<TestViewModel>(typeof(TestView));
-            MockServiceProvider.Where_GetService_returns(_testView, typeof(TestView));
+            MockServiceLocator.Where_Resolve_returns(_testView, typeof(TestView));
         }
 
         [Test]
@@ -29,7 +29,7 @@ namespace Blauhaus.MVVM.Tests.Tests.FormsNavigationServiceTests
             await Sut.ShowMainViewAsync<TestViewModel>();
 
             //Assert
-            MockServiceProvider.Verify_GetService_was_called_with_Type(typeof(TestView));
+            MockServiceLocator.Mock.Verify(x => x.Resolve(typeof(TestView)));
         }
 
         [Test]
@@ -57,7 +57,7 @@ namespace Blauhaus.MVVM.Tests.Tests.FormsNavigationServiceTests
         public async Task IF_service_provider_returns_null_SHOULD_throw()
         {
             //Arrange
-            MockServiceProvider.Where_GetService_returns(null, typeof(TestView));
+            MockServiceLocator.Where_Resolve_returns(null, typeof(TestView));
 
             //Act
             Assert.ThrowsAsync<NavigationException>(async () => await Sut.ShowMainViewAsync<TestViewModel>(), "No View of type TestView has been registered with the Ioc container");
@@ -69,7 +69,7 @@ namespace Blauhaus.MVVM.Tests.Tests.FormsNavigationServiceTests
         {
             //Arrange
             MockNavigationLookup.Where_GetViewType_returns<TestViewModel>(typeof(FakeView));
-            MockServiceProvider.Where_GetService_returns(new FakeView(), typeof(FakeView));
+            MockServiceLocator.Where_Resolve_returns(new FakeView(), typeof(FakeView));
 
             //Act
             Assert.ThrowsAsync<NavigationException>(async () => await Sut.ShowMainViewAsync<TestViewModel>(), "View type FakeView is not a Xamarin.Forms Page");

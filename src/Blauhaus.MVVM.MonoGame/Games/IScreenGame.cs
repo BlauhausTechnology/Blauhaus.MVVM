@@ -6,9 +6,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Blauhaus.MVVM.MonoGame.Games
 {
-    public interface ISceneGame
+    public interface IScreenGame
     {
-        void ChangeScene(IScene next);
+        void ChangeScene(IGameScreen next);
 
         ContentManager Content { get; }
         GameServiceContainer Services { get; }

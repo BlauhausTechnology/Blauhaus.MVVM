@@ -28,7 +28,7 @@ namespace Blauhaus.MVVM.MonoGame._Ioc
         }
         
         public static IServiceCollection AddPage<TPage, TViewModel>(this IServiceCollection services) 
-            where TPage : BaseScene<TViewModel>, IView 
+            where TPage : BaseScreen<TViewModel>, IView 
             where TViewModel : class, IViewModel
         {
             services.TryAddSingleton<INavigationLookup>(NavigationLookup);
