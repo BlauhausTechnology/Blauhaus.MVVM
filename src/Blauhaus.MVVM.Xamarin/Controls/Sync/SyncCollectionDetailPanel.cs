@@ -1,7 +1,7 @@
 ﻿using System;
 using Blauhaus.Domain.Client.Sync.Client;
+using Xamarin.CommunityToolkit.Markup;
 using Xamarin.Forms;
-using Xamarin.Forms.Markup;
 
 namespace Blauhaus.MVVM.Xamarin.Controls.Sync
 {
