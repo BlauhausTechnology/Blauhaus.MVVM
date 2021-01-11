@@ -6,11 +6,11 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Blauhaus.MVVM.MonoGame.Scenes
 {
-    public abstract class BaseScene<TViewModel> : IScene
+    public abstract class BaseScreen<TViewModel> : IGameScreen
     {
         protected readonly TViewModel ViewModel;
         
-        protected ISceneGame Game;
+        protected IScreenGame Game;
 
         protected Color BackgroundColour = Color.Black;
         
@@ -24,7 +24,7 @@ namespace Blauhaus.MVVM.MonoGame.Scenes
         protected ContentManager GameContent;
         protected GraphicsDevice GraphicsDevice;
         
-        protected BaseScene(ISceneGame game, TViewModel viewModel)
+        protected BaseScreen(IScreenGame game, TViewModel viewModel)
         {
             Game = game;
             ViewModel = viewModel;

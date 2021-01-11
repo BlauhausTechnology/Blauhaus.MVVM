@@ -6,16 +6,16 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Blauhaus.MVVM.MonoGame.Games
 {
-    public abstract class BaseSceneGame : Game, ISceneGame
+    public abstract class BaseScreenGame : Game, IScreenGame
     {
         protected GraphicsDeviceManager GraphicsDeviceManager;
         private SpriteBatch _spriteBatch = null!;
         
-        private IScene? _activeScene;
-        private IScene? _nextScene;
+        private IGameScreen? _activeScene;
+        private IGameScreen? _nextScene;
 
          
-        protected BaseSceneGame() 
+        protected BaseScreenGame() 
         {
             GraphicsDeviceManager = new GraphicsDeviceManager(this)
             {
@@ -58,7 +58,7 @@ namespace Blauhaus.MVVM.MonoGame.Games
             base.Draw(gameTime);
         }
         
-        public void ChangeScene(IScene next)
+        public void ChangeScene(IGameScreen next)
         {
             if(_activeScene != next)
             {

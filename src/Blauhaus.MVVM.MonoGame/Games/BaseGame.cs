@@ -14,7 +14,7 @@ using Microsoft.Xna.Framework;
 
 namespace Blauhaus.MVVM.MonoGame.Games
 {
-    public abstract class BaseGame<TStartScene> : BaseSceneGame where TStartScene : class, IScene
+    public abstract class BaseGame<TStartScene> : BaseScreenGame where TStartScene : class, IGameScreen
     {
         protected IBuildConfig CurrentBuildConfig = null!;
         private readonly AppLifecycleService _appLifeCycleService;
@@ -36,7 +36,7 @@ namespace Blauhaus.MVVM.MonoGame.Games
                     services.AddSingleton(CurrentBuildConfig);
                     services.AddSingleton<IServiceLocator, DotNetCoreServiceLocator>();
                     services.AddSingleton<IAppLifecycleService, AppLifecycleService>();
-                    services.AddSingleton<ISceneGame>(this);
+                    services.AddSingleton<IScreenGame>(this);
                     
                     //do this last to give platform services a chance to override defaults
                     foreach (var platformService in platformServices)

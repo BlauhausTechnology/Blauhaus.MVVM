@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Blauhaus.MVVM.MonoGame.Scenes
 {
-    public interface IScene : IView
+    public interface IGameScreen : IView
     {
         public void Initialize();
         public void LoadContent();
