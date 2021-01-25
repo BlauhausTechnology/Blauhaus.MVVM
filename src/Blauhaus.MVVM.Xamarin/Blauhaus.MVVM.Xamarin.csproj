@@ -14,8 +14,8 @@
     <PackageReference Include="Blauhaus.Errors" Version="0.3.5" />
     <PackageReference Include="Blauhaus.Ioc.DotNetCoreIocService" Version="1.3.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
-    <PackageReference Include="Xamarin.CommunityToolkit.Markup" Version="1.0.0" />
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.1874" />
+    <PackageReference Include="Xamarin.CommunityToolkit.Markup" Version="1.0.2" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.1905" />
   </ItemGroup>
 
   <ItemGroup>
