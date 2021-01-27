@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Blauhaus.MVVM.MonoGame.Scenes
+namespace Blauhaus.MVVM.MonoGame.Screens
 {
     public interface IGameScreen : IView
     {

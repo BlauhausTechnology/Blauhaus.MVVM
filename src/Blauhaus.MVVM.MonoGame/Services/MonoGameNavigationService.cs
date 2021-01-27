@@ -7,7 +7,7 @@ using Blauhaus.MVVM.Abstractions.Navigation;
 using Blauhaus.MVVM.Abstractions.ViewModels;
 using Blauhaus.MVVM.Abstractions.Views;
 using Blauhaus.MVVM.MonoGame.Games;
-using Blauhaus.MVVM.MonoGame.Scenes;
+using Blauhaus.MVVM.MonoGame.Screens;
 
 namespace Blauhaus.MVVM.MonoGame.Services
 {

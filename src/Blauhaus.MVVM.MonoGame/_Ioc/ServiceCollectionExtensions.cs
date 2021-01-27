@@ -3,7 +3,7 @@ using Blauhaus.MVVM.Abstractions.Dialogs;
 using Blauhaus.MVVM.Abstractions.Navigation;
 using Blauhaus.MVVM.Abstractions.ViewModels;
 using Blauhaus.MVVM.Abstractions.Views;
-using Blauhaus.MVVM.MonoGame.Scenes;
+using Blauhaus.MVVM.MonoGame.Screens;
 using Blauhaus.MVVM.MonoGame.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
