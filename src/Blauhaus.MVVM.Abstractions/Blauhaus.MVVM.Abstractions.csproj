@@ -12,8 +12,4 @@
     <PackageReference Include="Blauhaus.Responses" Version="0.3.5" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Collections\" />
-  </ItemGroup>
-
 </Project>
