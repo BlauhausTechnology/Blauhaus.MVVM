@@ -1,8 +1,10 @@
 ﻿using Blauhaus.Errors.Handler;
 using Blauhaus.MVVM.Abstractions.Dialogs;
+using Blauhaus.MVVM.Abstractions.Localization;
 using Blauhaus.MVVM.Abstractions.Navigation;
 using Blauhaus.MVVM.Abstractions.ViewModels;
 using Blauhaus.MVVM.Abstractions.Views;
+using Blauhaus.MVVM.Localization;
 using Blauhaus.MVVM.Xamarin.Dialogs;
 using Blauhaus.MVVM.Xamarin.ErrorHandling;
 using Blauhaus.MVVM.Xamarin.Navigation;
@@ -23,6 +25,7 @@ namespace Blauhaus.MVVM.Xamarin._Ioc
         public static IServiceCollection AddMvvmServices(this IServiceCollection services)
         {
             services
+                .AddSingleton<ILocalizationService, LocalizationService>()
                 .AddSingleton<IDialogService, FormsDialogService>()
                 .AddSingleton<INavigationService, FormsNavigationService>()
                 .AddSingleton<IFormsApplicationProxy, FormsApplicationProxy>()
