@@ -21,15 +21,15 @@ namespace Blauhaus.MVVM.Localization
 
             CultureInfo.DefaultThreadCurrentCulture = newCulture;
             CultureInfo.DefaultThreadCurrentUICulture = newCulture; 
-            Thread.CurrentThread.CurrentUICulture = newCulture;
-            Thread.CurrentThread.CurrentCulture = newCulture;
+            CultureInfo.CurrentCulture = newCulture;
+            CultureInfo.CurrentUICulture = newCulture;
 
             _analyticsService.Trace(this, $"Set device culture from {originalCulture} to {newCulture.DisplayName}");
         }
 
         public CultureInfo GetCulture()
         {
-            return Thread.CurrentThread.CurrentUICulture;
+            return CultureInfo.CurrentUICulture;
         }
     }
 }
