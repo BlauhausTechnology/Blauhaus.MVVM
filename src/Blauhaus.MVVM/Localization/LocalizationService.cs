@@ -19,10 +19,8 @@ namespace Blauhaus.MVVM.Localization
             var originalCulture = GetCulture().DisplayName;
             var newCulture = new CultureInfo(cultureString);
 
-            CultureInfo.DefaultThreadCurrentCulture = newCulture;
-            CultureInfo.DefaultThreadCurrentUICulture = newCulture; 
-            CultureInfo.CurrentCulture = newCulture;
-            CultureInfo.CurrentUICulture = newCulture;
+            Thread.CurrentThread.CurrentCulture = newCulture;
+            Thread.CurrentThread.CurrentUICulture = newCulture;
 
             _analyticsService.Trace(this, $"Set device culture from {originalCulture} to {newCulture.DisplayName}");
         }
