@@ -16,13 +16,14 @@ namespace Blauhaus.MVVM.Localization
 
         public void SetCulture(string cultureString)
         {
-            var originalCulture = GetCulture().DisplayName;
-            var newCulture = new CultureInfo(cultureString);
+            var originalCulture = GetCulture();
+            var newCultureName = cultureString.Replace("_", "-");
+            var newCulture = new CultureInfo(newCultureName);
 
             Thread.CurrentThread.CurrentCulture = newCulture;
             Thread.CurrentThread.CurrentUICulture = newCulture;
 
-            _analyticsService.Trace(this, $"Set device culture from {originalCulture} to {newCulture.DisplayName}");
+            _analyticsService.Trace(this, $"Set device culture from {originalCulture.DisplayName} to {newCulture.DisplayName}");
         }
 
         public CultureInfo GetCulture()
