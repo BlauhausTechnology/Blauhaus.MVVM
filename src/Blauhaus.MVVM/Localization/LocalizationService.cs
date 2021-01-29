@@ -20,8 +20,10 @@ namespace Blauhaus.MVVM.Localization
             var newCultureName = cultureString.Replace("_", "-");
             var newCulture = new CultureInfo(newCultureName);
 
-            Thread.CurrentThread.CurrentCulture = newCulture;
-            Thread.CurrentThread.CurrentUICulture = newCulture;
+            CultureInfo.CurrentUICulture = newCulture;
+            CultureInfo.CurrentCulture = newCulture;
+            CultureInfo.DefaultThreadCurrentCulture = newCulture;
+            CultureInfo.DefaultThreadCurrentUICulture = newCulture;
 
             _analyticsService.Trace(this, $"Set device culture from {originalCulture.DisplayName} to {newCulture.DisplayName}");
         }
