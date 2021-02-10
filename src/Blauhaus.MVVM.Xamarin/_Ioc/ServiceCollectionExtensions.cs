@@ -24,15 +24,18 @@ namespace Blauhaus.MVVM.Xamarin._Ioc
 
         public static IServiceCollection AddMvvmServices(this IServiceCollection services)
         {
-            services
+            return services.AddMvvmServices<IErrorHandler>();
+        }
+        
+        public static IServiceCollection AddMvvmServices<TErrorHandler>(this IServiceCollection services) where TErrorHandler : class, IErrorHandler
+        {
+            return services
                 .AddSingleton<ILocalizationService, LocalizationService>()
                 .AddSingleton<IDialogService, FormsDialogService>()
                 .AddSingleton<INavigationService, FormsNavigationService>()
                 .AddSingleton<IFormsApplicationProxy, FormsApplicationProxy>()
                 .AddSingleton<INavigationLookup>(x => NavigationLookup)
-                .AddSingleton<IErrorHandler, ErrorHandler>();
-            
-            return services;
+                .AddSingleton<IErrorHandler, TErrorHandler>();
         }
          
         public static IServiceCollection AddPageSingleton<TView, TViewModel>(this IServiceCollection services) 
