@@ -24,7 +24,7 @@ namespace Blauhaus.MVVM.Xamarin._Ioc
 
         public static IServiceCollection AddMvvmServices(this IServiceCollection services)
         {
-            return services.AddMvvmServices<IErrorHandler>();
+            return services.AddMvvmServices<ErrorHandler>();
         }
         
         public static IServiceCollection AddMvvmServices<TErrorHandler>(this IServiceCollection services) where TErrorHandler : class, IErrorHandler
