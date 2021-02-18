@@ -29,6 +29,13 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands.Navigatio
             });
         }
 
+        public ShowAndInitializeViewCommand<TViewModel, TParameter> WithParameter(Func<TParameter> parameter)
+        {
+            _isInitialized = true;
+            _parameter = parameter.Invoke();
+            return this;
+        }
+        
         public ShowAndInitializeViewCommand<TViewModel, TParameter> WithParameter(TParameter parameter)
         {
             _isInitialized = true;
