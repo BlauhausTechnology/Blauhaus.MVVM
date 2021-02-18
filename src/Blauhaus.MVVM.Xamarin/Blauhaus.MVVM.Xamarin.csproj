@@ -7,15 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Blauhaus.Analytics.Xamarin" Version="1.4.6" />
-    <PackageReference Include="Blauhaus.Common.Config" Version="1.8.13" />
+    <PackageReference Include="Blauhaus.Analytics.Xamarin" Version="1.4.7" />
+    <PackageReference Include="Blauhaus.Common.Config" Version="1.8.15" />
     <PackageReference Include="Blauhaus.DeviceServices.Abstractions" Version="0.8.8" />
-    <PackageReference Include="Blauhaus.Domain.Client" Version="1.0.2" />
+    <PackageReference Include="Blauhaus.Domain.Client" Version="1.0.7" />
     <PackageReference Include="Blauhaus.Errors" Version="0.3.5" />
     <PackageReference Include="Blauhaus.Ioc.DotNetCoreIocService" Version="1.3.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
     <PackageReference Include="Xamarin.CommunityToolkit.Markup" Version="1.0.2" />
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.1931" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />
   </ItemGroup>
 
   <ItemGroup>
