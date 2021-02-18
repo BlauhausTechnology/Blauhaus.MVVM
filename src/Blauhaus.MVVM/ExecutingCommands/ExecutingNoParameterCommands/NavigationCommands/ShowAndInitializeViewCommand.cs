@@ -10,8 +10,7 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands.Navigatio
     public class ShowAndInitializeViewCommand<TViewModel, TParameter> : AsyncExecutingCommand 
         where TViewModel : IViewModel, IAsyncInitializable<TParameter>
     {
-        private TParameter _parameter;
-        private bool _isInitialized;
+        private Func<TParameter>? _parameterFunc;
 
         public ShowAndInitializeViewCommand(
             IErrorHandler errorHandler, 
@@ -21,27 +20,20 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands.Navigatio
         {
             WithExecute(async () =>
             {
-                if (!_isInitialized)
+                if (_parameterFunc == null)
                 {
                     throw new InvalidOperationException("ShowAndInitializeViewCommand must be initialized with a parameter using WithParameter before use");
                 }
-                await navigationService.ShowAndInitializeViewAsync<TViewModel, TParameter>(_parameter!);
+                await navigationService.ShowAndInitializeViewAsync<TViewModel, TParameter>(_parameterFunc.Invoke());
             });
         }
 
         public ShowAndInitializeViewCommand<TViewModel, TParameter> WithParameter(Func<TParameter> parameter)
         {
-            _isInitialized = true;
-            _parameter = parameter.Invoke();
+            _parameterFunc = parameter;
             return this;
         }
-        
-        public ShowAndInitializeViewCommand<TViewModel, TParameter> WithParameter(TParameter parameter)
-        {
-            _isInitialized = true;
-            _parameter = parameter;
-            return this;
-        }
+       
  
     }
 }
