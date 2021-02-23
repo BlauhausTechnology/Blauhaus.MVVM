@@ -20,7 +20,7 @@ namespace Blauhaus.MVVM.ExecutingCommands._Base
         private IAnalyticsOperation? _analyticsOperation;
         private bool _isPageView = false;
         private object? _sender;
-        private string _caller = typeof(TExecutingCommand).Name;
+        private readonly string _caller = typeof(TExecutingCommand).Name;
         protected object Sender => _sender ??= this;
 
         protected BaseExecutingCommand(IErrorHandler errorHandler, IAnalyticsService analyticsService)
@@ -35,7 +35,7 @@ namespace Blauhaus.MVVM.ExecutingCommands._Base
             return (TExecutingCommand) this;
         }
         
-        public TExecutingCommand LogOperation(object sender, string operationName = "")
+        public TExecutingCommand LogOperation(object sender, string operationName)
         {
             _sender = sender;
             AnalyticsOperationName = operationName;
@@ -89,7 +89,7 @@ namespace Blauhaus.MVVM.ExecutingCommands._Base
             {
                 _analyticsOperation = AnalyticsService.StartPageViewOperation(Sender, Sender.GetType().Name, null, _caller);
             }
-            else if (AnalyticsOperationName != null && AnalyticsOperationName != string.Empty)
+            else if (!string.IsNullOrEmpty(AnalyticsOperationName))
             {
                 var properties = new Dictionary<string, object> { ["Command"] = typeof(TExecutingCommand).Name };
                 _analyticsOperation = AnalyticsService.StartOperation(Sender, AnalyticsOperationName, properties, _caller);
