@@ -15,7 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Xamarin.Forms;
 
-namespace Blauhaus.MVVM.Xamarin._Ioc
+namespace Blauhaus.MVVM.Xamarin.Ioc
 {
     public static class ServiceCollectionExtensions
     {

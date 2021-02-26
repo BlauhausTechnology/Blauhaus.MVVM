@@ -3,6 +3,7 @@ using System.Linq.Expressions;
 using System.Windows.Input;
 using Blauhaus.Common.Utils.Extensions;
 using Blauhaus.MVVM.Abstractions.ViewModels;
+using Blauhaus.MVVM.Xamarin.Converters;
 using Xamarin.Forms;
 
 namespace Blauhaus.MVVM.Xamarin.Extensions
@@ -22,6 +23,12 @@ namespace Blauhaus.MVVM.Xamarin.Extensions
             control.GestureRecognizers.Add(tapGestureRecognizer);
 
             return control;
+        }
+        
+        public static ProgressBar BindIsVisibleToIsInProgress(this ProgressBar progressBar, string propertyName)
+        {
+            progressBar.SetBinding(VisualElement.IsVisibleProperty, new Binding(propertyName, BindingMode.Default, new FloatIsInProgressConverter()));
+            return progressBar;
         }
          
     }

@@ -4,7 +4,7 @@ using Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands.NavigationCom
 using Blauhaus.MVVM.ExecutingCommands.ExecutingParameterCommands;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Blauhaus.MVVM._Ioc
+namespace Blauhaus.MVVM.Ioc
 {
     public static class ServiceCollectionExtensions
     {
