@@ -8,6 +8,8 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands.Navigatio
     public class ShowViewCommand<TViewModel> : AsyncExecutingCommand 
         where TViewModel : IViewModel
     {
+        private string _navigationStack = string.Empty;
+
         public ShowViewCommand(
             IErrorHandler errorHandler, 
             IAnalyticsService analyticsService,
@@ -16,9 +18,14 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands.Navigatio
         {
             WithExecute(async () =>
             {
-                await navigationService.ShowViewAsync<TViewModel>();
+                await navigationService.ShowViewAsync<TViewModel>(_navigationStack);
             });
         }
- 
+
+        public ShowViewCommand<TViewModel> WithNavigationStack(string navigationStack)
+        {
+            _navigationStack = navigationStack;
+            return this;
+        }
     }
 }

@@ -11,6 +11,7 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands.Navigatio
         where TViewModel : IViewModel, IAsyncInitializable<TParameter>
     {
         private Func<TParameter>? _parameterFunc;
+        private string _navigationStack = string.Empty;
 
         public ShowAndInitializeViewCommand(
             IErrorHandler errorHandler, 
@@ -24,7 +25,7 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands.Navigatio
                 {
                     throw new InvalidOperationException("ShowAndInitializeViewCommand must be initialized with a parameter using WithParameter before use");
                 }
-                await navigationService.ShowAndInitializeViewAsync<TViewModel, TParameter>(_parameterFunc.Invoke());
+                await navigationService.ShowAndInitializeViewAsync<TViewModel, TParameter>(_parameterFunc.Invoke(), _navigationStack);
             });
         }
 
@@ -33,6 +34,15 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands.Navigatio
             _parameterFunc = parameter;
             return this;
         }
+        
+        
+        public ShowAndInitializeViewCommand<TViewModel, TParameter> WithNavigationStack(string navigationStack)
+        {
+            _navigationStack = navigationStack;
+            return this;
+        }
+
+
        
  
     }
