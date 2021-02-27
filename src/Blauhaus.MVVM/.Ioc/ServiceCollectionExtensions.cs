@@ -1,9 +1,10 @@
 ﻿using Blauhaus.MVVM.Collections;
 using Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands;
+using Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands.NavigationCommands;
 using Blauhaus.MVVM.ExecutingCommands.ExecutingParameterCommands;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Blauhaus.MVVM._Ioc
+namespace Blauhaus.MVVM.Ioc
 {
     public static class ServiceCollectionExtensions
     {
@@ -20,6 +21,15 @@ namespace Blauhaus.MVVM._Ioc
             services.AddTransient(typeof(AsyncExecutingResponseParameterCommand<>));
             services.AddTransient(typeof(AsyncExecutingValueResponseParameterCommand<,>));
             services.AddTransient(typeof(ExecutingParameterCommand<>));
+
+            return services;
+        }
+        
+        public static IServiceCollection AddNavigationCommands(this IServiceCollection services)
+        {
+            services.AddTransient(typeof(ShowAndInitializeViewCommand<,>));
+            services.AddTransient(typeof(ShowViewCommand<>));
+            services.AddTransient(typeof(ShowMainViewCommand<>));
 
             return services;
         }

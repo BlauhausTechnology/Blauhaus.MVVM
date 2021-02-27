@@ -1,11 +1,9 @@
-﻿using System;
-using Blauhaus.Analytics.Abstractions.Service;
+﻿using Blauhaus.Analytics.Abstractions.Service;
 using Blauhaus.Analytics.TestHelpers.MockBuilders;
 using Blauhaus.Common.ValueObjects.BuildConfigs;
 using Blauhaus.DeviceServices.Abstractions.Connectivity;
 using Blauhaus.DeviceServices.TestHelpers.MockBuilders;
 using Blauhaus.Errors.Handler;
-using Blauhaus.Ioc.TestHelpers;
 using Blauhaus.MVVM.Abstractions.Dialogs;
 using Blauhaus.MVVM.Abstractions.Navigation;
 using Blauhaus.MVVM.TestHelpers.MockBuilders.Services;
@@ -15,7 +13,7 @@ using Blauhaus.Responses;
 using Blauhaus.TestHelpers.BaseTests;
 using NUnit.Framework;
 
-namespace Blauhaus.MVVM.Tests.Tests._Base
+namespace Blauhaus.MVVM.Tests.Tests.Base
 {
     public abstract class BaseMvvmTest<TSut> : BaseServiceTest<TSut> where TSut : class
     {

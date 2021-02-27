@@ -5,7 +5,7 @@ using Blauhaus.Ioc.Abstractions;
 using Blauhaus.Ioc.DotNetCoreIocService;
 using Blauhaus.MVVM.Abstractions.Application;
 using Blauhaus.MVVM.AppLifecycle;
-using Blauhaus.MVVM.MonoGame.Scenes;
+using Blauhaus.MVVM.MonoGame.Screens;
 using Blauhaus.MVVM.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

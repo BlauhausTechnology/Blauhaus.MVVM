@@ -34,10 +34,11 @@ namespace Blauhaus.MVVM.Xamarin.App
                 .ConfigureLogging(x => x.ClearProviders())
                 .ConfigureServices((services) =>
                 {
-                    ConfigureServices(services);
-
                     CurrentBuildConfig = GetBuildConfig();
                     services.AddSingleton(CurrentBuildConfig);
+
+                    ConfigureServices(services);
+
                     services.AddSingleton<IServiceLocator, TServiceLocator>();
                     services.AddSingleton<IAppLifecycleService, AppLifecycleService>();
                     

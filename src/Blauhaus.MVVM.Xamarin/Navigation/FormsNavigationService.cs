@@ -60,8 +60,6 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
 
         public Task ShowViewAsync<TViewModel>(string navigationStackName = "") where TViewModel : IViewModel
         {
-            
-            
             if (navigationStackName != "")
             {
                 SetCurrentNavigationView(navigationStackName);
@@ -106,6 +104,7 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
 
         public void SetCurrentNavigationView(string navigationStackName)
         {
+            
             //todo consider registering view models with their navigation stack in the first place so we don't need to remember to do this all the time
             
             if (!_navigationViews.ContainsKey(navigationStackName))
@@ -153,20 +152,32 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
             _navigationViews[navigationView.StackName] = navigationView;
         }
 
-        private Task ShowMainPageAsync(Page page)
+        private async Task ShowMainPageAsync(Page page)
         {
-            return _threadService.InvokeOnMainThreadAsync(() =>
+            if (page.BindingContext is IAsyncInitializable initializable)
+            {
+                await initializable.InitializeAsync();
+            }
+            
+            await _threadService.InvokeOnMainThreadAsync(() =>
             {
                 _application.SetMainPage(page);
             });
         }
-        private Task NavigateToAsync(Page page)
+        
+        private async Task NavigateToAsync(Page page)
         {
             if (CurrentNavigationPage == null)
             {
                 throw new InvalidOperationException("No NavigationPage has been set");
             }
-            return _threadService.InvokeOnMainThreadAsync(() =>
+            
+            if (page.BindingContext is IAsyncInitializable initializable)
+            {
+                await initializable.InitializeAsync();
+            }
+
+            await _threadService.InvokeOnMainThreadAsync(() =>
             {
                 CurrentNavigationPage.PushAsync(page, true);
             });

@@ -13,7 +13,7 @@ namespace Blauhaus.MVVM.Xamarin.Views.ContentViews
     {
         private readonly Dictionary<Type, Action<object>> _handlers = new Dictionary<Type, Action<object>>();
 
-        protected BaseContentView(bool isUpdatable = false)
+        protected BaseContentView(bool isUpdatable = true)
         {
             if (isUpdatable)
             {
