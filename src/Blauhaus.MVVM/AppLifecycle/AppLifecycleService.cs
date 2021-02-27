@@ -1,11 +1,22 @@
 ﻿using System;
+using System.Collections.Generic;
+using Blauhaus.Analytics.Abstractions.Service;
 using Blauhaus.MVVM.Abstractions.Application;
 
 namespace Blauhaus.MVVM.AppLifecycle
 {
     public class AppLifecycleService : IAppLifecycleService
-    { 
+    {
+        private readonly IAnalyticsService _analyticsService;
+        private readonly IEnumerable<IAppLifecycleHandler> _handlers;
 
+        public AppLifecycleService(
+            IAnalyticsService analyticsService,
+            IEnumerable<IAppLifecycleHandler> handlers)
+        {
+            _analyticsService = analyticsService;
+            _handlers = handlers;
+        }
  
 
         public void NotifyAppStarting()

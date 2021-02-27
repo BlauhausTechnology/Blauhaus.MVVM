@@ -8,7 +8,7 @@ using NUnit.Framework;
 
 namespace Blauhaus.MVVM.Tests.Tests.FormsNavigationServiceTests
 {
-    public class ShowAndInitialzieViewAsyncTests : BaseFormsNavigationServiceTest
+    public class ShowAndInitializeViewAsyncTests : BaseFormsNavigationServiceTest
     {
 
         private TestInitializingView _testView;

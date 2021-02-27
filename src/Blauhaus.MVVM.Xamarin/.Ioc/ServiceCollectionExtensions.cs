@@ -1,8 +1,10 @@
 ﻿using Blauhaus.Errors.Handler;
 using Blauhaus.MVVM.Abstractions.Dialogs;
+using Blauhaus.MVVM.Abstractions.Localization;
 using Blauhaus.MVVM.Abstractions.Navigation;
 using Blauhaus.MVVM.Abstractions.ViewModels;
 using Blauhaus.MVVM.Abstractions.Views;
+using Blauhaus.MVVM.Localization;
 using Blauhaus.MVVM.Xamarin.Dialogs;
 using Blauhaus.MVVM.Xamarin.ErrorHandling;
 using Blauhaus.MVVM.Xamarin.Navigation;
@@ -13,7 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Xamarin.Forms;
 
-namespace Blauhaus.MVVM.Xamarin._Ioc
+namespace Blauhaus.MVVM.Xamarin.Ioc
 {
     public static class ServiceCollectionExtensions
     {
@@ -22,14 +24,18 @@ namespace Blauhaus.MVVM.Xamarin._Ioc
 
         public static IServiceCollection AddMvvmServices(this IServiceCollection services)
         {
-            services
+            return services.AddMvvmServices<ErrorHandler>();
+        }
+        
+        public static IServiceCollection AddMvvmServices<TErrorHandler>(this IServiceCollection services) where TErrorHandler : class, IErrorHandler
+        {
+            return services
+                .AddSingleton<ILocalizationService, LocalizationService>()
                 .AddSingleton<IDialogService, FormsDialogService>()
                 .AddSingleton<INavigationService, FormsNavigationService>()
                 .AddSingleton<IFormsApplicationProxy, FormsApplicationProxy>()
                 .AddSingleton<INavigationLookup>(x => NavigationLookup)
-                .AddSingleton<IErrorHandler, ErrorHandler>();
-            
-            return services;
+                .AddSingleton<IErrorHandler, TErrorHandler>();
         }
          
         public static IServiceCollection AddPageSingleton<TView, TViewModel>(this IServiceCollection services) 

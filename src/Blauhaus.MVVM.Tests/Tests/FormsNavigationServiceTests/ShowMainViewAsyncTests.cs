@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Blauhaus.MVVM.Abstractions.Navigation;
 using Blauhaus.MVVM.Tests.TestObjects;
 using Blauhaus.MVVM.Tests.Tests.FormsNavigationServiceTests._Base;
@@ -21,7 +22,22 @@ namespace Blauhaus.MVVM.Tests.Tests.FormsNavigationServiceTests
             MockNavigationLookup.Where_GetViewType_returns<TestViewModel>(typeof(TestView));
             MockServiceLocator.Where_Resolve_returns(_testView, typeof(TestView));
         }
+        
+        [Test]
+        public async Task IF_ViewModel_is_IAsyncInitializable_SHOULD_initialize()
+        {
+            //Arrange 
+            var testAsyncInitializableView = new TestAsyncInitializableView(new TestAsyncInitializableViewModel());
+            MockNavigationLookup.Where_GetViewType_returns<TestAsyncInitializableViewModel>(typeof(TestAsyncInitializableView));
+            MockServiceLocator.Where_Resolve_returns(testAsyncInitializableView, typeof(TestAsyncInitializableView));
 
+            //Act
+            await Sut.ShowMainViewAsync<TestAsyncInitializableViewModel>();
+
+            //Assert
+            Assert.That(((TestAsyncInitializableViewModel)testAsyncInitializableView.BindingContext).IsInitialized, Is.True);
+        }
+        
         [Test]
         public async Task SHOULD_get_page_type_from_lookup_and_resolve_from_service_provider()
         {
