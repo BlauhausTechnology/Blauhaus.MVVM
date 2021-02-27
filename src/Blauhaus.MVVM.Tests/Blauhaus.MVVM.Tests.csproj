@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Tests\.Base\BaseMVVMTest.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Blauhaus.Auth.Abstractions" Version="0.11.2" />
     <PackageReference Include="Blauhaus.DeviceServices.TestHelpers" Version="0.8.8" />
     <PackageReference Include="Blauhaus.Domain.TestHelpers" Version="1.1.5" />

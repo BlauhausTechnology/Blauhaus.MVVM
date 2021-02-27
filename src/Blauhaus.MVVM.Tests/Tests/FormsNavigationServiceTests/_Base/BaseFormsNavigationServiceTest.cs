@@ -1,7 +1,7 @@
 ﻿using Blauhaus.DeviceServices.TestHelpers.MockBuilders;
 using Blauhaus.Ioc.Abstractions;
 using Blauhaus.Ioc.TestHelpers;
-using Blauhaus.MVVM.Tests.Tests._Base;
+using Blauhaus.MVVM.Tests.Tests.Base;
 using Blauhaus.MVVM.Xamarin.Navigation;
 using Xamarin.Forms.Mocks;
 

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Blauhaus.Common.Utils.Contracts;
 using Blauhaus.Ioc.Abstractions;
 using Blauhaus.MVVM.Collections;
-using Blauhaus.MVVM.Tests.Tests._Base;
+using Blauhaus.MVVM.Tests.Tests.Base;
 using Blauhaus.TestHelpers.MockBuilders;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
