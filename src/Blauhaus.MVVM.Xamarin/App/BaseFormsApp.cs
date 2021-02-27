@@ -56,19 +56,32 @@ namespace Blauhaus.MVVM.Xamarin.App
 
         }
 
-        protected override void OnStart()
+        protected sealed override void OnStart()
         {
             _appLifeCycleService.NotifyAppStarting();
+            HandleAppStarting();
+        }
+        protected virtual void HandleAppStarting()
+        {
         }
 
-        protected override void OnSleep()
+        protected sealed override void OnSleep()
         {
             _appLifeCycleService.NotifyAppGoingToSleep();
+            HandleAppGoingToSleep();
         }
-
-        protected override void OnResume()
+        protected virtual void HandleAppGoingToSleep()
+        {
+        }
+        
+        protected sealed override void OnResume()
         {
             _appLifeCycleService.NotifyAppWakingUp();
+            HandleAppWakingUp();
+        }
+        
+        protected virtual void HandleAppWakingUp()
+        {
         }
 
         protected abstract IBuildConfig GetBuildConfig();
