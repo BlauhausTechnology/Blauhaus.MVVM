@@ -34,4 +34,8 @@
     <ProjectReference Include="..\Blauhaus.MVVM\Blauhaus.MVVM.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Tests\AppLifecycleServiceTests\.Base\" />
+  </ItemGroup>
+
 </Project>
