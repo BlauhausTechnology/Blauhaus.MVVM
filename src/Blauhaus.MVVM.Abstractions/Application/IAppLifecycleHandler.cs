@@ -5,6 +5,6 @@ namespace Blauhaus.MVVM.Abstractions.Application
 {
     public interface IAppLifecycleHandler
     {
-        Task<Response> HandleAppLifecycleState(AppLifecycleState state);
+        Task<Response> HandleAppStateChangeAsync(AppLifecycleState state);
     }
 }

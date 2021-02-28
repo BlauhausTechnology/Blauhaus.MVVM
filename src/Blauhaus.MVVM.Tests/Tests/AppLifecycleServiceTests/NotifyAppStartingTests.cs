@@ -18,8 +18,8 @@ namespace Blauhaus.MVVM.Tests.Tests.AppLifecycleServiceTests
             await Task.Delay(10);
             
             //Assert
-            MockHandlerOne.Mock.Verify(x => x.HandleAppLifecycleState(AppLifecycleState.Starting));
-            MockHandlerTwo.Mock.Verify(x => x.HandleAppLifecycleState(AppLifecycleState.Starting));
+            MockHandlerOne.Mock.Verify(x => x.HandleAppStateChangeAsync(AppLifecycleState.Starting));
+            MockHandlerTwo.Mock.Verify(x => x.HandleAppStateChangeAsync(AppLifecycleState.Starting));
         }
         
         [Test]
@@ -37,7 +37,7 @@ namespace Blauhaus.MVVM.Tests.Tests.AppLifecycleServiceTests
         public async Task IF_handler_returns_error_SHOULD_handle()
         {
             //Arrange
-            MockHandlerOne.Mock.Setup(x => x.HandleAppLifecycleState(It.IsAny<AppLifecycleState>()))
+            MockHandlerOne.Mock.Setup(x => x.HandleAppStateChangeAsync(It.IsAny<AppLifecycleState>()))
                 .ReturnsAsync(Response.Failure(Errors.Errors.RequiredValue()));
             
             //Act
@@ -53,7 +53,7 @@ namespace Blauhaus.MVVM.Tests.Tests.AppLifecycleServiceTests
         {
             //Arrange
             var ex = new Exception("oopsydaisy");
-            MockHandlerTwo.Mock.Setup(x => x.HandleAppLifecycleState(It.IsAny<AppLifecycleState>())).ThrowsAsync(ex);
+            MockHandlerTwo.Mock.Setup(x => x.HandleAppStateChangeAsync(It.IsAny<AppLifecycleState>())).ThrowsAsync(ex);
             
             //Act
             Sut.NotifyAppStarting();

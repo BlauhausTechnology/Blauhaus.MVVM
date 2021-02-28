@@ -52,7 +52,7 @@ namespace Blauhaus.MVVM.AppLifecycle
                     
                     foreach (var appLifecycleHandler in _handlers)
                     {
-                        var response = await appLifecycleHandler.HandleAppLifecycleState(state);
+                        var response = await appLifecycleHandler.HandleAppStateChangeAsync(state);
                         if (response.IsFailure)
                         {
                             await _errorHandler.HandleErrorAsync(response.Error);

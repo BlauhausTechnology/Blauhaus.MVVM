@@ -18,9 +18,9 @@ namespace Blauhaus.MVVM.Tests.Tests.AppLifecycleServiceTests.Base
             base.Setup();
 
             MockHandlerOne = new MockBuilder<IAppLifecycleHandler>();
-            MockHandlerOne.Mock.Setup(x => x.HandleAppLifecycleState(It.IsAny<AppLifecycleState>())).ReturnsAsync(Response.Success);
+            MockHandlerOne.Mock.Setup(x => x.HandleAppStateChangeAsync(It.IsAny<AppLifecycleState>())).ReturnsAsync(Response.Success);
             MockHandlerTwo = new MockBuilder<IAppLifecycleHandler>();
-            MockHandlerTwo.Mock.Setup(x => x.HandleAppLifecycleState(It.IsAny<AppLifecycleState>())).ReturnsAsync(Response.Success);
+            MockHandlerTwo.Mock.Setup(x => x.HandleAppStateChangeAsync(It.IsAny<AppLifecycleState>())).ReturnsAsync(Response.Success);
             
             Services.AddSingleton(MockHandlerOne.Object);
             Services.AddSingleton(MockHandlerTwo.Object);
