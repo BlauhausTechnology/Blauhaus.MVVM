@@ -10,7 +10,6 @@ using Blauhaus.MVVM.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Xna.Framework;
 
 namespace Blauhaus.MVVM.MonoGame.Games
 {

@@ -1,5 +1,5 @@
 ﻿using System;
-using Blauhaus.Common.Utils.Contracts;
+using Blauhaus.Common.Abstractions;
 using Blauhaus.Ioc.Abstractions;
 
 namespace Blauhaus.MVVM.Collections

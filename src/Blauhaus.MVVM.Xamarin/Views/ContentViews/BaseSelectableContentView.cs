@@ -1,5 +1,4 @@
-﻿using Blauhaus.MVVM.Abstractions.Contracts;
-using Blauhaus.MVVM.Abstractions.ViewModels;
+﻿using Blauhaus.MVVM.Abstractions.ViewModels;
 using Xamarin.Forms;
 
 namespace Blauhaus.MVVM.Xamarin.Views.ContentViews

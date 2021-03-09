@@ -1,6 +1,5 @@
 ﻿using System;
 using Blauhaus.MVVM.Abstractions.Views;
-using Blauhaus.MVVM.Xamarin.Views.Content;
 using Blauhaus.MVVM.Xamarin.Views.MasterDetail;
 
 namespace Blauhaus.MVVM.Tests.TestObjects

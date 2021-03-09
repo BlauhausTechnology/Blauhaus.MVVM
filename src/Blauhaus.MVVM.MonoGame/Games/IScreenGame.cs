@@ -1,5 +1,4 @@
-﻿using System;
-using Blauhaus.MVVM.MonoGame.Screens;
+﻿using Blauhaus.MVVM.MonoGame.Screens;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;

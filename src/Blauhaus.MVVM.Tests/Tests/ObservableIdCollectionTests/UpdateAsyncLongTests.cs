@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Blauhaus.Common.Utils.Contracts;
+using Blauhaus.Common.Abstractions;
 using Blauhaus.Ioc.Abstractions;
 using Blauhaus.MVVM.Collections;
 using Blauhaus.MVVM.Tests.Tests.Base;
 using Blauhaus.TestHelpers.MockBuilders;
-using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using NUnit.Framework;
 

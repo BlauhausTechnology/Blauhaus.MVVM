@@ -1,6 +1,5 @@
 ﻿using System;
 using Blauhaus.MVVM.MonoGame.Screens;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
