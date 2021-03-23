@@ -52,6 +52,11 @@ namespace Blauhaus.MVVM.MonoGame.Services
             throw new System.NotImplementedException();
         }
 
+        public Task ShowAndInitializeMainViewAsync<TViewModel, T>(T parameter) where TViewModel : IViewModel, IAsyncInitializable<T>
+        {
+            throw new NotImplementedException();
+        }
+
         public Task ShowDetailViewAsync<TViewModel>() where TViewModel : IViewModel
         {
             throw new System.NotImplementedException();

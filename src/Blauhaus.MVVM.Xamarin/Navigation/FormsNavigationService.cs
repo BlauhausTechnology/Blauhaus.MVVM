@@ -70,7 +70,6 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
 
         public async Task ShowAndInitializeViewAsync<TViewModel, T>(T parameter, string navigationStackName = "") where TViewModel : IViewModel, IAsyncInitializable<T>
         {
-            
             if (navigationStackName != "")
             {
                 SetCurrentNavigationView(navigationStackName);
@@ -82,6 +81,16 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
             await viewModel.InitializeAsync(parameter);
             
             await NavigateToAsync(page);
+        }
+
+        public async Task ShowAndInitializeMainViewAsync<TViewModel, T>(T parameter) where TViewModel : IViewModel, IAsyncInitializable<T>
+        {
+            var page = GetPageForViewModel<Page>(typeof(TViewModel));
+
+            var viewModel = (TViewModel)page.BindingContext;
+            await viewModel.InitializeAsync(parameter);
+            
+            await ShowMainPageAsync(page);
         }
 
         public Task ShowDetailViewAsync<TViewModel>() where TViewModel : IViewModel
