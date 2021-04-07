@@ -41,6 +41,15 @@ namespace Blauhaus.MVVM.MonoGame.Services
             _screenGame.ChangeScene(scene);
             return Task.CompletedTask;
         }
+        
+        public async Task ShowAndInitializeMainViewAsync<TViewModel, T>(T parameter) where TViewModel : IViewModel, IAsyncInitializable<T>
+        {
+            var scene = GetScreenForViewModel(typeof(TViewModel));
+            var viewModel = (TViewModel)scene.BindingContext;
+            await viewModel.InitializeAsync(parameter);
+            _screenGame.ChangeScene(scene);
+        }
+
 
         public Task ShowViewAsync<TViewModel>(string navigationStackName = "") where TViewModel : IViewModel
         {
@@ -50,11 +59,6 @@ namespace Blauhaus.MVVM.MonoGame.Services
         public Task ShowAndInitializeViewAsync<TViewModel, T>(T parameter, string navigationStackName = "") where TViewModel : IViewModel, IAsyncInitializable<T>
         {
             throw new System.NotImplementedException();
-        }
-
-        public Task ShowAndInitializeMainViewAsync<TViewModel, T>(T parameter) where TViewModel : IViewModel, IAsyncInitializable<T>
-        {
-            throw new NotImplementedException();
         }
 
         public Task ShowDetailViewAsync<TViewModel>() where TViewModel : IViewModel
@@ -96,7 +100,7 @@ namespace Blauhaus.MVVM.MonoGame.Services
                 throw new NavigationException($"No view is registered for {viewModelType.Name}");
             }
 
-            var view = _serviceLocator.Resolve(viewModelType);
+            var view = _serviceLocator.Resolve(viewType);
             if (view == null)
             {
                 throw new NavigationException($"No View of type {viewType.Name} has been registered with the Ioc container");

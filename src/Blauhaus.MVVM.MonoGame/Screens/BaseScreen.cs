@@ -28,10 +28,13 @@ namespace Blauhaus.MVVM.MonoGame.Screens
         {
             Game = game;
             ViewModel = viewModel;
+            BindingContext = ViewModel!;
             GameContent = Game.Content;
             GraphicsDevice = Game.GraphicsDevice;
         }
-        
+
+        public object BindingContext { get; }
+
         public virtual void Initialize()
         { 
             LoadContent();

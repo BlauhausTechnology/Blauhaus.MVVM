@@ -6,6 +6,8 @@ namespace Blauhaus.MVVM.MonoGame.Screens
 {
     public interface IGameScreen : IView
     {
+        public object BindingContext { get; }
+        
         public void Initialize();
         public void LoadContent();
 
