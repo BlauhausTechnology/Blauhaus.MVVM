@@ -71,5 +71,7 @@ namespace Blauhaus.MVVM.MonoGame.Screens
             _screenContent?.Unload();
             _screenContent = null;
         }
+        
+        
     }
 }
