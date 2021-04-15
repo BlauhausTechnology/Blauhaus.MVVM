@@ -14,11 +14,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Blauhaus.Auth.Abstractions" Version="0.11.6" />
+    <PackageReference Include="Blauhaus.Auth.Abstractions" Version="0.11.7" />
     <PackageReference Include="Blauhaus.DeviceServices.TestHelpers" Version="0.8.8" />
     <PackageReference Include="Blauhaus.Domain.TestHelpers" Version="1.1.15" />
     <PackageReference Include="Blauhaus.Ioc.TestHelpers" Version="1.3.0" />
-    <PackageReference Include="Blauhaus.TestHelpers" Version="1.2.4" />
+    <PackageReference Include="Blauhaus.TestHelpers" Version="1.2.5" />
     <PackageReference Include="nunit" Version="3.13.1" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.17.0">
       <PrivateAssets>all</PrivateAssets>
