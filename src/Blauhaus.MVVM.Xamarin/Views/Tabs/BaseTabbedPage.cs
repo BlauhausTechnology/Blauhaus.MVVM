@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Blauhaus.Analytics.Abstractions.Service;
+using Blauhaus.Common.Abstractions;
 using Blauhaus.Ioc.Abstractions;
 using Blauhaus.MVVM.Abstractions.Navigation;
 using Blauhaus.MVVM.Abstractions.ViewModels;
@@ -66,7 +67,12 @@ namespace Blauhaus.MVVM.Xamarin.Views.Tabs
                         {
                             throw new NavigationException($"View type {viewType.Name} is not a {nameof(Page)}");
                         }
-
+                        
+                        if (page.BindingContext is IAsyncInitializable initializable)
+                        {
+                            await initializable.InitializeAsync();
+                        }
+                        
                         if (tabDefinition.NavigationStackName != null)
                         {
                             analyticsService.Debug($"Added new navigating tab for {tabDefinition.ViewModelType.Name}");
