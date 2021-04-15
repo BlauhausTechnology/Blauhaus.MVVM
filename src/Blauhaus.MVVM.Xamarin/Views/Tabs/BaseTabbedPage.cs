@@ -36,7 +36,8 @@ namespace Blauhaus.MVVM.Xamarin.Views.Tabs
 
             if (viewModel is ITabbedViewModel _)
             {
-                SetBinding(TabDefinitionsProperty, new Binding(nameof(ITabbedViewModel.TabDefinitions), BindingMode.OneWay, new ActionConverter<IReadOnlyList<TabDefinition>>(tabs =>
+                SetBinding(TabDefinitionsProperty, new Binding(nameof(ITabbedViewModel.TabDefinitions), BindingMode.OneWay, 
+                    new ActionConverter<IReadOnlyList<TabDefinition>>(async tabs =>
                 {
                     if (tabs == null)
                     {
