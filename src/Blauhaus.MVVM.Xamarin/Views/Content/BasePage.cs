@@ -1,4 +1,5 @@
-﻿using Blauhaus.MVVM.Abstractions.Contracts;
+﻿using System;
+using Blauhaus.MVVM.Abstractions.Contracts;
 using Blauhaus.MVVM.Abstractions.ViewModels;
 using Blauhaus.MVVM.Abstractions.Views;
 
@@ -31,6 +32,19 @@ namespace Blauhaus.MVVM.Xamarin.Views.Content
             }
         }
 
-           
+        protected override bool OnBackButtonPressed()
+        {
+            if (ViewModel is IDisposable disposable)
+            {
+                disposable?.Dispose();
+            }
+
+            if (ViewModel is IAsyncDisposable asyncDisposable)
+            {
+                asyncDisposable?.DisposeAsync();
+            }
+
+            return false;
+        }
     }
 }
