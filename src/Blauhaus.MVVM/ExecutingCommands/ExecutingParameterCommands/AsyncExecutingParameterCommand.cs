@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Blauhaus.Analytics.Abstractions.Service;
 using Blauhaus.Errors.Handler;
-using Blauhaus.MVVM.ExecutingCommands.ExecutingParameterCommands._Base;
+using Blauhaus.MVVM.ExecutingCommands.ExecutingParameterCommands.Base;
 
 namespace Blauhaus.MVVM.ExecutingCommands.ExecutingParameterCommands
 {
@@ -20,6 +20,11 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingParameterCommands
         public AsyncExecutingParameterCommand<TParameter> WithExecute(Func<TParameter, Task> task)
         {
             _task = task;
+            return this;
+        }
+        public AsyncExecutingParameterCommand<TParameter> WithExecute(Task task)
+        {
+            _task = (param)=>task;
             return this;
         }
 

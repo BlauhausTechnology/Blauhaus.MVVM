@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using Blauhaus.Analytics.Abstractions.Service;
 using Blauhaus.Errors;
 using Blauhaus.Errors.Handler;
-using Blauhaus.MVVM.ExecutingCommands._Base;
-using Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands._Base;
+using Blauhaus.MVVM.ExecutingCommands.Base;
+using Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands.Base;
 using Blauhaus.Responses;
 
 namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands
@@ -25,6 +25,11 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands
         public AsyncExecutingResponseCommand WithExecute(Func<Task<Response>> task)
         {
             _task = task;
+            return this;
+        }
+        public AsyncExecutingResponseCommand WithExecute(Task<Response> task)
+        {
+            _task = ()=>task;
             return this;
         }
 

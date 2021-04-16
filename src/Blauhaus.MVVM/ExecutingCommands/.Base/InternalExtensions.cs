@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Blauhaus.Errors;
 using Blauhaus.Errors.Extensions;
 
-namespace Blauhaus.MVVM.ExecutingCommands._Base
+namespace Blauhaus.MVVM.ExecutingCommands.Base
 {
     internal static class InternalExtensions
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using Blauhaus.Analytics.Abstractions.Service;
 using Blauhaus.Errors.Handler;
-using Blauhaus.MVVM.ExecutingCommands.ExecutingParameterCommands._Base;
+using Blauhaus.MVVM.ExecutingCommands.ExecutingParameterCommands.Base;
 
 namespace Blauhaus.MVVM.ExecutingCommands.ExecutingParameterCommands
 {

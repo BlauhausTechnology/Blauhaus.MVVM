@@ -74,7 +74,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
         }
          
         [Test]
-        public async Task SHOULD_invoke_given_task()
+        public async Task SHOULD_invoke_given_task_func()
         {
             //Arrange
             var tcs = new TaskCompletionSource<int>();
@@ -83,6 +83,25 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
                 await Task.CompletedTask;
                 tcs.SetResult(1);
             };
+
+            //Act
+            Sut.Execute();
+            var result = await tcs.Task;
+
+            //Assert
+            Assert.AreEqual(1, result);
+        }
+
+        [Test]
+        public async Task SHOULD_invoke_given_task()
+        {
+            //Arrange
+            var tcs = new TaskCompletionSource<int>();
+            var task = Task.Run(()=> 
+            {
+                tcs.SetResult(1);
+            });
+            Sut.WithExecute(task);
 
             //Act
             Sut.Execute();

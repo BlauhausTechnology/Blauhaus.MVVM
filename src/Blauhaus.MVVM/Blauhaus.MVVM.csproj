@@ -8,6 +8,10 @@
 
   <ItemGroup>
     <Compile Include=".Ioc\ServiceCollectionExtensions.cs" />
+    <Compile Include="ExecutingCommands\.Base\BaseExecutingCommand.cs" />
+    <Compile Include="ExecutingCommands\.Base\InternalExtensions.cs" />
+    <Compile Include="ExecutingCommands\ExecutingNoParameterCommands\.Base\BaseExecutingNoParameterCommand.cs" />
+    <Compile Include="ExecutingCommands\ExecutingParameterCommands\.Base\BaseExecutingParameterCommand.cs" />
   </ItemGroup>
 
   <ItemGroup>
