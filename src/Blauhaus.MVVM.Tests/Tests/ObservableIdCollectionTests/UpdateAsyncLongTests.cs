@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Blauhaus.Common.Abstractions;
 using Blauhaus.Ioc.Abstractions;
@@ -14,10 +15,9 @@ namespace Blauhaus.MVVM.Tests.Tests.ObservableIdCollectionTests
    
     public class UpdateAsyncLongTests : BaseMvvmTest<ObservableIdCollection<UpdateAsyncLongTests.IOutputObject, long>>
     {
-        public interface IOutputObject : IHasId<long>, IAsyncInitializable<long>, IAsyncReloadable
+        public interface IOutputObject : IHasId<long>, IAsyncInitializable<long>, IAsyncReloadable, IAsyncDisposable
         {
         } 
-
 
         private MockBuilder<IOutputObject> _outputObject1;
         private MockBuilder<IOutputObject> _outputObject2;
@@ -83,7 +83,7 @@ namespace Blauhaus.MVVM.Tests.Tests.ObservableIdCollectionTests
         }
 
         [Test]
-        public async Task WHEN_item_is_removed_SHOULD_remove_item()
+        public async Task WHEN_item_is_removed_SHOULD_remove_and_dispose_item()
         {
             //Arrange
             
@@ -105,6 +105,9 @@ namespace Blauhaus.MVVM.Tests.Tests.ObservableIdCollectionTests
             _outputObject1.Mock.Verify(x => x.InitializeAsync(1), Times.Once);
             _outputObject2.Mock.Verify(x => x.InitializeAsync(2), Times.Once);
             _outputObject3.Mock.Verify(x => x.InitializeAsync(3), Times.Once);
+            _outputObject1.Mock.Verify(x => x.DisposeAsync(), Times.Never);
+            _outputObject2.Mock.Verify(x => x.DisposeAsync(), Times.Once);
+            _outputObject3.Mock.Verify(x => x.DisposeAsync(), Times.Never);
         }
 
         [Test]

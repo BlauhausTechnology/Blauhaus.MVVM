@@ -15,7 +15,7 @@ namespace Blauhaus.MVVM.Tests.Tests.ObservableIdCollectionTests
    
     public class UpdateAsyncGuidTests : BaseMvvmTest<ObservableIdCollection<UpdateAsyncGuidTests.IOutputObject, Guid>>
     {
-        public interface IOutputObject : IHasId<Guid>, IAsyncInitializable<Guid>, IAsyncReloadable
+        public interface IOutputObject : IHasId<Guid>, IAsyncInitializable<Guid>, IAsyncReloadable, IAsyncDisposable
         {
         }
 
@@ -87,7 +87,7 @@ namespace Blauhaus.MVVM.Tests.Tests.ObservableIdCollectionTests
         }
 
         [Test]
-        public async Task WHEN_item_is_removed_SHOULD_remove_item()
+        public async Task WHEN_item_is_removed_SHOULD_remove_and_dispose_item()
         {
             //Arrange
             
@@ -109,6 +109,9 @@ namespace Blauhaus.MVVM.Tests.Tests.ObservableIdCollectionTests
             _outputObject1.Mock.Verify(x => x.InitializeAsync(g1), Times.Once);
             _outputObject2.Mock.Verify(x => x.InitializeAsync(g2), Times.Once);
             _outputObject3.Mock.Verify(x => x.InitializeAsync(g3), Times.Once);
+            _outputObject1.Mock.Verify(x => x.DisposeAsync(), Times.Never);
+            _outputObject2.Mock.Verify(x => x.DisposeAsync(), Times.Once);
+            _outputObject3.Mock.Verify(x => x.DisposeAsync(), Times.Never);
         }
 
         [Test]

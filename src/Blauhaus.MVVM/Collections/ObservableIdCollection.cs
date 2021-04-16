@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
@@ -40,6 +41,15 @@ namespace Blauhaus.MVVM.Collections
 
                 foreach (var itemToRemove in itemsToRemove)
                 {
+                    if (itemToRemove is IDisposable disposable)
+                    {
+                        disposable.Dispose();
+                    }
+
+                    if (itemToRemove is IAsyncDisposable asyncDisposable)
+                    {
+                        await asyncDisposable.DisposeAsync();
+                    }
                     Remove(itemToRemove);
                 }
 
