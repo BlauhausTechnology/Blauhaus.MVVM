@@ -74,7 +74,7 @@ namespace Blauhaus.MVVM.Xamarin.Views.Tabs
                             case IAsyncInitializable initializable:
                                 await initializable.InitializeAsync();
                                 break;
-                            case IInitializableViewModel initializableViewModel:
+                            case IInitializingViewModel initializableViewModel:
                                 initializableViewModel.InitializeCommand.Execute();
                                 break;
                         }

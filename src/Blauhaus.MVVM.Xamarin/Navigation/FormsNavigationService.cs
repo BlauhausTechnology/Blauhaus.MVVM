@@ -181,7 +181,7 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
             {
                 await initializable.InitializeAsync();
             }            
-            if (page.BindingContext is IInitializableViewModel initializableViewModel)
+            if (page.BindingContext is IInitializingViewModel initializableViewModel)
             {
                 initializableViewModel.InitializeCommand.Execute();
             }
@@ -203,7 +203,7 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
             {
                 await initializable.InitializeAsync();
             }
-            if (page.BindingContext is IInitializableViewModel initializableViewModel)
+            if (page.BindingContext is IInitializingViewModel initializableViewModel)
             {
                 initializableViewModel.InitializeCommand.Execute();
             }
