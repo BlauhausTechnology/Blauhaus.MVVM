@@ -11,6 +11,8 @@
   <ItemGroup>
     <Compile Include="Tests\.Base\BaseMVVMTest.cs" />
     <Compile Include="Tests\AppLifecycleServiceTests\.Base\BaseAppLifecycleServiceTest.cs" />
+    <Compile Include="Tests\ObservableIdCollectionTests\.Base\BaseObservableIdCollectionTest.cs" />
+    <Compile Include="Tests\ObservableIdCollectionTests\UpdateAsyncTests\.Base\BaseObservableIdCollectionUpdateTests.cs" />
   </ItemGroup>
 
   <ItemGroup>

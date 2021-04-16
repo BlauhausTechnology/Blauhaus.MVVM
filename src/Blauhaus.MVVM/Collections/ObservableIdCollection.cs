@@ -20,7 +20,7 @@ namespace Blauhaus.MVVM.Collections
         {
             _serviceLocator = serviceLocator;
         }
-
+         
         public async Task UpdateAsync(IReadOnlyList<TId> sourceIds)
         {
             await _semaphore.WaitAsync();
