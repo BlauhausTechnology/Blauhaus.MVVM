@@ -133,40 +133,39 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
             _currentFlyoutPage = flyoutView;
         }
 
-        public Task GoBackAsync()
+        public async Task GoBackAsync()
         {
             if (CurrentNavigationPage != null)
             {
-                if (CurrentNavigationPage.CurrentPage.BindingContext is INavigatingBackViewModel navigatingBackViewModel)
-                {
-                    navigatingBackViewModel.PopFromStackCommand.Execute();
-                }
+                if (CurrentNavigationPage.CurrentPage.BindingContext is IAsyncDisposable asyncDisposable)
+                    await asyncDisposable.DisposeAsync();
+                
+                if (CurrentNavigationPage.CurrentPage.BindingContext is IDisposable disposable)
+                    disposable.Dispose();
 
-                return _threadService.InvokeOnMainThreadAsync(async () => 
+                await _threadService.InvokeOnMainThreadAsync(async () => 
                     await CurrentNavigationPage.PopAsync());
             };
-            return Task.CompletedTask;
         }
 
-        public Task GoBackToRootAsync()
+        public async Task GoBackToRootAsync()
         {
             if (CurrentNavigationPage != null)
             {
-
                 foreach (var page in CurrentNavigationPage.Pages)
                 {
-                    if (page.BindingContext is INavigatingBackViewModel navigatingBackViewModel)
-                    {
-                        navigatingBackViewModel.PopFromStackCommand.Execute();
-                    }
+                    if (page.BindingContext is IAsyncDisposable asyncDisposable)
+                        await asyncDisposable.DisposeAsync();
+                 
+                    if (page.BindingContext is IDisposable disposable)
+                        disposable.Dispose();
                 }
 
-                return _threadService.InvokeOnMainThreadAsync(async () =>
+                await _threadService.InvokeOnMainThreadAsync(async () =>
                 {
                     await CurrentNavigationPage.PopToRootAsync();
                 });
             };
-            return Task.CompletedTask;
         }
 
         public void SetCurrentNavigationView(INavigationView navigationView)

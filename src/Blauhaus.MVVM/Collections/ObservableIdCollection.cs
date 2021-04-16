@@ -20,7 +20,29 @@ namespace Blauhaus.MVVM.Collections
         {
             _serviceLocator = serviceLocator;
         }
-         
+
+        public async Task ClearAsync()
+        {
+            if (typeof(T).IsAssignableFrom(typeof(IAsyncDisposable)))
+            {
+                foreach (var item in Items)
+                {
+                    var disposableItem = (IAsyncDisposable) item;
+                    await disposableItem.DisposeAsync();
+                }
+            }
+            if (typeof(T).IsAssignableFrom(typeof(IDisposable)))
+            {
+                foreach (var item in Items)
+                {
+                    var disposableItem = (IDisposable) item;
+                    disposableItem.Dispose();
+                }
+            }
+
+            Items.Clear();
+        }
+
         public async Task UpdateAsync(IReadOnlyList<TId> sourceIds)
         {
             await _semaphore.WaitAsync();
