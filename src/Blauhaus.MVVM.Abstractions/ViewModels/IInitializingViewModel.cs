@@ -2,7 +2,7 @@
 
 namespace Blauhaus.MVVM.Abstractions.ViewModels
 {
-    public interface IInitializableViewModel
+    public interface IInitializingViewModel
     {
         public IExecutingCommand InitializeCommand { get; }
     }
