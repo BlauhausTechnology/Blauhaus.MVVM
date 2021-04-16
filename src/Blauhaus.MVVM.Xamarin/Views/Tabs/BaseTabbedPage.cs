@@ -69,11 +69,16 @@ namespace Blauhaus.MVVM.Xamarin.Views.Tabs
                             throw new NavigationException($"View type {viewType.Name} is not a {nameof(Page)}");
                         }
                         
-                        if (page.BindingContext is IAsyncInitializable initializable)
+                        switch (page.BindingContext)
                         {
-                            await initializable.InitializeAsync();
+                            case IAsyncInitializable initializable:
+                                await initializable.InitializeAsync();
+                                break;
+                            case IInitializableViewModel initializableViewModel:
+                                initializableViewModel.InitializeCommand.Execute();
+                                break;
                         }
-                        
+
                         if (tabDefinition.NavigationStackName != null)
                         {
                             analyticsService.Debug($"Added new navigating tab for {tabDefinition.ViewModelType.Name}");

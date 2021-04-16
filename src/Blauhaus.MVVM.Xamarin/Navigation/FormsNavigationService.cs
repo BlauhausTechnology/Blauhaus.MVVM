@@ -165,6 +165,10 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
             if (page.BindingContext is IAsyncInitializable initializable)
             {
                 await initializable.InitializeAsync();
+            }            
+            if (page.BindingContext is IInitializableViewModel initializableViewModel)
+            {
+                initializableViewModel.InitializeCommand.Execute();
             }
             
             await _threadService.InvokeOnMainThreadAsync(() =>
@@ -183,6 +187,10 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
             if (page.BindingContext is IAsyncInitializable initializable)
             {
                 await initializable.InitializeAsync();
+            }
+            if (page.BindingContext is IInitializableViewModel initializableViewModel)
+            {
+                initializableViewModel.InitializeCommand.Execute();
             }
 
             await _threadService.InvokeOnMainThreadAsync(() =>
