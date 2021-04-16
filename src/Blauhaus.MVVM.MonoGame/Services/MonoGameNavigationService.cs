@@ -35,11 +35,21 @@ namespace Blauhaus.MVVM.MonoGame.Services
             return ShowMainViewAsync(typeof(TViewModel));
         }
 
-        public Task ShowMainViewAsync(Type viewModelType)
+        public async Task ShowMainViewAsync(Type viewModelType)
         {
             var scene = GetScreenForViewModel(viewModelType);
+
+            switch (scene.BindingContext)
+            {
+                case IAsyncInitializable initializable:
+                    await initializable.InitializeAsync();
+                    break;
+                case IInitializingViewModel initializableViewModel:
+                    initializableViewModel.InitializeCommand.Execute();
+                    break;
+            }
+
             _screenGame.ChangeScene(scene);
-            return Task.CompletedTask;
         }
         
         public async Task ShowAndInitializeMainViewAsync<TViewModel, T>(T parameter) where TViewModel : IViewModel, IAsyncInitializable<T>
