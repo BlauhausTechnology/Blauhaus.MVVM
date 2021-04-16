@@ -10,6 +10,7 @@ using Blauhaus.MVVM.Abstractions.ViewModels;
 using Blauhaus.MVVM.Abstractions.Views;
 using Blauhaus.MVVM.Xamarin.Navigation.FormsApplicationProxy;
 using Xamarin.Forms;
+// ReSharper disable SuspiciousTypeConversion.Global
 
 namespace Blauhaus.MVVM.Xamarin.Navigation
 {
@@ -136,6 +137,11 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
         {
             if (CurrentNavigationPage != null)
             {
+                if (CurrentNavigationPage.CurrentPage.BindingContext is INavigatingBackViewModel navigatingBackViewModel)
+                {
+                    navigatingBackViewModel.PopFromStackCommand.Execute();
+                }
+
                 return _threadService.InvokeOnMainThreadAsync(async () => 
                     await CurrentNavigationPage.PopAsync());
             };
@@ -146,6 +152,15 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
         {
             if (CurrentNavigationPage != null)
             {
+
+                foreach (var page in CurrentNavigationPage.Pages)
+                {
+                    if (page.BindingContext is INavigatingBackViewModel navigatingBackViewModel)
+                    {
+                        navigatingBackViewModel.PopFromStackCommand.Execute();
+                    }
+                }
+
                 return _threadService.InvokeOnMainThreadAsync(async () =>
                 {
                     await CurrentNavigationPage.PopToRootAsync();
