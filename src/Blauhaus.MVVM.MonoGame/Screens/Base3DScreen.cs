@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Blauhaus.MVVM.MonoGame.Screens
 {
-    public abstract class Base3DScreen<TViewModel> : BaseScreen<TViewModel>
+    public abstract class Base3DScreen<TViewModel> : BaseUpdateScreen<TViewModel>
     {
         
         protected Matrix WorldMatrix = Matrix.Identity;
