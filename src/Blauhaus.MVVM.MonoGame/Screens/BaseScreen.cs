@@ -70,6 +70,11 @@ namespace Blauhaus.MVVM.MonoGame.Screens
         {
             _screenContent?.Unload();
             _screenContent = null;
+
+            if (ViewModel is IDisappearingViewModel disappearingViewModel)
+            {
+                disappearingViewModel.DisappearCommand.Execute();
+            }
         }
         
         
