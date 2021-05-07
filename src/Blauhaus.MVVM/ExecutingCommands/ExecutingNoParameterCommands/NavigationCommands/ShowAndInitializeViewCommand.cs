@@ -1,6 +1,6 @@
 ﻿using System;
 using Blauhaus.Analytics.Abstractions.Service;
-using Blauhaus.Common.Utils.Contracts;
+using Blauhaus.Common.Abstractions;
 using Blauhaus.Errors.Handler;
 using Blauhaus.MVVM.Abstractions.Navigation;
 using Blauhaus.MVVM.Abstractions.ViewModels;

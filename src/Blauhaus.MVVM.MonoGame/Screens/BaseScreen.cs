@@ -28,10 +28,13 @@ namespace Blauhaus.MVVM.MonoGame.Screens
         {
             Game = game;
             ViewModel = viewModel;
+            BindingContext = ViewModel!;
             GameContent = Game.Content;
             GraphicsDevice = Game.GraphicsDevice;
         }
-        
+
+        public object BindingContext { get; }
+
         public virtual void Initialize()
         { 
             LoadContent();
@@ -67,6 +70,13 @@ namespace Blauhaus.MVVM.MonoGame.Screens
         {
             _screenContent?.Unload();
             _screenContent = null;
+
+            if (ViewModel is IDisappearingViewModel disappearingViewModel)
+            {
+                disappearingViewModel.DisappearCommand.Execute();
+            }
         }
+        
+        
     }
 }

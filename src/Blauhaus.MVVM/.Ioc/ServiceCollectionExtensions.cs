@@ -1,4 +1,5 @@
-﻿using Blauhaus.MVVM.Collections;
+﻿using Blauhaus.MVVM.Abstractions.Application;
+using Blauhaus.MVVM.Collections;
 using Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands;
 using Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands.NavigationCommands;
 using Blauhaus.MVVM.ExecutingCommands.ExecutingParameterCommands;
@@ -8,6 +9,13 @@ namespace Blauhaus.MVVM.Ioc
 {
     public static class ServiceCollectionExtensions
     {
+
+        public static IServiceCollection AddAppLifecycleStateHandler<THandler>(this IServiceCollection services) where THandler : class, IAppLifecycleHandler
+        {
+            services.AddSingleton<IAppLifecycleHandler, THandler>();
+            return services;
+        }
+
         public static IServiceCollection AddExecutingCommands(this IServiceCollection services)
         {
             services.AddTransient<AsyncExecutingCommand>();

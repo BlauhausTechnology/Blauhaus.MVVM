@@ -3,7 +3,6 @@ using Blauhaus.Ioc.Abstractions;
 using Blauhaus.Ioc.TestHelpers;
 using Blauhaus.MVVM.Tests.Tests.Base;
 using Blauhaus.MVVM.Xamarin.Navigation;
-using Xamarin.Forms.Mocks;
 
 namespace Blauhaus.MVVM.Tests.Tests.FormsNavigationServiceTests._Base
 {

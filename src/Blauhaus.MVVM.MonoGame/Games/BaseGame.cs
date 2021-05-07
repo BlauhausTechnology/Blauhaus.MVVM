@@ -10,14 +10,16 @@ using Blauhaus.MVVM.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Xna.Framework;
 
 namespace Blauhaus.MVVM.MonoGame.Games
 {
-    public abstract class BaseGame<TStartScene> : BaseScreenGame where TStartScene : class, IGameScreen
+    public abstract class BaseGame<TGameScreen> : BaseScreenGame where TGameScreen : class, IGameScreen
     {
         protected IBuildConfig CurrentBuildConfig = null!;
-        private readonly AppLifecycleService _appLifeCycleService;
+        private AppLifecycleService? _appLifeCycleService;
+
+        protected AppLifecycleService AppLifecycleService => _appLifeCycleService ??= (AppLifecycleService) AppServiceLocator.Resolve<IAppLifecycleService>();
+
         private bool _hasStarted;
         
         protected BaseGame(IServiceCollection? platformServices)
@@ -46,10 +48,7 @@ namespace Blauhaus.MVVM.MonoGame.Games
 
                 }).Build().Services;
             
-            
             AppServiceLocator.Initialize(serviceProvider.GetRequiredService<IServiceLocator>());
-
-            _appLifeCycleService = (AppLifecycleService) AppServiceLocator.Resolve<IAppLifecycleService>();
         }
 
         protected override void Initialize()
@@ -57,9 +56,9 @@ namespace Blauhaus.MVVM.MonoGame.Games
             base.Initialize();
 
             _hasStarted = true;
-            _appLifeCycleService.NotifyAppStarting();
+            AppLifecycleService.NotifyAppStarting();
 
-            ChangeScene(AppServiceLocator.Resolve<TStartScene>());
+            ChangeScene(AppServiceLocator.Resolve<TGameScreen>());
         }
 
         protected override void OnActivated(object sender, EventArgs args)
@@ -68,14 +67,14 @@ namespace Blauhaus.MVVM.MonoGame.Games
             
             if (_hasStarted)
             {
-                _appLifeCycleService.NotifyAppWakingUp();
+                AppLifecycleService.NotifyAppWakingUp();
             }
         }
 
         protected override void OnDeactivated(object sender, EventArgs args)
         {
             base.OnDeactivated(sender, args);
-            _appLifeCycleService.NotifyAppGoingToSleep();
+            AppLifecycleService.NotifyAppGoingToSleep();
         }
          
         protected abstract IBuildConfig GetBuildConfig();

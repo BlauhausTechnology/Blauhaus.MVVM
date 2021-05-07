@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Blauhaus.Common.Utils.Contracts;
+using Blauhaus.Common.Abstractions;
 using Blauhaus.Ioc.Abstractions;
 
 namespace Blauhaus.MVVM.Collections
@@ -19,7 +20,7 @@ namespace Blauhaus.MVVM.Collections
         {
             _serviceLocator = serviceLocator;
         }
-
+         
         public async Task UpdateAsync(IReadOnlyList<TId> sourceIds)
         {
             await _semaphore.WaitAsync();
@@ -40,6 +41,15 @@ namespace Blauhaus.MVVM.Collections
 
                 foreach (var itemToRemove in itemsToRemove)
                 {
+                    if (itemToRemove is IDisposable disposable)
+                    {
+                        disposable.Dispose();
+                    }
+
+                    if (itemToRemove is IAsyncDisposable asyncDisposable)
+                    {
+                        await asyncDisposable.DisposeAsync();
+                    }
                     Remove(itemToRemove);
                 }
 

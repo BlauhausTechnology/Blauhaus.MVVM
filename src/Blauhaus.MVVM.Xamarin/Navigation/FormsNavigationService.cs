@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Blauhaus.Common.Utils.Contracts;
+using Blauhaus.Common.Abstractions;
 using Blauhaus.DeviceServices.Abstractions.Thread;
 using Blauhaus.Ioc.Abstractions;
-using Blauhaus.MVVM.Abstractions.Contracts;
 using Blauhaus.MVVM.Abstractions.Navigation;
 using Blauhaus.MVVM.Abstractions.ViewModels;
 using Blauhaus.MVVM.Abstractions.Views;
 using Blauhaus.MVVM.Xamarin.Navigation.FormsApplicationProxy;
 using Xamarin.Forms;
+// ReSharper disable SuspiciousTypeConversion.Global
 
 namespace Blauhaus.MVVM.Xamarin.Navigation
 {
@@ -71,7 +71,6 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
 
         public async Task ShowAndInitializeViewAsync<TViewModel, T>(T parameter, string navigationStackName = "") where TViewModel : IViewModel, IAsyncInitializable<T>
         {
-            
             if (navigationStackName != "")
             {
                 SetCurrentNavigationView(navigationStackName);
@@ -83,6 +82,16 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
             await viewModel.InitializeAsync(parameter);
             
             await NavigateToAsync(page);
+        }
+
+        public async Task ShowAndInitializeMainViewAsync<TViewModel, T>(T parameter) where TViewModel : IViewModel, IAsyncInitializable<T>
+        {
+            var page = GetPageForViewModel<Page>(typeof(TViewModel));
+
+            var viewModel = (TViewModel)page.BindingContext;
+            await viewModel.InitializeAsync(parameter);
+            
+            await ShowMainPageAsync(page);
         }
 
         public Task ShowDetailViewAsync<TViewModel>() where TViewModel : IViewModel
@@ -124,26 +133,39 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
             _currentFlyoutPage = flyoutView;
         }
 
-        public Task GoBackAsync()
+        public async Task GoBackAsync()
         {
             if (CurrentNavigationPage != null)
             {
-                return _threadService.InvokeOnMainThreadAsync(async () => 
+                if (CurrentNavigationPage.CurrentPage.BindingContext is IAsyncDisposable asyncDisposable)
+                    await asyncDisposable.DisposeAsync();
+                
+                if (CurrentNavigationPage.CurrentPage.BindingContext is IDisposable disposable)
+                    disposable.Dispose();
+
+                await _threadService.InvokeOnMainThreadAsync(async () => 
                     await CurrentNavigationPage.PopAsync());
             };
-            return Task.CompletedTask;
         }
 
-        public Task GoBackToRootAsync()
+        public async Task GoBackToRootAsync()
         {
             if (CurrentNavigationPage != null)
             {
-                return _threadService.InvokeOnMainThreadAsync(async () =>
+                foreach (var page in CurrentNavigationPage.Pages)
+                {
+                    if (page.BindingContext is IAsyncDisposable asyncDisposable)
+                        await asyncDisposable.DisposeAsync();
+                 
+                    if (page.BindingContext is IDisposable disposable)
+                        disposable.Dispose();
+                }
+
+                await _threadService.InvokeOnMainThreadAsync(async () =>
                 {
                     await CurrentNavigationPage.PopToRootAsync();
                 });
             };
-            return Task.CompletedTask;
         }
 
         public void SetCurrentNavigationView(INavigationView navigationView)
@@ -157,6 +179,10 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
             if (page.BindingContext is IAsyncInitializable initializable)
             {
                 await initializable.InitializeAsync();
+            }            
+            if (page.BindingContext is IInitializingViewModel initializableViewModel)
+            {
+                initializableViewModel.InitializeCommand.Execute();
             }
             
             await _threadService.InvokeOnMainThreadAsync(() =>
@@ -175,6 +201,10 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
             if (page.BindingContext is IAsyncInitializable initializable)
             {
                 await initializable.InitializeAsync();
+            }
+            if (page.BindingContext is IInitializingViewModel initializableViewModel)
+            {
+                initializableViewModel.InitializeCommand.Execute();
             }
 
             await _threadService.InvokeOnMainThreadAsync(() =>
