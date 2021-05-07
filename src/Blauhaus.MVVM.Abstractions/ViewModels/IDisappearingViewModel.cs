@@ -2,7 +2,7 @@
 
 namespace Blauhaus.MVVM.Abstractions.ViewModels
 {
-    public interface IDisappearingViewModel : IAppearingViewModel
+    public interface IDisappearingViewModel
     {
         IExecutingCommand DisappearCommand { get; }
     }
