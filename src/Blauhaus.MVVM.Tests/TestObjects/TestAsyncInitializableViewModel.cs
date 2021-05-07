@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Blauhaus.Common.Utils.Contracts;
+using Blauhaus.Common.Abstractions;
 using Blauhaus.MVVM.Abstractions.ViewModels;
 
 namespace Blauhaus.MVVM.Tests.TestObjects

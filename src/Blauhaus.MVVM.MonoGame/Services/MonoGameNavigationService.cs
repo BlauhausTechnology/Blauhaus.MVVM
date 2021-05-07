@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Blauhaus.Common.Utils.Contracts;
+using Blauhaus.Common.Abstractions;
 using Blauhaus.DeviceServices.Abstractions.Thread;
 using Blauhaus.Ioc.Abstractions;
 using Blauhaus.MVVM.Abstractions.Navigation;
@@ -35,12 +35,31 @@ namespace Blauhaus.MVVM.MonoGame.Services
             return ShowMainViewAsync(typeof(TViewModel));
         }
 
-        public Task ShowMainViewAsync(Type viewModelType)
+        public async Task ShowMainViewAsync(Type viewModelType)
         {
             var scene = GetScreenForViewModel(viewModelType);
+
+            switch (scene.BindingContext)
+            {
+                case IAsyncInitializable initializable:
+                    await initializable.InitializeAsync();
+                    break;
+                case IInitializingViewModel initializableViewModel:
+                    initializableViewModel.InitializeCommand.Execute();
+                    break;
+            }
+
             _screenGame.ChangeScene(scene);
-            return Task.CompletedTask;
         }
+        
+        public async Task ShowAndInitializeMainViewAsync<TViewModel, T>(T parameter) where TViewModel : IViewModel, IAsyncInitializable<T>
+        {
+            var scene = GetScreenForViewModel(typeof(TViewModel));
+            var viewModel = (TViewModel)scene.BindingContext;
+            await viewModel.InitializeAsync(parameter);
+            _screenGame.ChangeScene(scene);
+        }
+
 
         public Task ShowViewAsync<TViewModel>(string navigationStackName = "") where TViewModel : IViewModel
         {
@@ -91,7 +110,7 @@ namespace Blauhaus.MVVM.MonoGame.Services
                 throw new NavigationException($"No view is registered for {viewModelType.Name}");
             }
 
-            var view = _serviceLocator.Resolve(viewModelType);
+            var view = _serviceLocator.Resolve(viewType);
             if (view == null)
             {
                 throw new NavigationException($"No View of type {viewType.Name} has been registered with the Ioc container");

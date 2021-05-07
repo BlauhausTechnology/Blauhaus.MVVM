@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Blauhaus.Analytics.Abstractions.Operation;
-using Blauhaus.MVVM.ExecutingCommands._Base;
+using Blauhaus.MVVM.ExecutingCommands.Base;
 using Blauhaus.MVVM.Tests.Tests.Base;
 using Blauhaus.TestHelpers.MockBuilders;
 using Blauhaus.TestHelpers.PropertiesChanged.CanExecuteChanged;

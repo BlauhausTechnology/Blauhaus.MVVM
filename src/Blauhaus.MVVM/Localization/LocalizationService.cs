@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using System.Threading;
 using Blauhaus.Analytics.Abstractions.Service;
 using Blauhaus.MVVM.Abstractions.Localization;
 

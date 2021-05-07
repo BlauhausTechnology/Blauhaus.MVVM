@@ -7,7 +7,7 @@ using Blauhaus.Common.Utils.NotifyPropertyChanged;
 using Blauhaus.Errors.Handler;
 using Blauhaus.MVVM.Abstractions.Commands;
 
-namespace Blauhaus.MVVM.ExecutingCommands._Base
+namespace Blauhaus.MVVM.ExecutingCommands.Base
 {
     public abstract class BaseExecutingCommand<TExecutingCommand> : BaseBindableObject, IExecutingCommand
         where TExecutingCommand : BaseExecutingCommand<TExecutingCommand>

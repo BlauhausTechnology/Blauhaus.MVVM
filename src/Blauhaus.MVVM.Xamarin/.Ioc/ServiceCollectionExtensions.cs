@@ -45,7 +45,7 @@ namespace Blauhaus.MVVM.Xamarin.Ioc
             services.TryAddSingleton<INavigationLookup>(NavigationLookup);
 
             services.AddSingleton<TView>();
-            services.AddSingleton<TViewModel>();
+            services.TryAddSingleton<TViewModel>();
 
             NavigationLookup.Register<TView, TViewModel>();
             return services;

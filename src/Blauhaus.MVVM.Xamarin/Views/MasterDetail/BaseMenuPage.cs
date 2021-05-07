@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Input;
-using Blauhaus.MVVM.Abstractions.Contracts;
 using Blauhaus.MVVM.Abstractions.ViewModels;
 using Blauhaus.MVVM.Xamarin.Views.Content;
 using Xamarin.Forms;

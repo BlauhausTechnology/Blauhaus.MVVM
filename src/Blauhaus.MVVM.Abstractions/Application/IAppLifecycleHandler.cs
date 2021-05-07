@@ -1,9 +1,10 @@
 ﻿using System.Threading.Tasks;
+using Blauhaus.Responses;
 
 namespace Blauhaus.MVVM.Abstractions.Application
 {
     public interface IAppLifecycleHandler
     {
-        Task HandleAppLifecycleState(AppLifecycleState state);
+        Task<Response> HandleAppStateChangeAsync(AppLifecycleState state);
     }
 }

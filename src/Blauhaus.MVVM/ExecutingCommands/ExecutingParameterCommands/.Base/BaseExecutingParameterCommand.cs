@@ -1,9 +1,9 @@
 ﻿using System;
 using Blauhaus.Analytics.Abstractions.Service;
 using Blauhaus.Errors.Handler;
-using Blauhaus.MVVM.ExecutingCommands._Base;
+using Blauhaus.MVVM.ExecutingCommands.Base;
 
-namespace Blauhaus.MVVM.ExecutingCommands.ExecutingParameterCommands._Base
+namespace Blauhaus.MVVM.ExecutingCommands.ExecutingParameterCommands.Base
 {
     public abstract class BaseExecutingParameterCommand<TExecutingCommand, TParameter> : BaseExecutingCommand<TExecutingCommand> 
         where TExecutingCommand : BaseExecutingParameterCommand<TExecutingCommand, TParameter>
