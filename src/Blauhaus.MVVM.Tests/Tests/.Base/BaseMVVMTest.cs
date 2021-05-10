@@ -29,7 +29,6 @@ namespace Blauhaus.MVVM.Tests.Tests.Base
 
             AddService(x => MockNavigationLookup.Object);
             AddService(x => MockFormsApplicationProxy.Object);
-            //AddService(x => MockServiceProvider.Object);
             AddService(x => MockAnalyticsService.Object);
             AddService(x => MockErrorHandler.Object);
             AddService(x => threadService.Object);
@@ -39,12 +38,11 @@ namespace Blauhaus.MVVM.Tests.Tests.Base
 
         }
 
-        protected IBuildConfig Config;
+        protected IBuildConfig Config = null!;
 
         protected NavigationServiceMockBuilder MockNavigationService => Mocks.AddMock<NavigationServiceMockBuilder, INavigationService>().Invoke();
         protected NavigationLookupMockBuilder MockNavigationLookup => Mocks.AddMock<NavigationLookupMockBuilder, INavigationLookup>().Invoke();
         protected FormsApplicationProxyMockBuilder MockFormsApplicationProxy => Mocks.AddMock<FormsApplicationProxyMockBuilder, IFormsApplicationProxy>().Invoke();
-        //protected ServiceProviderMockBuilder MockServiceProvider => Mocks.AddMock<ServiceProviderMockBuilder, IServiceProvider>().Invoke();
         protected AnalyticsServiceMockBuilder MockAnalyticsService => Mocks.AddMock<AnalyticsServiceMockBuilder, IAnalyticsService>().Invoke();
         protected ErrorHandlerMockBuilder MockErrorHandler => Mocks.AddMock<ErrorHandlerMockBuilder, IErrorHandler>().Invoke();
         protected ConnectivityServiceMockBuilder MockConnectivityService => Mocks.AddMock<ConnectivityServiceMockBuilder, IConnectivityService>().Invoke();

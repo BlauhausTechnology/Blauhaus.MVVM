@@ -5,25 +5,31 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Blauhaus.Common.Abstractions;
+using Blauhaus.DeviceServices.Abstractions.Thread;
 using Blauhaus.Ioc.Abstractions;
 
 namespace Blauhaus.MVVM.Collections
 {
-
     public class ObservableIdCollection<T, TId> : ObservableCollection<T> 
         where T : class, IHasId<TId>, IAsyncInitializable<TId>
     {
         private readonly IServiceLocator _serviceLocator;
+        private readonly IThreadService _threadService;
         private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1);
 
-        public ObservableIdCollection(IServiceLocator serviceLocator)
+        public ObservableIdCollection(
+            IServiceLocator serviceLocator,
+            IThreadService threadService)
         {
             _serviceLocator = serviceLocator;
+            _threadService = threadService;
         }
          
         public async Task UpdateAsync(IReadOnlyList<TId> sourceIds)
         {
-            await _semaphore.WaitAsync();
+            await _threadService.InvokeOnMainThreadAsync(async () =>
+            {
+                await _semaphore.WaitAsync();
             try
             {
                 var tasks = new List<Task>();
@@ -90,7 +96,7 @@ namespace Blauhaus.MVVM.Collections
             {
                 _semaphore.Release();
             }
-
+            });
         }
     }
 }
