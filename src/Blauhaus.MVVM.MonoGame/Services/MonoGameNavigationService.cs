@@ -29,7 +29,17 @@ namespace Blauhaus.MVVM.MonoGame.Services
             _threadService = threadService;
             _screenGame = screenGame;
         }
-        
+
+        public Task SetMainViewAsNavigationRootAsync<TViewModel>(string navigationStackName = "") where TViewModel : class, IViewModel
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task SetAndInitializeMainViewAsNavigationRootAsync<TViewModel, T>(T parameter, string navigationStackName = "") where TViewModel : class, IViewModel, IAsyncInitializable<T>
+        {
+            throw new NotImplementedException();
+        }
+
         public Task ShowMainViewAsync<TViewModel>() where TViewModel : class, IViewModel
         {
             return ShowMainViewAsync(typeof(TViewModel));
@@ -81,7 +91,7 @@ namespace Blauhaus.MVVM.MonoGame.Services
             throw new System.NotImplementedException();
         }
 
-        public void SetCurrentNavigationView(string navigationStackName)
+        public void SetCurrentNavigationStack(string navigationStackName)
         {
             throw new System.NotImplementedException();
         }

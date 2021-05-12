@@ -72,6 +72,23 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
 
         }
 
+        public async Task SetAndInitializeMainViewAsNavigationRootAsync<TViewModel, T>(T parameter, string navigationStackName = "") where TViewModel : class, IViewModel, IAsyncInitializable<T>
+        {
+            var rootPage = GetPageForViewModel<Page>(typeof(TViewModel));
+
+            var viewModel = (IAsyncInitializable<T>) rootPage.BindingContext;
+            await viewModel.InitializeAsync(parameter);
+
+            var navigationView = new NavigationView(this, rootPage, navigationStackName);
+
+            SetCurrentNavigationView(navigationView);            
+
+            await _threadService.InvokeOnMainThreadAsync(() =>
+            {
+                _application.SetMainPage(navigationView);
+            });
+        }
+
         public Task ShowMainViewAsync<TViewModel>() where TViewModel : class, IViewModel
         {
             return ShowMainViewAsync(typeof(TViewModel));
