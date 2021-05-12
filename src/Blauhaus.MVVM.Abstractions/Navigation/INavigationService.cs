@@ -8,6 +8,7 @@ namespace Blauhaus.MVVM.Abstractions.Navigation
 {
     public interface INavigationService
     {
+        Task SetNAvigationRootAsync<TViewModel>(string navigationStackName = "") where TViewModel : class, IViewModel;
         Task ShowMainViewAsync<TViewModel>() where TViewModel : class, IViewModel;
         Task ShowMainViewAsync(Type viewModelType);
 
@@ -19,7 +20,7 @@ namespace Blauhaus.MVVM.Abstractions.Navigation
         Task ShowDetailViewAsync<TViewModel>() where TViewModel : IViewModel;
 
         void SetCurrentNavigationView(INavigationView navigationView);
-        void SetCurrentNavigationView(string navigationStackName);
+        void SetCurrentNavigationStack(string navigationStackName);
         void SetCurrentFlyoutView(IFlyoutView flyoutView);
 
         Task GoBackAsync();

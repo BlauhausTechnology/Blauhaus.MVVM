@@ -9,6 +9,7 @@ using Blauhaus.MVVM.Abstractions.Navigation;
 using Blauhaus.MVVM.Abstractions.ViewModels;
 using Blauhaus.MVVM.Abstractions.Views;
 using Blauhaus.MVVM.Xamarin.Navigation.FormsApplicationProxy;
+using Blauhaus.MVVM.Xamarin.Views.Navigation;
 using Xamarin.Forms;
 // ReSharper disable SuspiciousTypeConversion.Global
 
@@ -47,6 +48,30 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
             _threadService = threadService;
         }
 
+        public async Task SetMainViewAsNavigationRootAsync<TViewModel>(string navigationStackName = "") where TViewModel : class, IViewModel
+        {
+            var rootPage = GetPageForViewModel<Page>(typeof(TViewModel));
+
+            if (rootPage.BindingContext is IAsyncInitializable initializable)
+            {
+                await initializable.InitializeAsync();
+            }            
+            if (rootPage.BindingContext is IInitializingViewModel initializableViewModel)
+            {
+                initializableViewModel.InitializeCommand.Execute();
+            }
+
+            var navigationView = new NavigationView(this, rootPage, navigationStackName);
+
+            SetCurrentNavigationView(navigationView);            
+
+            await _threadService.InvokeOnMainThreadAsync(() =>
+            {
+                _application.SetMainPage(navigationView);
+            });
+
+        }
+
         public Task ShowMainViewAsync<TViewModel>() where TViewModel : class, IViewModel
         {
             return ShowMainViewAsync(typeof(TViewModel));
@@ -62,7 +87,7 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
         {
             if (navigationStackName != "")
             {
-                SetCurrentNavigationView(navigationStackName);
+                SetCurrentNavigationStack(navigationStackName);
             }
 
             var page = GetPageForViewModel<Page>(typeof(TViewModel));
@@ -73,7 +98,7 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
         {
             if (navigationStackName != "")
             {
-                SetCurrentNavigationView(navigationStackName);
+                SetCurrentNavigationStack(navigationStackName);
             }
 
             var page = GetPageForViewModel<Page>(typeof(TViewModel));
@@ -111,9 +136,8 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
             throw new InvalidOperationException("Detail Page must implement IView");
         }
 
-        public void SetCurrentNavigationView(string navigationStackName)
+        public void SetCurrentNavigationStack(string navigationStackName)
         {
-            
             //todo consider registering view models with their navigation stack in the first place so we don't need to remember to do this all the time
             
             if (!_navigationViews.ContainsKey(navigationStackName))

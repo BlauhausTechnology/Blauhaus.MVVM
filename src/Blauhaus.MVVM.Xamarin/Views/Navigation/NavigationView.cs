@@ -8,10 +8,10 @@ namespace Blauhaus.MVVM.Xamarin.Views.Navigation
     {
         private readonly INavigationService _navigationService;
 
-        public NavigationView(INavigationService navigationService, Page rootPage, string name = "") : base(rootPage)
+        public NavigationView(INavigationService navigationService, Page rootPage, string stackName = "") : base(rootPage)
         {
             _navigationService = navigationService;
-            StackName = string.IsNullOrEmpty(name) ? rootPage.GetType().Name : name;
+            StackName = string.IsNullOrEmpty(stackName) ? rootPage.GetType().Name : stackName;
         }
 
         protected override void OnAppearing()
