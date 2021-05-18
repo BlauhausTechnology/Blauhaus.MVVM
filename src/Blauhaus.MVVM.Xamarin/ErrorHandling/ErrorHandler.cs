@@ -56,13 +56,16 @@ namespace Blauhaus.MVVM.Xamarin.ErrorHandling
 
         public async Task HandleErrorAsync(Error error)
         {
-            await OnErrorHandledAsync(error);
-            await _dialogService.DisplayAlertAsync("Error", error.Description);
+            var errorWasHandled = await OnErrorHandledAsync(error);
+            if (!errorWasHandled)
+            {
+                await _dialogService.DisplayAlertAsync("Error", error.Description);
+            }
         }
 
-        protected virtual Task OnErrorHandledAsync(Error error)
+        protected virtual Task<bool> OnErrorHandledAsync(Error error)
         {
-            return Task.CompletedTask;
+            return Task.FromResult(false);
         }
     }
 }
