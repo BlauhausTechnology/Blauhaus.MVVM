@@ -7,7 +7,7 @@ using Blauhaus.Errors.Extensions;
 using Blauhaus.Errors.Handler;
 using Blauhaus.MVVM.Abstractions.Dialogs;
 
-namespace Blauhaus.MVVM.Xamarin.ErrorHandling
+namespace Blauhaus.MVVM.Services
 {
     public class ErrorHandler : IErrorHandler
     {

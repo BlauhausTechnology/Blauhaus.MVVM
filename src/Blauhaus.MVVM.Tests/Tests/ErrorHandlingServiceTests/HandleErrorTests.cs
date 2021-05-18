@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Blauhaus.Auth.Abstractions.Errors;
+using Blauhaus.MVVM.Services;
 using Blauhaus.MVVM.Tests.Tests.Base;
-using Blauhaus.MVVM.Xamarin.ErrorHandling;
 using NUnit.Framework;
 
 namespace Blauhaus.MVVM.Tests.Tests.ErrorHandlingServiceTests
