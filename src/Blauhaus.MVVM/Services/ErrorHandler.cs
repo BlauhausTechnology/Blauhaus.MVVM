@@ -34,7 +34,7 @@ namespace Blauhaus.MVVM.Services
             if (exception is ErrorException errorException)
             {
                 errorMessage = errorException.Error.Description;
-                if (!await OnErrorHandledAsync(errorException.Error))
+                if (await OnErrorHandledAsync(errorException.Error))
                 {
                     return;
                 }
@@ -52,7 +52,10 @@ namespace Blauhaus.MVVM.Services
             if (errorMessage.IsError(out var error))
             {
                 errorMessage = error.Description;
-                await OnErrorHandledAsync(error);
+                if (await OnErrorHandledAsync(error))
+                {
+                    return;
+                }
             }
             await _dialogService.DisplayAlertAsync("Error", errorMessage);
         }
