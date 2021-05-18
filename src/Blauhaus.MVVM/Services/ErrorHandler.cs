@@ -34,7 +34,10 @@ namespace Blauhaus.MVVM.Services
             if (exception is ErrorException errorException)
             {
                 errorMessage = errorException.Error.Description;
-                await OnErrorHandledAsync(errorException.Error);
+                if (!await OnErrorHandledAsync(errorException.Error))
+                {
+                    return;
+                }
             }
             else if ((BuildConfig) _buildConfig == BuildConfig.Debug)
             {
