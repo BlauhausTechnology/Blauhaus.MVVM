@@ -9,6 +9,20 @@ using Xamarin.Forms;
 
 namespace Blauhaus.MVVM.Xamarin.Views.ContentViews
 {
+
+    public abstract class BaseContentView<TViewModel> : BaseContentView
+    {
+        protected readonly TViewModel ViewModel;
+
+        protected BaseContentView(TViewModel viewModel) 
+            : base(viewModel is INotifyUpdates)
+        {
+            ViewModel = viewModel;
+            BindingContext = ViewModel;
+        }
+    }
+
+
     public abstract class BaseContentView : ContentView
     {
         private readonly Dictionary<Type, Action<object>> _handlers = new Dictionary<Type, Action<object>>();
