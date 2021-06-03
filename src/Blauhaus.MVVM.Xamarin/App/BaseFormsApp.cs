@@ -20,6 +20,9 @@ namespace Blauhaus.MVVM.Xamarin.App
         }
     }
 
+    //todo try using just the ServiceProvider without the HostBuilder to improve startup time
+    //https://github.com/dotnet/maui/issues/880
+
     public abstract class BaseFormsApp<TServiceLocator> : Application where TServiceLocator : class, IServiceLocator
     {
         protected IBuildConfig CurrentBuildConfig = null!;
