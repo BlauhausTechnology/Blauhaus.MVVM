@@ -6,6 +6,10 @@ namespace Blauhaus.MVVM.TestHelpers.MockBuilders.Services
 {
     public class DialogServiceMockBuilder : BaseMockBuilder<DialogServiceMockBuilder, IDialogService>
     {
+        public DialogServiceMockBuilder()
+        {
+            Where_DisplayConfirmationAsync_returns(true);
+        }
 
         public DialogServiceMockBuilder Where_DisplayConfirmationAsync_returns(bool result)
         {
