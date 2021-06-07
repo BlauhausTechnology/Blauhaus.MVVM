@@ -67,6 +67,14 @@ namespace Blauhaus.MVVM.Xamarin.Views.ContentViews
         protected void Subscribe<TUpdate>(Action<TUpdate> handler)
         {
             _handlers[typeof(TUpdate)] = obj => handler.Invoke((TUpdate) obj);
+
+            if (BindingContext is INotifyUpdates notifyUpdatesViewModel)
+            {
+                if (notifyUpdatesViewModel.Update is TUpdate update)
+                {
+                    handler.Invoke(update);
+                }
+            }
         }
 
         public static readonly BindableProperty UpdateProperty = BindableProperty.Create(
