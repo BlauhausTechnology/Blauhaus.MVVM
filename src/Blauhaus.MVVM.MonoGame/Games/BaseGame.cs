@@ -48,7 +48,7 @@ namespace Blauhaus.MVVM.MonoGame.Games
 
                 }).Build().Services;
             
-            AppServiceLocator.Initialize(serviceProvider.GetRequiredService<IServiceLocator>());
+            AppServiceLocator.Initialize(()=> serviceProvider.GetRequiredService<IServiceLocator>());
         }
 
         protected override void Initialize()
