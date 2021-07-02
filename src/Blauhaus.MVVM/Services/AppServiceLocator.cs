@@ -9,11 +9,26 @@ namespace Blauhaus.MVVM.Services
     /// </summary>
     public static class AppServiceLocator
     {
-        public static IServiceLocator? Instance;
+        private static IServiceLocator? _instance;
 
-        public static void Initialize(IServiceLocator serviceLocator)
+        public static IServiceLocator Instance
         {
-            Instance = serviceLocator;
+            get
+            {
+                if (_func == null)
+                {
+                    throw new Exception("ServiceLocator instance has not been initialized");
+                }
+
+                return _instance ??= _func.Invoke();
+            }
+        }
+
+        private static Func<IServiceLocator>? _func;
+
+        public static void Initialize(Func<IServiceLocator> serviceLocatorFunc)
+        {
+            _func = serviceLocatorFunc;
         }
 
         public static T Resolve<T>() where T : class

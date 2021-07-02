@@ -53,9 +53,9 @@ namespace Blauhaus.MVVM.Xamarin.App
 
                 }).Build().Services;
 
-            AppServiceLocator.Initialize(serviceProvider.GetRequiredService<IServiceLocator>());
+            AppServiceLocator.Initialize(()=> serviceProvider.GetRequiredService<IServiceLocator>());
 
-            _appLifeCycleService = (AppLifecycleService) AppServiceLocator.Resolve<IAppLifecycleService>();
+            _appLifeCycleService = (AppLifecycleService) serviceProvider.GetRequiredService<IAppLifecycleService>();
 
         }
 

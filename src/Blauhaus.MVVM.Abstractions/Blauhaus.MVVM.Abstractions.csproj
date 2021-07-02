@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Blauhaus.Common.Utils" Version="1.11.0" />
-    <PackageReference Include="Blauhaus.Errors" Version="0.3.6" />
-    <PackageReference Include="Blauhaus.Responses" Version="0.3.6" />
+    <PackageReference Include="Blauhaus.Common.Utils" Version="1.11.3" />
+    <PackageReference Include="Blauhaus.Errors" Version="0.3.11" />
+    <PackageReference Include="Blauhaus.Responses" Version="0.3.11" />
   </ItemGroup>
 
 </Project>

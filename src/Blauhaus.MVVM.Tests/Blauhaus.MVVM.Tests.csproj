@@ -17,12 +17,12 @@
 
   <ItemGroup>
     <PackageReference Include="Blauhaus.Auth.Abstractions" Version="0.11.11" />
-    <PackageReference Include="Blauhaus.DeviceServices.TestHelpers" Version="1.0.3" />
+    <PackageReference Include="Blauhaus.DeviceServices.TestHelpers" Version="1.0.5" />
     <PackageReference Include="Blauhaus.Domain.TestHelpers" Version="1.1.24" />
-    <PackageReference Include="Blauhaus.Ioc.TestHelpers" Version="1.3.0" />
-    <PackageReference Include="Blauhaus.TestHelpers" Version="1.2.10" />
+    <PackageReference Include="Blauhaus.Ioc.TestHelpers" Version="1.3.2" />
+    <PackageReference Include="Blauhaus.TestHelpers" Version="1.3.2" />
     <PackageReference Include="nunit" Version="3.13.2" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.17.0">
+    <PackageReference Include="NUnit3TestAdapter" Version="4.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
