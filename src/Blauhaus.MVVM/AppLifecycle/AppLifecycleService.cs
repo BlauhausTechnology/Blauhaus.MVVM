@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Blauhaus.Analytics.Abstractions.Extensions;
 using Blauhaus.Analytics.Abstractions.Service;
 using Blauhaus.Errors.Handler;
 using Blauhaus.MVVM.Abstractions.Application;
@@ -56,16 +57,14 @@ namespace Blauhaus.MVVM.AppLifecycle
                         return;
                     }
 
-                    var tasks = new Task<Response>[_handlers.Count];
-                    for (var i = 0; i < _handlers.Count; i++)
+                    foreach (var appLifecycleHandler in _handlers)
                     {
-                        tasks[i] = _handlers[i].HandleAppStateChangeAsync(state);
-                    }
-
-                    var results = await Task.WhenAll(tasks);
-                    if (results.Any(x => x.IsFailure))
-                    {
-                        await _errorHandler.HandleErrorAsync(results.First(x => x.IsFailure).Error);
+                        var handlerResult = await appLifecycleHandler.HandleAppStateChangeAsync(state);
+                        if (handlerResult.IsFailure)
+                        {
+                            _analyticsService.TraceWarning(this, "AppLifeCycle handler failed!");
+                            await _errorHandler.HandleErrorAsync(handlerResult.Error);
+                        }
                     } 
                 }
                 catch (Exception e)
