@@ -30,72 +30,72 @@ namespace Blauhaus.MVVM.Collections
             await _threadService.InvokeOnMainThreadAsync(async () =>
             {
                 await _semaphore.WaitAsync();
-            try
-            {
-                var tasks = new List<Task>();
-
-                var itemsToRemove = new List<T>();
-                foreach (var existingItem in this)
+                try
                 {
-                    var sourceId = sourceIds.FirstOrDefault(x => Equals(x, existingItem.Id));
+                    var tasks = new List<Task>();
 
-                    if (sourceId == null || sourceId.Equals(default(TId)))
+                    var itemsToRemove = new List<T>();
+                    foreach (var existingItem in this)
                     {
-                        itemsToRemove.Add(existingItem);
-                    }
-                }
+                        var sourceId = sourceIds.FirstOrDefault(x => Equals(x, existingItem.Id));
 
-                foreach (var itemToRemove in itemsToRemove)
-                {
-                    if (itemToRemove is IDisposable disposable)
-                    {
-                        disposable.Dispose();
-                    }
-
-                    if (itemToRemove is IAsyncDisposable asyncDisposable)
-                    {
-                        await asyncDisposable.DisposeAsync();
-                    }
-                    Remove(itemToRemove);
-                }
-
-                for (var i = 0; i < sourceIds.Count; i++)
-                {
-
-                    var existingItem = this.FirstOrDefault(x => x.Id != null && x.Id.Equals(sourceIds[i]));
-
-                    if (existingItem == null)
-                    {
-                        var newItem = _serviceLocator.Resolve<T>();
-                        tasks.Add(newItem.InitializeAsync(sourceIds[i]));
-                        InsertItem(i, newItem);
-                    }
-
-                    else
-                    {
-
-                        if (existingItem is IAsyncReloadable reloadable)
+                        if (sourceId == null || sourceId.Equals(default(TId)))
                         {
-                            tasks.Add(reloadable.ReloadAsync());
-                        }
-
-                        if (IndexOf(existingItem) != i)
-                        {
-                            Move(IndexOf(existingItem), i);
+                            itemsToRemove.Add(existingItem);
                         }
                     }
 
-                }
+                    foreach (var itemToRemove in itemsToRemove)
+                    {
+                        if (itemToRemove is IDisposable disposable)
+                        {
+                            disposable.Dispose();
+                        }
 
-                if (tasks.Any())
-                {
-                    await Task.WhenAll(tasks);
+                        if (itemToRemove is IAsyncDisposable asyncDisposable)
+                        {
+                            await asyncDisposable.DisposeAsync();
+                        }
+                        Remove(itemToRemove);
+                    }
+
+                    for (var i = 0; i < sourceIds.Count; i++)
+                    {
+
+                        var existingItem = this.FirstOrDefault(x => x.Id != null && x.Id.Equals(sourceIds[i]));
+
+                        if (existingItem == null)
+                        {
+                            var newItem = _serviceLocator.Resolve<T>();
+                            tasks.Add(newItem.InitializeAsync(sourceIds[i]));
+                            InsertItem(i, newItem);
+                        }
+
+                        else
+                        {
+
+                            if (existingItem is IAsyncReloadable reloadable)
+                            {
+                                tasks.Add(reloadable.ReloadAsync());
+                            }
+
+                            if (IndexOf(existingItem) != i)
+                            {
+                                Move(IndexOf(existingItem), i);
+                            }
+                        }
+
+                    }
+
+                    if (tasks.Any())
+                    {
+                        await Task.WhenAll(tasks);
+                    }
                 }
-            }
-            finally
-            {
-                _semaphore.Release();
-            }
+                finally
+                {
+                    _semaphore.Release();
+                }
             });
         }
     }
