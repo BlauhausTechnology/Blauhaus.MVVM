@@ -1,4 +1,4 @@
-﻿using Blauhaus.Domain.Abstractions.Sync;
+﻿using Blauhaus.Domain.Abstractions.Sync.Old;
 
 namespace Blauhaus.MVVM.Xamarin.Extensions
 {

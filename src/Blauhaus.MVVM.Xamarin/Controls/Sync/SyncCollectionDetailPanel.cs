@@ -1,5 +1,5 @@
 ﻿using System;
-using Blauhaus.Domain.Client.Sync.Client;
+using Blauhaus.Domain.Client.Sync.Old.Client;
 using Xamarin.CommunityToolkit.Markup;
 using Xamarin.Forms;
 

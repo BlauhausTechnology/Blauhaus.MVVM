@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using Blauhaus.Domain.Abstractions.Sync;
+using Blauhaus.Domain.Abstractions.Sync.Old;
 using Blauhaus.MVVM.Xamarin.Extensions;
 using Xamarin.Forms;
 
