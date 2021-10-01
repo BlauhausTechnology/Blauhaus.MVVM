@@ -24,7 +24,12 @@ namespace Blauhaus.MVVM.Collections
             _serviceLocator = serviceLocator;
             _threadService = threadService;
         }
-         
+
+        public async Task UpdateAsync(IReadOnlyList<IHasId<TId>> idSources)
+        {
+            await UpdateAsync(idSources.Select(x => x.Id).ToArray());
+        }
+
         public async Task UpdateAsync(IReadOnlyList<TId> sourceIds)
         {
             await _threadService.InvokeOnMainThreadAsync(async () =>
