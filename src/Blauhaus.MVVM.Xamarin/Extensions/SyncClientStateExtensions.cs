@@ -1,14 +1,14 @@
-﻿using Blauhaus.Domain.Abstractions.Sync.Old;
+﻿//using Blauhaus.Domain.Abstractions.Sync.Old;
 
-namespace Blauhaus.MVVM.Xamarin.Extensions
-{
-    public static class SyncClientStateExtensions
-    {
-        public static bool IsExecuting(this SyncClientState state)
-        {
-            return state == SyncClientState.DownloadingNew
-                   || state == SyncClientState.LoadingLocal
-                   || state == SyncClientState.DownloadingOld;
-        }
-    }
-}
+//namespace Blauhaus.MVVM.Xamarin.Extensions
+//{
+//    public static class SyncClientStateExtensions
+//    {
+//        public static bool IsExecuting(this SyncClientState state)
+//        {
+//            return state == SyncClientState.DownloadingNew
+//                   || state == SyncClientState.LoadingLocal
+//                   || state == SyncClientState.DownloadingOld;
+//        }
+//    }
+//}

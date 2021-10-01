@@ -8,8 +8,8 @@
 
   <ItemGroup>
     <PackageReference Include="Blauhaus.Common.Utils" Version="1.11.11" />
-    <PackageReference Include="Blauhaus.Errors" Version="0.4.1" />
-    <PackageReference Include="Blauhaus.Responses" Version="0.4.1" />
+    <PackageReference Include="Blauhaus.Errors" Version="0.4.3" />
+    <PackageReference Include="Blauhaus.Responses" Version="0.4.3" />
   </ItemGroup>
 
 </Project>
