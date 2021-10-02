@@ -44,6 +44,7 @@ namespace Blauhaus.MVVM.Ioc
 
         public static IServiceCollection AddObservableIdCollections(this IServiceCollection services)
         {
+            services.AddTransient(typeof(ObservableIdCollection<,>));
             services.AddTransient(typeof(ObservableGuidCollection<>));
             services.AddTransient(typeof(ObservableLongCollection<>));
             services.AddTransient(typeof(ObservableStringCollection<>));

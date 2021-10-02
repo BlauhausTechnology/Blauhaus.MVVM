@@ -73,10 +73,7 @@ namespace Blauhaus.MVVM.Xamarin.Views.Tabs
                         {
                             case IAsyncInitializable initializable:
                                 await initializable.InitializeAsync();
-                                break;
-                            case IInitializingViewModel initializableViewModel:
-                                initializableViewModel.InitializeCommand.Execute();
-                                break;
+                                break; 
                         }
 
                         if (tabDefinition.NavigationStackName != null)
