@@ -53,10 +53,7 @@ namespace Blauhaus.MVVM.MonoGame.Services
             {
                 case IAsyncInitializable initializable:
                     await initializable.InitializeAsync();
-                    break;
-                case IInitializingViewModel initializableViewModel:
-                    initializableViewModel.InitializeCommand.Execute();
-                    break;
+                    break; 
             }
 
             _screenGame.ChangeScene(scene);
