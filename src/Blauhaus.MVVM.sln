@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.31717.71
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31729.503
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blauhaus.MVVM.Abstractions", "Blauhaus.MVVM.Abstractions\Blauhaus.MVVM.Abstractions.csproj", "{5377C9E2-571F-49B8-B48D-9CEE10255A56}"
 EndProject
@@ -19,8 +19,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blauhaus.MVVM", "Blauhaus.MVVM\Blauhaus.MVVM.csproj", "{F2655115-EDA0-4311-B079-913AB7B39E07}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blauhaus.MVVM.MonoGame", "Blauhaus.MVVM.MonoGame\Blauhaus.MVVM.MonoGame.csproj", "{D7273E1F-851F-4CBF-A4AA-CD4E75B8E79D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blauhaus.MVVM.Maui", "Blauhaus.MVVM.Maui\Blauhaus.MVVM.Maui.csproj", "{D8802241-FE67-470A-9719-DB1DE29E91FE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -52,10 +50,6 @@ Global
 		{D7273E1F-851F-4CBF-A4AA-CD4E75B8E79D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7273E1F-851F-4CBF-A4AA-CD4E75B8E79D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7273E1F-851F-4CBF-A4AA-CD4E75B8E79D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D8802241-FE67-470A-9719-DB1DE29E91FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D8802241-FE67-470A-9719-DB1DE29E91FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D8802241-FE67-470A-9719-DB1DE29E91FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D8802241-FE67-470A-9719-DB1DE29E91FE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
