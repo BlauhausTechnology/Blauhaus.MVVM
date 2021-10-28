@@ -4,8 +4,10 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Blauhaus.Analytics.Abstractions.Service;
 using Blauhaus.Common.Abstractions;
 using Blauhaus.DeviceServices.Abstractions.Thread;
+using Blauhaus.Errors.Handler;
 using Blauhaus.Ioc.Abstractions;
 
 namespace Blauhaus.MVVM.Collections
@@ -15,14 +17,20 @@ namespace Blauhaus.MVVM.Collections
     {
         private readonly IServiceLocator _serviceLocator;
         private readonly IThreadService _threadService;
-        private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1);
+        private readonly IAnalyticsService _analyticsService;
+        private readonly IErrorHandler _errorHandler;
+        private readonly SemaphoreSlim _semaphore = new(1);
 
         public ObservableIdCollection(
             IServiceLocator serviceLocator,
-            IThreadService threadService)
+            IThreadService threadService,
+            IAnalyticsService analyticsService,
+            IErrorHandler errorHandler)
         {
             _serviceLocator = serviceLocator;
             _threadService = threadService;
+            _analyticsService = analyticsService;
+            _errorHandler = errorHandler;
         }
 
         public async Task UpdateAsync(IReadOnlyList<IHasId<TId>> idSources)
@@ -61,6 +69,7 @@ namespace Blauhaus.MVVM.Collections
                         {
                             await asyncDisposable.DisposeAsync();
                         }
+
                         Remove(itemToRemove);
                     }
 
@@ -89,13 +98,16 @@ namespace Blauhaus.MVVM.Collections
                                 Move(IndexOf(existingItem), i);
                             }
                         }
-
                     }
 
                     if (tasks.Any())
                     {
                         await Task.WhenAll(tasks);
                     }
+                }
+                catch (Exception e)
+                {
+                    await _errorHandler.HandleExceptionAsync(this, e);
                 }
                 finally
                 {
