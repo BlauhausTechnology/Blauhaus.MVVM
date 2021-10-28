@@ -33,6 +33,8 @@ namespace Blauhaus.MVVM.Collections
             _errorHandler = errorHandler;
         }
 
+        public bool LogDebugMessages { get; set; }
+
         public async Task UpdateAsync(IReadOnlyList<IHasId<TId>> idSources)
         {
             await UpdateAsync(idSources.Select(x => x.Id).ToArray());
@@ -55,6 +57,9 @@ namespace Blauhaus.MVVM.Collections
                         if (sourceId == null || sourceId.Equals(default(TId)))
                         {
                             itemsToRemove.Add(existingItem);
+                            
+                            if(LogDebugMessages) 
+                                _analyticsService.Debug($"Removing {typeof(T).Name} with id {existingItem.Id} from collection");
                         }
                     }
 
@@ -80,6 +85,10 @@ namespace Blauhaus.MVVM.Collections
 
                         if (existingItem == null)
                         {
+                            
+                            if(LogDebugMessages) 
+                                _analyticsService.Debug($"Adding {typeof(T).Name} with id {sourceIds[i]} to collection");
+
                             var newItem = _serviceLocator.Resolve<T>();
                             tasks.Add(newItem.InitializeAsync(sourceIds[i]));
                             InsertItem(i, newItem);
@@ -90,11 +99,17 @@ namespace Blauhaus.MVVM.Collections
 
                             if (existingItem is IAsyncReloadable reloadable)
                             {
+                                if(LogDebugMessages) 
+                                    _analyticsService.Debug($"Reloading {typeof(T).Name} with id {sourceIds[i]}");
+
                                 tasks.Add(reloadable.ReloadAsync());
                             }
 
                             if (IndexOf(existingItem) != i)
                             {
+                                if(LogDebugMessages) 
+                                    _analyticsService.Debug($"Moving {typeof(T).Name} with id {sourceIds[i]} from {IndexOf(existingItem)} to {i}");
+
                                 Move(IndexOf(existingItem), i);
                             }
                         }
@@ -114,6 +129,14 @@ namespace Blauhaus.MVVM.Collections
                     _semaphore.Release();
                 }
             });
+        }
+
+        private void Log(string message, Dictionary<string, object>? properties = null)
+        {
+            if (LogDebugMessages)
+            {
+                _analyticsService.Debug(message, properties);
+            }
         }
     }
 }
