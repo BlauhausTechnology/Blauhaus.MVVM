@@ -6,10 +6,8 @@ using Blauhaus.MVVM.Abstractions.ViewModels;
 namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands.NavigationCommands
 {
     public class ShowMainViewCommand<TViewModel> : AsyncExecutingCommand 
-        where TViewModel : IViewModel
+        where TViewModel : class, IViewModel
     {
-        private string _navigationStack = string.Empty;
-
         public ShowMainViewCommand(
             IErrorHandler errorHandler, 
             IAnalyticsService analyticsService,
@@ -18,14 +16,9 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands.Navigatio
         {
             WithExecute(async () =>
             {
-                await navigationService.ShowViewAsync<TViewModel>(_navigationStack);
+                await navigationService.ShowMainViewAsync<TViewModel>();
             });
         }
- 
-        public ShowMainViewCommand<TViewModel> WithNavigationStack(string navigationStack)
-        {
-            _navigationStack = navigationStack;
-            return this;
-        }
+  
     }
 }
