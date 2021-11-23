@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Blauhaus.Analytics.Abstractions.Extensions;
 using Blauhaus.Analytics.Abstractions.Service;
 using Blauhaus.Common.Abstractions;
 using Blauhaus.DeviceServices.Abstractions.Thread;
@@ -19,7 +20,7 @@ namespace Blauhaus.MVVM.Collections
         private readonly IThreadService _threadService;
         private readonly IAnalyticsService _analyticsService;
         private readonly IErrorHandler _errorHandler;
-        private readonly SemaphoreSlim _semaphore = new(1);
+        private bool _isUpdating;
 
         public ObservableIdCollection(
             IServiceLocator serviceLocator,
@@ -42,12 +43,18 @@ namespace Blauhaus.MVVM.Collections
 
         public async Task UpdateAsync(IReadOnlyList<TId> sourceIds)
         {
+
+            if (_isUpdating)
+            {
+                _analyticsService.TraceVerbose(this, $"{typeof(TId).Name} collection will not be updated with {sourceIds.Count} ids because it is already busy");
+                return;
+            }
+            _isUpdating = true;
+
             await _threadService.InvokeOnMainThreadAsync(async () =>
             {
-                await _semaphore.WaitAsync();
                 try
                 {
-                    var tasks = new List<Task>();
 
                     var itemsToRemove = new List<T>();
                     foreach (var existingItem in this)
@@ -90,19 +97,18 @@ namespace Blauhaus.MVVM.Collections
                                 _analyticsService.Debug($"Adding {typeof(T).Name} with id {sourceIds[i]} to collection");
 
                             var newItem = _serviceLocator.Resolve<T>();
-                            tasks.Add(newItem.InitializeAsync(sourceIds[i]));
+                            await newItem.InitializeAsync(sourceIds[i]);
                             InsertItem(i, newItem);
                         }
 
                         else
                         {
-
                             if (existingItem is IAsyncReloadable reloadable)
                             {
                                 if(LogDebugMessages) 
                                     _analyticsService.Debug($"Reloading {typeof(T).Name} with id {sourceIds[i]}");
 
-                                tasks.Add(reloadable.ReloadAsync());
+                                await reloadable.ReloadAsync();
                             }
 
                             if (IndexOf(existingItem) != i)
@@ -114,11 +120,6 @@ namespace Blauhaus.MVVM.Collections
                             }
                         }
                     }
-
-                    if (tasks.Any())
-                    {
-                        await Task.WhenAll(tasks);
-                    }
                 }
                 catch (Exception e)
                 {
@@ -126,17 +127,10 @@ namespace Blauhaus.MVVM.Collections
                 }
                 finally
                 {
-                    _semaphore.Release();
+                    _isUpdating = false;
                 }
             });
         }
-
-        private void Log(string message, Dictionary<string, object>? properties = null)
-        {
-            if (LogDebugMessages)
-            {
-                _analyticsService.Debug(message, properties);
-            }
-        }
+         
     }
 }

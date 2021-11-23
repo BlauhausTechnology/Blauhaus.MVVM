@@ -25,7 +25,7 @@ namespace Blauhaus.MVVM.Xamarin.Views.ContentViews
 
     public abstract class BaseContentView : ContentView
     {
-        private readonly Dictionary<Type, Action<object>> _handlers = new Dictionary<Type, Action<object>>();
+        private readonly Dictionary<Type, Action<object>> _handlers = new();
 
         protected BaseContentView(bool isUpdatable = true)
         {
