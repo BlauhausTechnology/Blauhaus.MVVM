@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Blauhaus.Analytics.Abstractions.Operation;
+using Blauhaus.Analytics.TestHelpers.MockBuilders;
 using Blauhaus.MVVM.ExecutingCommands.Base;
 using Blauhaus.MVVM.Tests.Tests.Base;
 using Blauhaus.TestHelpers.MockBuilders;
@@ -13,7 +14,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests._Base
     public class BaseExecutingCommandTest<TCommand> : BaseMvvmTest<TCommand> where TCommand : BaseExecutingCommand<TCommand>
     {
         
-        private MockBuilder<IAnalyticsOperation> _mockOperation;
+        private AnalyticsOperationMockBuilder _mockOperation;
         public override void Setup()
         {
             base.Setup();
