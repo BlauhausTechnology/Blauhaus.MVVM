@@ -4,6 +4,7 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Blauhaus.Analytics.Abstractions.Operation;
+using Blauhaus.Analytics.TestHelpers.MockBuilders;
 using Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands;
 using Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests._Base;
 using Blauhaus.TestHelpers.MockBuilders;
@@ -22,7 +23,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
         private Action? _onCompleted;
         private string _operationName;
         private List<int> _calls;
-        private MockBuilder<IAnalyticsOperation> MockOperation;
+        private AnalyticsOperationMockBuilder MockOperation;
 
         public override void Setup()
         {
