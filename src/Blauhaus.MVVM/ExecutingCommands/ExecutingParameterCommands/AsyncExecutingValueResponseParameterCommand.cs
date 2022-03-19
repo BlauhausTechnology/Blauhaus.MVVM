@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Blauhaus.Analytics.Abstractions.Service;
 using Blauhaus.Errors;
 using Blauhaus.Errors.Handler;
+using Blauhaus.Ioc.Abstractions;
 using Blauhaus.MVVM.ExecutingCommands.Base;
 using Blauhaus.MVVM.ExecutingCommands.ExecutingParameterCommands.Base;
 using Blauhaus.Responses;
@@ -18,9 +19,10 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingParameterCommands
 
 
         public AsyncExecutingValueResponseParameterCommand(
+            IServiceLocator serviceLocator,
             IErrorHandler errorHandler, 
             IAnalyticsService analyticsService) 
-            : base(errorHandler, analyticsService)
+             : base(serviceLocator, errorHandler, analyticsService)
         {
         }
          

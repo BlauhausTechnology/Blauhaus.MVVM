@@ -1,5 +1,6 @@
 ﻿using Blauhaus.Analytics.Abstractions.Service;
 using Blauhaus.Errors.Handler;
+using Blauhaus.Ioc.Abstractions;
 using Blauhaus.MVVM.ExecutingCommands.Base;
 
 namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands.Base
@@ -9,9 +10,10 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands.Base
     {
 
         protected BaseExecutingNoParameterCommand(
+            IServiceLocator serviceLocator,
             IErrorHandler errorHandler, 
             IAnalyticsService analyticsService) 
-            : base(errorHandler, analyticsService)
+            : base(serviceLocator, errorHandler, analyticsService)
         {
         }
          

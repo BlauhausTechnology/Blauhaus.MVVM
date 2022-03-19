@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Blauhaus.Analytics.Abstractions.Service;
 using Blauhaus.Errors.Handler;
+using Blauhaus.Ioc.Abstractions;
 using Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands.Base;
 
 namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands
@@ -10,8 +11,11 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands
     {
         private Func<Task>? _task;
 
-        public AsyncExecutingCommand(IErrorHandler errorHandler, IAnalyticsService analyticsService) 
-            : base(errorHandler, analyticsService)
+        public AsyncExecutingCommand(
+            IServiceLocator serviceLocator,
+            IErrorHandler errorHandler, 
+            IAnalyticsService analyticsService) 
+            : base(serviceLocator, errorHandler, analyticsService)
         {
         }
 

@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Blauhaus.Analytics.Abstractions;
 using Blauhaus.Analytics.Abstractions.Operation;
 using Blauhaus.Analytics.Abstractions.Service;
 using Blauhaus.Common.Utils.NotifyPropertyChanged;
 using Blauhaus.Errors.Handler;
+using Blauhaus.Ioc.Abstractions;
 using Blauhaus.MVVM.Abstractions.Commands;
+using Blauhaus.MVVM.Services;
+using Microsoft.Extensions.Logging;
 
 namespace Blauhaus.MVVM.ExecutingCommands.Base
 {
@@ -16,16 +20,23 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
         private Func<bool>? _canExecute;
 
         protected readonly IErrorHandler ErrorHandler;
+        private readonly IServiceLocator _serviceLocator;
         protected readonly IAnalyticsService AnalyticsService;
-        private IAnalyticsOperation? _analyticsOperation;
+        private IDisposable? _cleanup;
         private bool _isPageView = false;
         private object? _sender;
         private readonly string _caller = typeof(TExecutingCommand).Name;
+        private IAnalyticsLogger? _logger;
+        private Func<IDisposable>? _loggerFunc;
         protected object Sender => _sender ??= this;
 
-        protected BaseExecutingCommand(IErrorHandler errorHandler, IAnalyticsService analyticsService)
+        protected BaseExecutingCommand(
+            IServiceLocator serviceLocator,
+            IErrorHandler errorHandler, 
+            IAnalyticsService analyticsService)
         {
             ErrorHandler = errorHandler;
+            _serviceLocator = serviceLocator;
             AnalyticsService = analyticsService;
         }
          
@@ -34,6 +45,7 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
             _canExecute = canExecute;
             return (TExecutingCommand) this;
         }
+
         
         public TExecutingCommand LogOperation(object sender, string operationName)
         {
@@ -49,6 +61,17 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
             return (TExecutingCommand) this;
         }
 
+        public TExecutingCommand LogAction<TSource>(LogLevel logLevel, string message, params object[] args)
+        {
+            _logger = _serviceLocator.Resolve<IAnalyticsLogger<TSource>>();
+            _loggerFunc = () =>
+            {
+                _logger.SetValue("ActionId", Guid.NewGuid());
+                var disposable = _logger.BeginTimedScope(logLevel, message, args);
+                return disposable;
+            };
+            return (TExecutingCommand)this;
+        }
         
         public bool CanExecute(object parameter) => CanExecute();
         protected bool CanExecute()
@@ -87,26 +110,30 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
 
             if (_isPageView)
             {
-                _analyticsOperation = AnalyticsService.StartPageViewOperation(Sender, Sender.GetType().Name, null, _caller);
+                _cleanup = AnalyticsService.StartPageViewOperation(Sender, Sender.GetType().Name, null, _caller);
             }
             else if (!string.IsNullOrEmpty(AnalyticsOperationName))
             {
                 var properties = new Dictionary<string, object> { ["Command"] = typeof(TExecutingCommand).Name };
-                _analyticsOperation = AnalyticsService.StartOperation(Sender, AnalyticsOperationName, properties, _caller);
+                _cleanup = AnalyticsService.StartOperation(Sender, AnalyticsOperationName, properties, _caller);
+            }
+            else if (_loggerFunc != null)
+            {
+                _cleanup = _loggerFunc.Invoke();
             }
         }
 
         protected void Finish()
         {
             IsExecuting = false;
-            _analyticsOperation?.Dispose();
+            _cleanup?.Dispose();
         }
 
         protected async void Fail(object sender, Exception e)
         {
             IsExecuting = false;
             await ErrorHandler.HandleExceptionAsync(sender, e); 
-            _analyticsOperation?.Dispose(); //dispose after handling error else analytics logged without operation
+            _cleanup?.Dispose(); //dispose after handling error else analytics logged without operation
         }
 
         protected void TryExecute(object? action, Action act)

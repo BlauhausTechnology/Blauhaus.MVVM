@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Blauhaus.Errors;
 using Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands;
 using Blauhaus.MVVM.Tests.TestObjects;
-using Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests._Base;
+using Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Base;
 using Blauhaus.Responses;
 using Blauhaus.TestHelpers.PropertiesChanged.CanExecuteChanged;
 using Blauhaus.TestHelpers.PropertiesChanged.PropertiesChanged;

@@ -2,6 +2,7 @@
 using Blauhaus.Analytics.Abstractions.Service;
 using Blauhaus.Common.Abstractions;
 using Blauhaus.Errors.Handler;
+using Blauhaus.Ioc.Abstractions;
 using Blauhaus.MVVM.Abstractions.Navigation;
 using Blauhaus.MVVM.Abstractions.ViewModels;
 
@@ -14,10 +15,11 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands.Navigatio
         private string _navigationStack = string.Empty;
 
         public ShowAndInitializeViewCommand(
+            IServiceLocator serviceLocator,
             IErrorHandler errorHandler, 
             IAnalyticsService analyticsService,
             INavigationService navigationService) 
-                : base(errorHandler, analyticsService)
+                : base(serviceLocator, errorHandler, analyticsService)
         {
             WithExecute(async () =>
             {

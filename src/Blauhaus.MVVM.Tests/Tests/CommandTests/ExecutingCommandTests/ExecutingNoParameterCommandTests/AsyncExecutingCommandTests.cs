@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands;
-using Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests._Base;
+using Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Base;
 using Blauhaus.TestHelpers.PropertiesChanged.CanExecuteChanged;
 using Blauhaus.TestHelpers.PropertiesChanged.PropertiesChanged;
 using Moq;

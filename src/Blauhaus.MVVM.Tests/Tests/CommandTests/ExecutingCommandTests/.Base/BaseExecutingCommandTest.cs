@@ -1,23 +1,26 @@
-﻿using System.Collections.Generic;
-using Blauhaus.Analytics.Abstractions.Operation;
+﻿using System;
+using System.Collections.Generic;
 using Blauhaus.Analytics.TestHelpers.MockBuilders;
 using Blauhaus.MVVM.ExecutingCommands.Base;
 using Blauhaus.MVVM.Tests.Tests.Base;
-using Blauhaus.TestHelpers.MockBuilders;
 using Blauhaus.TestHelpers.PropertiesChanged.CanExecuteChanged;
 using Blauhaus.TestHelpers.PropertiesChanged.PropertiesChanged;
+using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 
-namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests._Base
+namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Base
 {
     public class BaseExecutingCommandTest<TCommand> : BaseMvvmTest<TCommand> where TCommand : BaseExecutingCommand<TCommand>
     {
         
-        private AnalyticsOperationMockBuilder _mockOperation;
+        private AnalyticsOperationMockBuilder _mockOperation = null!;
+        private Mock<IDisposable> _mockDisposable = null!;
+
         public override void Setup()
         {
             base.Setup();
+            _mockDisposable = MockLogger.MockScopeDisposable;
             _mockOperation = MockAnalyticsService.Where_StartOperation_returns_operation();
         }
 
@@ -68,8 +71,22 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests._Base
             MockAnalyticsService.Mock.Verify(x => x.StartOperation(It.Is<object>(y => y.GetType() == this.GetType()), It.IsAny<string>(), It.IsAny<Dictionary<string, object>>(), It.IsAny<string>()));
             _mockOperation.Mock.Verify(x => x.Dispose(), Times.Once);
         }
-
         
+        [Test]
+        public void IF_LogAction_is_set_SHOULD_log()
+        {
+            //Arrange 
+            Sut.LogAction<TCommand>(LogLevel.Critical, "Message");
+
+            //Act
+            Sut.Execute();
+
+            //Assert
+            MockLogger.VerifyBeginTimedScope(LogLevel.Critical, "Message");
+            _mockDisposable.Verify(x => x.Dispose(), Times.Once);
+        }
+
+
         [Test]
         public void IF_IsPageView_SHOULD_start_PageView_operation_and_dispose_operation_when_completed()
         {
