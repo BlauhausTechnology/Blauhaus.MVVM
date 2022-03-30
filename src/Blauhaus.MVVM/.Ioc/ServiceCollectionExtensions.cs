@@ -1,5 +1,6 @@
 ﻿using Blauhaus.MVVM.Abstractions.Application;
 using Blauhaus.MVVM.Collections;
+using Blauhaus.MVVM.Collections.Base;
 using Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands;
 using Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands.NavigationCommands;
 using Blauhaus.MVVM.ExecutingCommands.ExecutingParameterCommands;
@@ -44,7 +45,7 @@ namespace Blauhaus.MVVM.Ioc
 
         public static IServiceCollection AddObservableIdCollections(this IServiceCollection services)
         {
-            services.AddTransient(typeof(ObservableIdCollection<,>));
+            services.AddTransient(typeof(BaseObservableIdCollection<,>));
             services.AddTransient(typeof(ObservableGuidCollection<>));
             services.AddTransient(typeof(ObservableLongCollection<>));
             services.AddTransient(typeof(ObservableStringCollection<>));

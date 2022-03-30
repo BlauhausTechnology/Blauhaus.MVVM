@@ -2,39 +2,46 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using Blauhaus.Analytics.Abstractions.Extensions;
-using Blauhaus.Analytics.Abstractions.Service;
+using Blauhaus.Analytics.Abstractions;
 using Blauhaus.Common.Abstractions;
 using Blauhaus.DeviceServices.Abstractions.Thread;
 using Blauhaus.Errors.Handler;
 using Blauhaus.Ioc.Abstractions;
+using Microsoft.Extensions.Logging;
 
-namespace Blauhaus.MVVM.Collections
+namespace Blauhaus.MVVM.Collections.Base
 {
-    public class ObservableIdCollection<T, TId> : ObservableCollection<T> 
+
+    public class ObservableIdCollection<T, TId> : BaseObservableIdCollection<T, TId>
         where T : class, IHasId<TId>, IAsyncInitializable<TId>
     {
+        public ObservableIdCollection(IAnalyticsLogger<ObservableIdCollection<T, TId>> logger, IServiceLocator serviceLocator, IThreadService threadService, IErrorHandler errorHandler) : base(logger, serviceLocator, threadService, errorHandler)
+        {
+        }
+    }
+
+    public abstract class BaseObservableIdCollection<T, TId> : ObservableCollection<T> 
+        where T : class, IHasId<TId>, IAsyncInitializable<TId>
+    {
+        private readonly IAnalyticsLogger _logger;
         private readonly IServiceLocator _serviceLocator;
         private readonly IThreadService _threadService;
-        private readonly IAnalyticsService _analyticsService;
         private readonly IErrorHandler _errorHandler;
         private bool _isUpdating;
 
-        public ObservableIdCollection(
+        protected BaseObservableIdCollection(
+            IAnalyticsLogger logger,
             IServiceLocator serviceLocator,
             IThreadService threadService,
-            IAnalyticsService analyticsService,
             IErrorHandler errorHandler)
         {
+            _logger = logger;
             _serviceLocator = serviceLocator;
             _threadService = threadService;
-            _analyticsService = analyticsService;
             _errorHandler = errorHandler;
         }
 
-        public bool LogDebugMessages { get; set; }
 
         public async Task UpdateAsync(IReadOnlyList<IHasId<TId>> idSources)
         {
@@ -46,7 +53,7 @@ namespace Blauhaus.MVVM.Collections
 
             if (_isUpdating)
             {
-                _analyticsService.TraceVerbose(this, $"{typeof(TId).Name} collection will not be updated with {sourceIds.Count} ids because it is already busy");
+                _logger.LogTrace("Collection of {ListItemType} will not be updated with {ListItemCount} ids because it is already busy updating", typeof(T).Name, sourceIds.Count);
                 return;
             }
             _isUpdating = true;
@@ -64,9 +71,7 @@ namespace Blauhaus.MVVM.Collections
                         if (sourceId == null || sourceId.Equals(default(TId)))
                         {
                             itemsToRemove.Add(existingItem);
-                            
-                            if(LogDebugMessages) 
-                                _analyticsService.Debug($"Removing {typeof(T).Name} with id {existingItem.Id} from collection");
+                            _logger.LogTrace("Removing {ListItemType} with id {ListItemId} from collection", typeof(T).Name, existingItem.Id);
                         }
                     }
 
@@ -93,8 +98,7 @@ namespace Blauhaus.MVVM.Collections
                         if (existingItem == null)
                         {
                             
-                            if(LogDebugMessages) 
-                                _analyticsService.Debug($"Adding {typeof(T).Name} with id {sourceIds[i]} to collection");
+                            _logger.LogTrace("Adding {ListItemType} with id {ListItemId} to collection", typeof(T).Name, sourceIds[i]);
 
                             var newItem = _serviceLocator.Resolve<T>();
                             await newItem.InitializeAsync(sourceIds[i]);
@@ -105,17 +109,13 @@ namespace Blauhaus.MVVM.Collections
                         {
                             if (existingItem is IAsyncReloadable reloadable)
                             {
-                                if(LogDebugMessages) 
-                                    _analyticsService.Debug($"Reloading {typeof(T).Name} with id {sourceIds[i]}");
-
+                                _logger.LogTrace("Reloading {ListItemType} with id {ListItemId}", typeof(T).Name, sourceIds[i]);
                                 await reloadable.ReloadAsync();
                             }
 
                             if (IndexOf(existingItem) != i)
                             {
-                                if(LogDebugMessages) 
-                                    _analyticsService.Debug($"Moving {typeof(T).Name} with id {sourceIds[i]} from {IndexOf(existingItem)} to {i}");
-
+                                _logger.LogTrace("Moving {ListItemType} with id {ListItemId} from {OldListPosition} to {ListPosition}", typeof(T).Name, sourceIds[i], IndexOf(existingItem), i);
                                 Move(IndexOf(existingItem), i);
                             }
                         }

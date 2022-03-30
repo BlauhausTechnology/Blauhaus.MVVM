@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Compile Include=".Ioc\ServiceCollectionExtensions.cs" />
+    <Compile Include="Collections\.Base\BaseObservableIdCollection.cs" />
     <Compile Include="ExecutingCommands\.Base\BaseExecutingCommand.cs" />
     <Compile Include="ExecutingCommands\.Base\InternalExtensions.cs" />
     <Compile Include="ExecutingCommands\ExecutingNoParameterCommands\.Base\BaseExecutingNoParameterCommand.cs" />
@@ -15,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Blauhaus.Analytics.Abstractions" Version="1.8.29" />
+    <PackageReference Include="Blauhaus.Analytics.Abstractions" Version="1.8.35" />
     <PackageReference Include="Blauhaus.DeviceServices.Abstractions" Version="1.0.16" />
     <PackageReference Include="Blauhaus.Ioc.Abstractions" Version="1.4.3" />
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="6.0.0" />
