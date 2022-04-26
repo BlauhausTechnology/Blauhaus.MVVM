@@ -72,6 +72,11 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
             };
             return (TExecutingCommand)this;
         }
+
+        public TExecutingCommand LogAction<TSource>(string message, params object[] args)
+        {
+            return LogAction<TSource>(LogLevel.Information, message, args);
+        }
         
         public bool CanExecute(object parameter) => CanExecute();
         protected bool CanExecute()

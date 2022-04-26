@@ -11,7 +11,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Blauhaus.Ioc.DotNetCoreIocService" Version="1.4.3" />
+		<PackageReference Include="Blauhaus.Ioc.DotNetCoreIocService" Version="1.4.5" />
 		<PackageReference Include="Blauhaus.MonoGame" Version="0.0.2" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
 		<PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.0.1641">
