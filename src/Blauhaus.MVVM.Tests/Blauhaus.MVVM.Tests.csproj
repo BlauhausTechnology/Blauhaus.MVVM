@@ -17,17 +17,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Blauhaus.Auth.Abstractions" Version="0.14.5" />
-    <PackageReference Include="Blauhaus.DeviceServices.TestHelpers" Version="1.1.4" />
-    <PackageReference Include="Blauhaus.Domain.TestHelpers" Version="1.8.8" />
+    <PackageReference Include="Blauhaus.Auth.Abstractions" Version="0.15.2" />
+    <PackageReference Include="Blauhaus.DeviceServices.TestHelpers" Version="1.1.5" />
+    <PackageReference Include="Blauhaus.Domain.TestHelpers" Version="1.8.9" />
     <PackageReference Include="Blauhaus.Ioc.TestHelpers" Version="1.4.5" />
-    <PackageReference Include="Blauhaus.TestHelpers" Version="1.3.13" />
+    <PackageReference Include="Blauhaus.TestHelpers" Version="1.3.16" />
     <PackageReference Include="nunit" Version="3.13.3" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.2.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
     <PackageReference Include="Xamarin.Forms.Mocks" Version="4.7.0.1" />
   </ItemGroup>
 
