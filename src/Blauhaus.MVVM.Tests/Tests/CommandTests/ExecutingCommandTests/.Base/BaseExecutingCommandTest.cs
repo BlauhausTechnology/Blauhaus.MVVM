@@ -76,13 +76,13 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Base
         public void IF_LogAction_is_set_SHOULD_log()
         {
             //Arrange 
-            Sut.LogAction<TCommand>(LogLevel.Critical, "Message");
+            Sut.LogAction<TCommand>("MyAction", LogLevel.Critical);
 
             //Act
             Sut.Execute();
 
             //Assert
-            MockLogger.VerifyBeginTimedScope(LogLevel.Critical, "Message");
+            MockLogger.VerifyBeginTimedScope(LogLevel.Critical, "MyAction");
             _mockDisposable.Verify(x => x.Dispose(), Times.Once);
         }
 

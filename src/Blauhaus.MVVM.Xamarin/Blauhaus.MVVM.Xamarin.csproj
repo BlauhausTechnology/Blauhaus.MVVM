@@ -13,7 +13,7 @@
   <ItemGroup>
     <PackageReference Include="Blauhaus.Analytics.Xamarin" Version="1.8.41" />
     <PackageReference Include="Blauhaus.Common.Config" Version="1.9.3" />
-    <PackageReference Include="Blauhaus.DeviceServices.Abstractions" Version="1.1.5" />
+    <PackageReference Include="Blauhaus.DeviceServices.Abstractions" Version="1.1.7" />
     <PackageReference Include="Blauhaus.Domain.Client" Version="1.8.9" />
     <PackageReference Include="Blauhaus.Errors" Version="0.4.6" />
     <PackageReference Include="Blauhaus.Ioc.DotNetCoreIocService" Version="1.4.5" />

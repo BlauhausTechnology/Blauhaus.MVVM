@@ -61,23 +61,20 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
             return (TExecutingCommand) this;
         }
 
-        public TExecutingCommand LogAction<TSource>(LogLevel logLevel, string message, params object[] args)
+        public TExecutingCommand LogAction<TSource>(string actionName, LogLevel logLevel = LogLevel.Information)
         {
             _logger = _serviceLocator.Resolve<IAnalyticsLogger<TSource>>();
             _loggerFunc = () =>
             {
-                _logger.SetValue("ActionId", Guid.NewGuid());
-                var disposable = _logger.BeginTimedScope(logLevel, message, args);
+                _logger.SetValue("ActionId", Guid.NewGuid().ToString());
+                _logger.SetValue("ActionName",actionName);
+                _logger.SetValue("ActionSource",typeof(TSource).Name);
+                var disposable = _logger.BeginTimedScope(logLevel, actionName);
                 return disposable;
             };
             return (TExecutingCommand)this;
         }
-
-        public TExecutingCommand LogAction<TSource>(string message, params object[] args)
-        {
-            return LogAction<TSource>(LogLevel.Information, message, args);
-        }
-        
+ 
         public bool CanExecute(object parameter) => CanExecute();
         protected bool CanExecute()
         {
