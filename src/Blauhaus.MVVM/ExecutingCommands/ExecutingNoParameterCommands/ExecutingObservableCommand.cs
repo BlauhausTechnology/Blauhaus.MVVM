@@ -15,9 +15,8 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands
         
         public ExecutingObservableCommand(
             IServiceLocator serviceLocator,
-            IErrorHandler errorHandler, 
-            IAnalyticsService analyticsService) 
-                : base(serviceLocator, errorHandler, analyticsService)
+            IErrorHandler errorHandler) 
+                : base(serviceLocator, errorHandler)
         {
         }
          
@@ -60,13 +59,13 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands
                         }
                         catch (Exception e)
                         {
-                            Fail(this, e);
+                            Fail(e);
                         }
                     },
                     error =>
                     {
                         //OnError
-                        Fail(this, error);
+                        Fail(error);
                     },
                     () =>
                     {

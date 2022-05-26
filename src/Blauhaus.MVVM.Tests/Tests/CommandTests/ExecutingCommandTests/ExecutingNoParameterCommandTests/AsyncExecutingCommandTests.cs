@@ -129,26 +129,6 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
             }
         }
 
-        [Test]
-        public void IF_AnalyticsOperation_is_providedSHOULD_log()
-        {
-            //Arrange 
-            using (var isExecutingChanges = Sut.SubscribeToPropertyChanged(x => x.IsExecuting))
-            {
-                //Arrange
-                Sut.LogOperation(this, "ops");
-
-                //Act
-                Sut.Execute();
-                isExecutingChanges.WaitForChangeCount(2);
-
-                //Assert
-                MockAnalyticsService.Mock.Verify(x => x.StartOperation(
-                    It.Is<object>(y => y.GetType() == typeof(AsyncExecutingCommandTests)), 
-                    "ops", It.IsAny<Dictionary<string, object>>(), It.IsAny<string>()));
-            }
-        }
-         
-
+        
     }
 }

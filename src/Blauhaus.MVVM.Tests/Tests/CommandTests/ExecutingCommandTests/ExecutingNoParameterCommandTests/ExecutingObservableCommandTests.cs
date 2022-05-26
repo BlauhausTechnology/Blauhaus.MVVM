@@ -48,8 +48,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
                 .Observe(_observable)
                 .OnNext(_onNext)
                 .OnCompleted(_onCompleted)
-                .WithCanExecute(_canExecute)
-                .LogOperation(this, _operationName);
+                .WithCanExecute(_canExecute);
         }
 
         [Test]

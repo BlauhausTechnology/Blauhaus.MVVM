@@ -19,9 +19,8 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands
         
         public AsyncExecutingValueResponseCommand(
             IServiceLocator serviceLocator, 
-            IErrorHandler errorHandler, 
-            IAnalyticsService analyticsService) 
-                : base(serviceLocator, errorHandler, analyticsService)
+            IErrorHandler errorHandler) 
+                : base(serviceLocator, errorHandler)
         {
         }
          

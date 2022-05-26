@@ -16,28 +16,20 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
     public abstract class BaseExecutingCommand<TExecutingCommand> : BaseBindableObject, IExecutingCommand
         where TExecutingCommand : BaseExecutingCommand<TExecutingCommand>
     {
-        protected string? AnalyticsOperationName;
         private Func<bool>? _canExecute;
 
         protected readonly IErrorHandler ErrorHandler;
         private readonly IServiceLocator _serviceLocator;
-        protected readonly IAnalyticsService AnalyticsService;
         private IDisposable? _cleanup;
-        private bool _isPageView = false;
-        private object? _sender;
-        private readonly string _caller = typeof(TExecutingCommand).Name;
         private IAnalyticsLogger? _logger;
         private Func<IDisposable>? _loggerFunc;
-        protected object Sender => _sender ??= this;
 
         protected BaseExecutingCommand(
             IServiceLocator serviceLocator,
-            IErrorHandler errorHandler, 
-            IAnalyticsService analyticsService)
+            IErrorHandler errorHandler)
         {
             ErrorHandler = errorHandler;
             _serviceLocator = serviceLocator;
-            AnalyticsService = analyticsService;
         }
          
         public TExecutingCommand WithCanExecute(Func<bool> canExecute)
@@ -47,20 +39,6 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
         }
 
         
-        public TExecutingCommand LogOperation(object sender, string operationName)
-        {
-            _sender = sender;
-            AnalyticsOperationName = operationName;
-            return (TExecutingCommand) this;
-        }
-
-        public TExecutingCommand LogPageView(object page)
-        {
-            _sender = page;
-            _isPageView = true;
-            return (TExecutingCommand) this;
-        }
-
         public TExecutingCommand LogAction<TSource>(string actionName, LogLevel logLevel = LogLevel.Information)
         {
             _logger = _serviceLocator.Resolve<IAnalyticsLogger<TSource>>();
@@ -109,17 +87,7 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
         protected void Start()
         {
             IsExecuting = true;
-
-            if (_isPageView)
-            {
-                _cleanup = AnalyticsService.StartPageViewOperation(Sender, Sender.GetType().Name, null, _caller);
-            }
-            else if (!string.IsNullOrEmpty(AnalyticsOperationName))
-            {
-                var properties = new Dictionary<string, object> { ["Command"] = typeof(TExecutingCommand).Name };
-                _cleanup = AnalyticsService.StartOperation(Sender, AnalyticsOperationName, properties, _caller);
-            }
-            else if (_loggerFunc != null)
+            if (_loggerFunc != null)
             {
                 _cleanup = _loggerFunc.Invoke();
             }
@@ -131,10 +99,10 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
             _cleanup?.Dispose();
         }
 
-        protected async void Fail(object sender, Exception e)
+        protected async void Fail(Exception e)
         {
             IsExecuting = false;
-            await ErrorHandler.HandleExceptionAsync(sender, e); 
+            await ErrorHandler.HandleExceptionAsync(this, e); 
             _cleanup?.Dispose(); //dispose after handling error else analytics logged without operation
         }
 
@@ -154,7 +122,7 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
                 }
                 catch (Exception e)
                 {
-                    Fail(Sender, e);
+                    Fail(e);
                 }
             }
         }
@@ -176,7 +144,7 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
                 }
                 catch (Exception e)
                 {
-                    Fail(Sender, e);
+                    Fail(e);
                 }
             }
         }

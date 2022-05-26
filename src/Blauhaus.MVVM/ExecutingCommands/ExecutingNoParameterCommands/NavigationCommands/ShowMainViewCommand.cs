@@ -12,9 +12,8 @@ namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands.Navigatio
         public ShowMainViewCommand(
             IServiceLocator serviceLocator,
             IErrorHandler errorHandler, 
-            IAnalyticsService analyticsService,
             INavigationService navigationService) 
-                : base(serviceLocator, errorHandler, analyticsService)
+                : base(serviceLocator, errorHandler)
         {
             WithExecute(async () =>
             {

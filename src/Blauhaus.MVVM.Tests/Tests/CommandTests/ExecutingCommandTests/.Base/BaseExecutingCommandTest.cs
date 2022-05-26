@@ -57,22 +57,6 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Base
         }
 
         [Test]
-        public void IF_AnalyticsOperationName_is_set_SHOULD_start_operation_and_dispose_operation_when_completed()
-        {
-            //Arrange 
-            _mockOperation = MockAnalyticsService.Where_StartOperation_returns_operation();
-            Sut.LogOperation(this, "MyOp");
-
-            //Act
-            Sut.Execute();
-
-            //Assert
-            MockAnalyticsService.VerifyStartOperation("MyOp"); 
-            MockAnalyticsService.Mock.Verify(x => x.StartOperation(It.Is<object>(y => y.GetType() == this.GetType()), It.IsAny<string>(), It.IsAny<Dictionary<string, object>>(), It.IsAny<string>()));
-            _mockOperation.Mock.Verify(x => x.Dispose(), Times.Once);
-        }
-        
-        [Test]
         public void IF_LogAction_is_set_SHOULD_log()
         {
             //Arrange 
@@ -86,22 +70,6 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Base
             _mockDisposable.Verify(x => x.Dispose(), Times.Once);
         }
 
-
-        [Test]
-        public void IF_IsPageView_SHOULD_start_PageView_operation_and_dispose_operation_when_completed()
-        {
-            //Arrange 
-            _mockOperation = MockAnalyticsService.Where_StartPageViewOperation_returns_operation();
-            Sut.LogPageView(this);
-
-            //Act
-            Sut.Execute();
-
-            //Assert
-            MockAnalyticsService.VerifyStartPageViewOperation(); 
-            MockAnalyticsService.Mock.Verify(x => x.StartPageViewOperation(It.Is<object>(y => y.GetType() == this.GetType()), It.IsAny<string>(), It.IsAny<Dictionary<string, object>>(), It.IsAny<string>()));
-            _mockOperation.Mock.Verify(x => x.Dispose(), Times.Once);
-        }
-
+      
     }
 }
