@@ -10,20 +10,7 @@ using NUnit.Framework;
 namespace Blauhaus.MVVM.Tests.Tests.ErrorHandlingServiceTests
 {
     public class HandleExceptionAsyncTests : BaseMvvmTest<ErrorHandler>
-    { 
-        [Test]
-        public async Task SHOULD_log_exception()
-        {
-            //Arrange
-            var exception = new Exception("failio");
-
-            //Act
-            await Sut.HandleExceptionAsync(this, exception);
-
-            //Assert
-            MockAnalyticsService.VerifyLogException(exception);
-        }
-
+    {  
         [Test] 
         public async Task IF_Release_SHOULD_Show_generic_message()
         {

@@ -1,16 +1,18 @@
 ﻿using System.Globalization;
+using Blauhaus.Analytics.Abstractions;
 using Blauhaus.Analytics.Abstractions.Service;
 using Blauhaus.MVVM.Abstractions.Localization;
+using Microsoft.Extensions.Logging;
 
 namespace Blauhaus.MVVM.Localization
 {
     public class LocalizationService : ILocalizationService
     {
-        private readonly IAnalyticsService _analyticsService;
+        private readonly IAnalyticsLogger _logger;
 
-        public LocalizationService(IAnalyticsService analyticsService)
+        public LocalizationService(IAnalyticsLogger<LocalizationService> logger)
         {
-            _analyticsService = analyticsService;
+            _logger = logger;
         }
 
         public void SetCulture(string cultureString)
@@ -24,7 +26,7 @@ namespace Blauhaus.MVVM.Localization
             CultureInfo.DefaultThreadCurrentCulture = newCulture;
             CultureInfo.DefaultThreadCurrentUICulture = newCulture;
 
-            _analyticsService.Trace(this, $"Set device culture from {originalCulture.DisplayName} to {newCulture.DisplayName}");
+            _logger.LogInformation("Set device culture from {OldCulture} to {NewCulture}", originalCulture.DisplayName, newCulture.DisplayName);
         }
 
         public CultureInfo GetCulture()

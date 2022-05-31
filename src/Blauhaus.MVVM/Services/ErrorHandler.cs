@@ -1,34 +1,37 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Blauhaus.Analytics.Abstractions;
+using Blauhaus.Analytics.Abstractions.Extensions;
 using Blauhaus.Analytics.Abstractions.Service;
 using Blauhaus.Common.ValueObjects.BuildConfigs;
 using Blauhaus.Errors;
 using Blauhaus.Errors.Extensions;
 using Blauhaus.Errors.Handler;
 using Blauhaus.MVVM.Abstractions.Dialogs;
+using Microsoft.Extensions.Logging;
 
 namespace Blauhaus.MVVM.Services
 {
     public class ErrorHandler : IErrorHandler
     {
         private readonly IDialogService _dialogService;
-        private readonly IAnalyticsService _analyticsService;
+        private readonly IAnalyticsLogger _logger;
         private readonly IBuildConfig _buildConfig;
 
         public ErrorHandler(
             IDialogService dialogService, 
-            IAnalyticsService analyticsService,
+            IAnalyticsLogger<ErrorHandler> logger,
             IBuildConfig buildConfig)
         {
             _dialogService = dialogService;
-            _analyticsService = analyticsService;
+            _logger = logger;
             _buildConfig = buildConfig;
         }
 
 
         public async Task HandleExceptionAsync(object sender, Exception exception)
         {
-            _analyticsService.LogException(sender, exception);
+            _logger.LogError(Error.Unexpected(), exception);
 
             var errorMessage = "An unexpected error has occured";
             if (exception is ErrorException errorException)

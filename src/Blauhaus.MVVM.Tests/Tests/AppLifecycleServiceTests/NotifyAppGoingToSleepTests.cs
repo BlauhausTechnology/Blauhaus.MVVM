@@ -21,18 +21,7 @@ namespace Blauhaus.MVVM.Tests.Tests.AppLifecycleServiceTests
             MockHandlerOne.Mock.Verify(x => x.HandleAppStateChangeAsync(AppLifecycleState.GoingToSleep));
             MockHandlerTwo.Mock.Verify(x => x.HandleAppStateChangeAsync(AppLifecycleState.GoingToSleep));
         }
-        
-        [Test]
-        public async Task SHOULD_log()
-        {
-            //Act
-            Sut.NotifyAppGoingToSleep();
-            await Task.Delay(10);
-            
-            //Assert
-            MockAnalyticsService.VerifyTrace("App GoingToSleep. Notifying handlers: 2");
-        }
-        
+         
         [Test]
         public async Task IF_handler_returns_error_SHOULD_handle()
         {

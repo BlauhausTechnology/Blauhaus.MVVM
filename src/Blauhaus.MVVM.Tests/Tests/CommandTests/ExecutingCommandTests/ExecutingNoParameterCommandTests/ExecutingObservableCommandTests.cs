@@ -29,7 +29,6 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
         {
             base.Setup();
 
-            MockOperation = MockAnalyticsService.Where_StartOperation_returns_operation();
 
             _calls = new List<int>();
             _onNext =   (i) => { _calls.Add(i); };
@@ -65,21 +64,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
             Assert.That(_calls.Count, Is.EqualTo(0));
         }
 
-        [Test]
-        public async Task SHOULD_start_operation_and_dispose_operation_when_completed()
-        {
-            //Arrange 
-            _operationName = "MyOp";
-
-            //Act
-            Sut.Execute(null);
-            MockAnalyticsService.VerifyStartOperation("MyOp"); 
-
-            //Assert
-            MockOperation.Mock.Verify(x => x.Dispose(), Times.Once);
-        }
-
-
+       
         [Test]
         public async Task SHOULD_subscribe_to_observable_and_invoke_onNext()
         {

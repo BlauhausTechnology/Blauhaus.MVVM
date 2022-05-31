@@ -21,7 +21,6 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Base
         {
             base.Setup();
             _mockDisposable = MockLogger.MockScopeDisposable;
-            _mockOperation = MockAnalyticsService.Where_StartOperation_returns_operation();
         }
 
         [Test]

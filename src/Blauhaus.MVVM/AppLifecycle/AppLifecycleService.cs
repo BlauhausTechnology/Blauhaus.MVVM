@@ -2,26 +2,28 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Blauhaus.Analytics.Abstractions;
 using Blauhaus.Analytics.Abstractions.Extensions;
 using Blauhaus.Analytics.Abstractions.Service;
 using Blauhaus.Errors.Handler;
 using Blauhaus.MVVM.Abstractions.Application;
 using Blauhaus.Responses;
+using Microsoft.Extensions.Logging;
 
 namespace Blauhaus.MVVM.AppLifecycle
 {
     public class AppLifecycleService : IAppLifecycleService
     {
-        private readonly IAnalyticsService _analyticsService;
+        private readonly IAnalyticsLogger _logger;
         private readonly IErrorHandler _errorHandler;
         private readonly IReadOnlyList<IAppLifecycleHandler> _handlers;
 
         public AppLifecycleService(
-            IAnalyticsService analyticsService,
+            IAnalyticsLogger<AppLifecycleService> logger,
             IEnumerable<IAppLifecycleHandler> handlers,
             IErrorHandler errorHandler)
         {
-            _analyticsService = analyticsService;
+            _logger = logger;
             _errorHandler = errorHandler;
             _handlers = handlers.ToList();
         }
@@ -50,19 +52,21 @@ namespace Blauhaus.MVVM.AppLifecycle
                 {
                     eventHandler.Invoke();
                     
-                    _analyticsService.Trace(this, $"App {state}. Notifying handlers: {_handlers.Count}");
+                    _logger.LogTrace("App state changing to {AppState}", state);
 
                     if (_handlers.Count == 0)
                     {
                         return;
                     }
+                    
+                    _logger.LogTrace("Notifying IAppLifecycleHandlers: {HandlerCount}", _handlers.Count);
 
                     foreach (var appLifecycleHandler in _handlers)
                     {
                         var handlerResult = await appLifecycleHandler.HandleAppStateChangeAsync(state);
                         if (handlerResult.IsFailure)
                         {
-                            _analyticsService.TraceWarning(this, "AppLifeCycle handler failed!");
+                            _logger.LogWarning("AppLifeCycle handler failed! {Error}", handlerResult.Error.ToString());
                             await _errorHandler.HandleErrorAsync(handlerResult.Error);
                         }
                     } 
