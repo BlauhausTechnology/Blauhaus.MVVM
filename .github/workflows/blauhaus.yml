@@ -15,8 +15,8 @@ jobs:
          dotnet-version: '6.0.x'
          include-prerelease: true
      - name: Install MAUI Workloads
-        run: |
-         dotnet workload install maui --ignore-failed-sources
+       run: |
+        dotnet workload install maui --ignore-failed-sources
      - name: Set Version
        run: |
         npm install @actions/core --save
