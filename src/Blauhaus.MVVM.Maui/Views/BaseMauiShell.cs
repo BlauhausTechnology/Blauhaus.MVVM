@@ -2,11 +2,11 @@
 
 namespace Blauhaus.MVVM.Maui.Views;
 
-public abstract class BaseMauiContentPage<TViewModel> : ContentPage
+public abstract class BaseMauiShell<TViewModel> : Shell
 {
     protected readonly TViewModel ViewModel;
 
-    protected BaseMauiContentPage(TViewModel viewModel)
+    protected BaseMauiShell(TViewModel viewModel)
     {
         ViewModel = viewModel;
         BindingContext = ViewModel;
