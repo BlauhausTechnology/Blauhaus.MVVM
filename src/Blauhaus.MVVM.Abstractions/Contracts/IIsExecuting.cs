@@ -2,6 +2,6 @@
 {
     public interface IIsExecuting
     {
-        bool IsExecuting { get; }
+        bool IsExecuting { get; set; }
     }
 }

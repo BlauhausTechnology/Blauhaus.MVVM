@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Blauhaus.Analytics.TestHelpers.MockBuilders;
+using Blauhaus.MVVM.Abstractions.Contracts;
 using Blauhaus.MVVM.ExecutingCommands.Base;
 using Blauhaus.MVVM.Tests.Tests.Base;
 using Blauhaus.TestHelpers.PropertiesChanged.CanExecuteChanged;
@@ -69,6 +70,55 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Base
             _mockDisposable.Verify(x => x.Dispose(), Times.Once);
         }
 
+        [Test]
+        public void IF_IsExecuting_is_given_SHOULD_set()
+        {
+            //Arrange
+            var isExecuting = new TestIsExecuting();
+            Sut.WithIsExecuting(isExecuting);
+            
+            //Act
+            Sut.Execute();
+            
+            //Assert
+            Assert.That(isExecuting.Sets.Count, Is.EqualTo(2));
+            Assert.That(isExecuting.Sets[0], Is.True);
+            Assert.That(isExecuting.Sets[1], Is.False);
+        }
+        
+        [Test]
+        public void IF_IsExecuting_is_given_and_is_true_SHOULD_disable()
+        {
+            //Arrange
+            var isExecuting = new TestIsExecuting { IsExecuting = true };
+            Sut.WithIsExecuting(isExecuting);
+            
+            //Assert
+            Assert.That(Sut.CanExecute(null), Is.False);
+        }
       
     }
+}
+
+
+internal class TestIsExecuting : IIsExecuting
+{
+    private bool _isExecuting;
+
+    public bool IsExecuting
+    {
+        get
+        {
+            Gets.Add(_isExecuting);
+            return _isExecuting;
+        }
+        set
+        {
+            Sets.Add(value);
+            _isExecuting = value;
+        }
+    }
+
+    public List<bool> Gets { get; } = new();
+    public List<bool> Sets { get; } = new();
 }

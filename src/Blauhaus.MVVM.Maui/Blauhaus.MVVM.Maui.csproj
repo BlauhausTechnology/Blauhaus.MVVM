@@ -22,7 +22,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Blauhaus.DeviceServices.Abstractions" Version="1.1.8" />
+	  <PackageReference Include="Blauhaus.DeviceServices.Abstractions" Version="1.1.12" />
 	</ItemGroup>
 
 	<ItemGroup>

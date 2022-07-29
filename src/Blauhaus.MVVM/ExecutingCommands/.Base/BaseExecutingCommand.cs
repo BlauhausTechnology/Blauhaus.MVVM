@@ -8,6 +8,7 @@ using Blauhaus.Common.Utils.NotifyPropertyChanged;
 using Blauhaus.Errors.Handler;
 using Blauhaus.Ioc.Abstractions;
 using Blauhaus.MVVM.Abstractions.Commands;
+using Blauhaus.MVVM.Abstractions.Contracts;
 using Blauhaus.MVVM.Services;
 using Microsoft.Extensions.Logging;
 
@@ -23,6 +24,7 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
         private IDisposable? _cleanup;
         private IAnalyticsLogger? _logger;
         private Func<IDisposable>? _loggerFunc;
+        private IIsExecuting? _externalIsExecuting;
 
         protected BaseExecutingCommand(
             IServiceLocator serviceLocator,
@@ -52,10 +54,18 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
             };
             return (TExecutingCommand)this;
         }
- 
+
+        public TExecutingCommand WithIsExecuting(IIsExecuting externalIsExecuting)
+        {
+            _externalIsExecuting = externalIsExecuting;
+            return (TExecutingCommand)this;
+        }
         public bool CanExecute(object parameter) => CanExecute();
         protected bool CanExecute()
         {
+            if (_externalIsExecuting is not null && _externalIsExecuting.IsExecuting)
+                return false;
+            
             if (_canExecute == null)
             {
                 return !IsExecuting;
@@ -87,6 +97,8 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
         protected void Start()
         {
             IsExecuting = true;
+            if (_externalIsExecuting != null) _externalIsExecuting.IsExecuting = true;
+            
             if (_loggerFunc != null)
             {
                 _cleanup = _loggerFunc.Invoke();
@@ -96,6 +108,8 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
         protected void Finish()
         {
             IsExecuting = false;
+            if (_externalIsExecuting != null) _externalIsExecuting.IsExecuting = false;
+            
             _cleanup?.Dispose();
         }
 
