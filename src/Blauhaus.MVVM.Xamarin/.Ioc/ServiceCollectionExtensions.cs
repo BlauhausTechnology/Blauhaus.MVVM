@@ -1,7 +1,8 @@
 ﻿using Blauhaus.Errors.Handler;
 using Blauhaus.MVVM.Abstractions.Dialogs;
 using Blauhaus.MVVM.Abstractions.Localization;
-using Blauhaus.MVVM.Abstractions.Navigation;
+using Blauhaus.MVVM.Abstractions.Navigation.NavigationService;
+using Blauhaus.MVVM.Abstractions.Navigation.Register;
 using Blauhaus.MVVM.Abstractions.ViewModels;
 using Blauhaus.MVVM.Abstractions.Views;
 using Blauhaus.MVVM.Localization;
@@ -20,7 +21,7 @@ namespace Blauhaus.MVVM.Xamarin.Ioc
     public static class ServiceCollectionExtensions
     {
 
-        private static readonly NavigationLookup NavigationLookup = new NavigationLookup();
+        private static readonly NavigationRegister NavigationRegister = new NavigationRegister();
 
         public static IServiceCollection AddMvvmServices(this IServiceCollection services)
         {
@@ -34,7 +35,7 @@ namespace Blauhaus.MVVM.Xamarin.Ioc
                 .AddSingleton<IDialogService, FormsDialogService>()
                 .AddSingleton<INavigationService, FormsNavigationService>()
                 .AddSingleton<IFormsApplicationProxy, FormsApplicationProxy>()
-                .AddSingleton<INavigationLookup>(x => NavigationLookup)
+                .AddSingleton<INavigationRegister>(x => NavigationRegister)
                 .AddSingleton<IErrorHandler, TErrorHandler>();
         }
          
@@ -42,12 +43,12 @@ namespace Blauhaus.MVVM.Xamarin.Ioc
             where TView : Page, IView 
             where TViewModel : class, IViewModel
         {
-            services.TryAddSingleton<INavigationLookup>(NavigationLookup);
+            services.TryAddSingleton<INavigationRegister>(NavigationRegister);
 
             services.AddSingleton<TView>();
             services.TryAddSingleton<TViewModel>();
 
-            NavigationLookup.Register<TView, TViewModel>();
+            NavigationRegister.Register<TView, TViewModel>();
             return services;
         }
 
@@ -55,12 +56,12 @@ namespace Blauhaus.MVVM.Xamarin.Ioc
             where TPage : BasePage<TViewModel>, IView 
             where TViewModel : class, IViewModel
         {
-            services.TryAddSingleton<INavigationLookup>(NavigationLookup);
+            services.TryAddSingleton<INavigationRegister>(NavigationRegister);
             
             services.AddTransient<TPage>();
             services.AddTransient<TViewModel>();
 
-            NavigationLookup.Register<TPage, TViewModel>();
+            NavigationRegister.Register<TPage, TViewModel>();
             return services;
         }
 

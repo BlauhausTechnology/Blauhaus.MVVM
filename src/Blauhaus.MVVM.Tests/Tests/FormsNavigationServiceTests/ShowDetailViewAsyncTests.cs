@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Blauhaus.MVVM.Abstractions.Navigation;
+using Blauhaus.MVVM.Abstractions.Navigation.NavigationService;
 using Blauhaus.MVVM.Tests.TestObjects;
 using Blauhaus.MVVM.Tests.Tests.FormsNavigationServiceTests._Base;
 using Blauhaus.MVVM.Xamarin.Views.MasterDetail;

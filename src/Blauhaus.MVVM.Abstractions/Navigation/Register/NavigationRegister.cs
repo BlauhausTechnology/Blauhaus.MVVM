@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using Blauhaus.MVVM.Abstractions.ViewModels;
 using Blauhaus.MVVM.Abstractions.Views;
 
-namespace Blauhaus.MVVM.Abstractions.Navigation
+namespace Blauhaus.MVVM.Abstractions.Navigation.Register
 {
-    public class NavigationLookup : INavigationLookup
+    public class NavigationRegister : INavigationRegister
     {
 
-        private readonly Dictionary<string, Type> _viewTypes = new Dictionary<string, Type>();
+        private readonly Dictionary<string, Type> _viewTypes = new();
 
         public void Register<TView, TViewModel>()
             where TView : IView
@@ -16,7 +16,7 @@ namespace Blauhaus.MVVM.Abstractions.Navigation
         {
             _viewTypes[GetViewModelIdentifier<TViewModel>()] = typeof(TView);
         }
-        
+
         public Type? GetViewType<TViewModel>() where TViewModel : IViewModel
         {
             return _viewTypes.TryGetValue(GetViewModelIdentifier<TViewModel>(), out var viewType) ? viewType : null;

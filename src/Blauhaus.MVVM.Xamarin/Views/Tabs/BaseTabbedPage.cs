@@ -4,6 +4,8 @@ using Blauhaus.Analytics.Abstractions.Service;
 using Blauhaus.Common.Abstractions;
 using Blauhaus.Ioc.Abstractions;
 using Blauhaus.MVVM.Abstractions.Navigation;
+using Blauhaus.MVVM.Abstractions.Navigation.NavigationService;
+using Blauhaus.MVVM.Abstractions.Navigation.Register;
 using Blauhaus.MVVM.Abstractions.ViewModels;
 using Blauhaus.MVVM.Abstractions.ViewModels.Tabs;
 using Blauhaus.MVVM.Abstractions.Views;
@@ -16,7 +18,7 @@ using TabbedPage = Xamarin.Forms.TabbedPage;
 // ReSharper disable SuspiciousTypeConversion.Global
 
 namespace Blauhaus.MVVM.Xamarin.Views.Tabs
-{ 
+{
     public abstract class BaseTabbedPage<TViewModel> : TabbedPage, IView 
         where TViewModel : IViewModel
     {
@@ -25,7 +27,7 @@ namespace Blauhaus.MVVM.Xamarin.Views.Tabs
         protected BaseTabbedPage(
             TViewModel viewModel,
             INavigationService navigationService,
-            INavigationLookup navigationLookup,
+            INavigationRegister navigationRegister,
             IServiceLocator serviceLocator,
             IAnalyticsService analyticsService)
         {
@@ -52,7 +54,7 @@ namespace Blauhaus.MVVM.Xamarin.Views.Tabs
                             return;
                         }
 
-                        var viewType = navigationLookup.GetViewType(tabDefinition.ViewModelType);
+                        var viewType = navigationRegister.GetViewType(tabDefinition.ViewModelType);
                         if (viewType == null)
                         {
                             throw new NavigationException($"No view is registered for {tabDefinition.ViewModelType.Name}");

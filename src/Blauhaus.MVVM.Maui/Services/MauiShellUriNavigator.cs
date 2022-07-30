@@ -1,10 +1,10 @@
 ﻿using Blauhaus.Analytics.Abstractions;
 using Blauhaus.DeviceServices.Abstractions.Thread;
 using Blauhaus.Errors.Handler;
-using Blauhaus.MVVM.Abstractions.Navigation;
+using Blauhaus.MVVM.Abstractions.Navigation.UriNavigation;
 using Microsoft.Extensions.Logging;
 
-namespace Blauhaus.MVVM.Maui.Services;
+namespace Blauhaus.MVVM.Maui.Services.Navigation;
 
 public class MauiShellUriNavigator : IUriNavigator
 {

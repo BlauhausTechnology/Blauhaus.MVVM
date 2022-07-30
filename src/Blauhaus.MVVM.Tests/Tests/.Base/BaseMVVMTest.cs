@@ -7,7 +7,8 @@ using Blauhaus.DeviceServices.TestHelpers.MockBuilders;
 using Blauhaus.Errors.Handler;
 using Blauhaus.Ioc.DotNetCoreIocService;
 using Blauhaus.MVVM.Abstractions.Dialogs;
-using Blauhaus.MVVM.Abstractions.Navigation;
+using Blauhaus.MVVM.Abstractions.Navigation.NavigationService;
+using Blauhaus.MVVM.Abstractions.Navigation.Register;
 using Blauhaus.MVVM.TestHelpers.MockBuilders.Services;
 using Blauhaus.MVVM.Tests.MockBuilders;
 using Blauhaus.MVVM.Xamarin.Navigation.FormsApplicationProxy;
@@ -49,7 +50,7 @@ namespace Blauhaus.MVVM.Tests.Tests.Base
         protected IBuildConfig Config = null!;
 
         protected NavigationServiceMockBuilder MockNavigationService => Mocks.AddMock<NavigationServiceMockBuilder, INavigationService>().Invoke();
-        protected NavigationLookupMockBuilder MockNavigationLookup => Mocks.AddMock<NavigationLookupMockBuilder, INavigationLookup>().Invoke();
+        protected NavigationLookupMockBuilder MockNavigationLookup => Mocks.AddMock<NavigationLookupMockBuilder, INavigationRegister>().Invoke();
         protected FormsApplicationProxyMockBuilder MockFormsApplicationProxy => Mocks.AddMock<FormsApplicationProxyMockBuilder, IFormsApplicationProxy>().Invoke();
         protected ErrorHandlerMockBuilder MockErrorHandler => Mocks.AddMock<ErrorHandlerMockBuilder, IErrorHandler>().Invoke();
         protected ConnectivityServiceMockBuilder MockConnectivityService => Mocks.AddMock<ConnectivityServiceMockBuilder, IConnectivityService>().Invoke();

@@ -1,6 +1,7 @@
 ﻿using Blauhaus.Errors.Handler;
 using Blauhaus.MVVM.Abstractions.Dialogs;
-using Blauhaus.MVVM.Abstractions.Navigation;
+using Blauhaus.MVVM.Abstractions.Navigation.NavigationService;
+using Blauhaus.MVVM.Abstractions.Navigation.Register;
 using Blauhaus.MVVM.Abstractions.ViewModels;
 using Blauhaus.MVVM.Abstractions.Views;
 using Blauhaus.MVVM.MonoGame.Screens;
@@ -12,7 +13,7 @@ namespace Blauhaus.MVVM.MonoGame.Ioc
 {
     public static class ServiceCollectionExtensions
     {
-        private static readonly NavigationLookup NavigationLookup = new NavigationLookup();
+        private static readonly NavigationRegister NavigationRegister = new NavigationRegister();
         
         public static IServiceCollection AddMvvmServices(this IServiceCollection services)
         {
@@ -27,7 +28,7 @@ namespace Blauhaus.MVVM.MonoGame.Ioc
             services
                 .AddSingleton<IDialogService, MonoGameDialogService>()
                 .AddSingleton<INavigationService, MonoGameNavigationService>()
-                .AddSingleton<INavigationLookup>(x => NavigationLookup)
+                .AddSingleton<INavigationRegister>(x => NavigationRegister)
                 .AddSingleton<IErrorHandler, TErrorHandler>();
             
             return services;
@@ -37,12 +38,12 @@ namespace Blauhaus.MVVM.MonoGame.Ioc
             where TPage : BaseScreen<TViewModel>, IView 
             where TViewModel : class, IViewModel
         {
-            services.TryAddSingleton<INavigationLookup>(NavigationLookup);
+            services.TryAddSingleton<INavigationRegister>(NavigationRegister);
             
             services.AddTransient<TPage>();
             services.AddTransient<TViewModel>();
 
-            NavigationLookup.Register<TPage, TViewModel>();
+            NavigationRegister.Register<TPage, TViewModel>();
             return services;
         }
     }

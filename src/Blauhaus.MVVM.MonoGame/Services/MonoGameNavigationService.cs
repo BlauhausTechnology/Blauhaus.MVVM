@@ -4,6 +4,8 @@ using Blauhaus.Common.Abstractions;
 using Blauhaus.DeviceServices.Abstractions.Thread;
 using Blauhaus.Ioc.Abstractions;
 using Blauhaus.MVVM.Abstractions.Navigation;
+using Blauhaus.MVVM.Abstractions.Navigation.NavigationService;
+using Blauhaus.MVVM.Abstractions.Navigation.Register;
 using Blauhaus.MVVM.Abstractions.ViewModels;
 using Blauhaus.MVVM.Abstractions.Views;
 using Blauhaus.MVVM.MonoGame.Games;
@@ -14,18 +16,18 @@ namespace Blauhaus.MVVM.MonoGame.Services
     public class MonoGameNavigationService : INavigationService
     {
         private readonly IServiceLocator _serviceLocator;
-        private readonly INavigationLookup _navigationLookup;
+        private readonly INavigationRegister _navigationRegister;
         private readonly IThreadService _threadService;
         private readonly IScreenGame _screenGame;
 
         public MonoGameNavigationService(
             IServiceLocator serviceLocator,
-            INavigationLookup navigationLookup,
+            INavigationRegister navigationRegister,
             IThreadService threadService,
             IScreenGame screenGame)
         {
             _serviceLocator = serviceLocator;
-            _navigationLookup = navigationLookup;
+            _navigationRegister = navigationRegister;
             _threadService = threadService;
             _screenGame = screenGame;
         }
@@ -111,7 +113,7 @@ namespace Blauhaus.MVVM.MonoGame.Services
         
         private IGameScreen GetScreenForViewModel(Type viewModelType) 
         {
-            var viewType = _navigationLookup.GetViewType(viewModelType);
+            var viewType = _navigationRegister.GetViewType(viewModelType);
             if (viewType == null)
             {
                 throw new NavigationException($"No view is registered for {viewModelType.Name}");

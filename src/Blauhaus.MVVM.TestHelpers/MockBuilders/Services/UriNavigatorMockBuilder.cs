@@ -1,4 +1,4 @@
-﻿using Blauhaus.MVVM.Abstractions.Navigation;
+﻿using Blauhaus.MVVM.Abstractions.Navigation.UriNavigation;
 using Blauhaus.TestHelpers.MockBuilders;
 using Moq;
 

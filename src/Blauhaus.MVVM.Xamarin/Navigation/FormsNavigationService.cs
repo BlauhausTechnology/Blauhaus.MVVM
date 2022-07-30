@@ -6,6 +6,8 @@ using Blauhaus.Common.Abstractions;
 using Blauhaus.DeviceServices.Abstractions.Thread;
 using Blauhaus.Ioc.Abstractions;
 using Blauhaus.MVVM.Abstractions.Navigation;
+using Blauhaus.MVVM.Abstractions.Navigation.NavigationService;
+using Blauhaus.MVVM.Abstractions.Navigation.Register;
 using Blauhaus.MVVM.Abstractions.ViewModels;
 using Blauhaus.MVVM.Abstractions.Views;
 using Blauhaus.MVVM.Xamarin.Navigation.FormsApplicationProxy;
@@ -18,7 +20,7 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
     public class FormsNavigationService : INavigationService
     {
         private readonly IServiceLocator _serviceLocator;
-        private readonly INavigationLookup _navigationLookup;
+        private readonly INavigationRegister _navigationRegister;
         private readonly IFormsApplicationProxy _application;
         private readonly IThreadService _threadService;
 
@@ -38,12 +40,12 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
 
         public FormsNavigationService(
             IServiceLocator serviceLocator,
-            INavigationLookup navigationLookup,
+            INavigationRegister navigationRegister,
             IFormsApplicationProxy application, 
             IThreadService threadService)
         {
             _serviceLocator = serviceLocator;
-            _navigationLookup = navigationLookup;
+            _navigationRegister = navigationRegister;
             _application = application;
             _threadService = threadService;
         }
@@ -244,7 +246,7 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
           
         private TPage GetPageForViewModel<TPage>(Type viewModelType) where TPage : Page
         {
-            var viewType = _navigationLookup.GetViewType(viewModelType);
+            var viewType = _navigationRegister.GetViewType(viewModelType);
             if (viewType == null)
             {
                 throw new NavigationException($"No view is registered for {viewModelType.Name}");

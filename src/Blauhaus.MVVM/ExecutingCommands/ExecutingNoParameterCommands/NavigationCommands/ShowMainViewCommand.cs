@@ -1,7 +1,7 @@
 ﻿using Blauhaus.Analytics.Abstractions.Service;
 using Blauhaus.Errors.Handler;
 using Blauhaus.Ioc.Abstractions;
-using Blauhaus.MVVM.Abstractions.Navigation;
+using Blauhaus.MVVM.Abstractions.Navigation.NavigationService;
 using Blauhaus.MVVM.Abstractions.ViewModels;
 
 namespace Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands.NavigationCommands

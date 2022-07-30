@@ -1,11 +1,11 @@
 ﻿using System;
-using Blauhaus.MVVM.Abstractions.Navigation;
+using Blauhaus.MVVM.Abstractions.Navigation.Register;
 using Blauhaus.TestHelpers.MockBuilders;
 using Moq;
 
 namespace Blauhaus.MVVM.Tests.MockBuilders
 {
-    public class NavigationLookupMockBuilder : BaseMockBuilder<NavigationLookupMockBuilder, INavigationLookup>
+    public class NavigationLookupMockBuilder : BaseMockBuilder<NavigationLookupMockBuilder, INavigationRegister>
     {
         public NavigationLookupMockBuilder Where_GetViewType_returns(Type type)
         {

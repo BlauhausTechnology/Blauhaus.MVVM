@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Blauhaus.MVVM.Abstractions.Navigation;
+namespace Blauhaus.MVVM.Abstractions.Navigation.UriNavigation;
 
 public interface IUriNavigator
 {
