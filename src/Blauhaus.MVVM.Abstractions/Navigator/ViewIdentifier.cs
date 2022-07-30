@@ -2,7 +2,7 @@
 using Blauhaus.Common.Abstractions;
 using Blauhaus.Common.ValueObjects.Base;
 
-namespace Blauhaus.MVVM.Abstractions.Navigation.Navigator
+namespace Blauhaus.MVVM.Abstractions.Navigator
 {
     public class ViewIdentifier : BaseValueObject<ViewIdentifier>, IHasName
     {
@@ -11,6 +11,7 @@ namespace Blauhaus.MVVM.Abstractions.Navigation.Navigator
             Name = name;
             Identifier = identifier;
         }
+
         public string Name { get; }
         public string? Identifier { get; }
 

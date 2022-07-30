@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Blauhaus.MVVM.Abstractions.Navigation.Navigator;
+namespace Blauhaus.MVVM.Abstractions.Navigator;
 
 public interface INavigator
 {

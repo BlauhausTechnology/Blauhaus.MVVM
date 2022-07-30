@@ -1,21 +1,29 @@
 ﻿using Blauhaus.Ioc.Abstractions;
 using Blauhaus.MVVM.Abstractions.Commands;
+using Blauhaus.MVVM.Abstractions.Navigator;
 using Blauhaus.MVVM.Abstractions.ViewModels;
 using Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands;
+using Blauhaus.MVVM.Maui.TestApp.Navigation;
 using Blauhaus.MVVM.Maui.TestApp.ViewModels.Base;
+using Blauhaus.MVVM.Maui.TestApp.Views;
 
 namespace Blauhaus.MVVM.Maui.TestApp.ViewModels;
 
 public class LoadingViewModel : BaseTestAppViewModel, IAppearingViewModel
 {
     public LoadingViewModel(
-        IServiceLocator serviceLocator) 
-            : base(serviceLocator)
+        IServiceLocator serviceLocator,
+        INavigator navigator) 
+            : base(serviceLocator, navigator)
     {
         Title = "Loading...";
 
         AppearCommand=serviceLocator.Resolve<AsyncExecutingCommand>()
             .WithExecute(HandleAppearingAsync);
+        
+        NavigateFullScreenCommand = Navigate(AppNavigation.FullScreen);
+        NavigateContainerCommand = Navigate(AppNavigation.Container);
+
     }
 
     public string Status
@@ -26,7 +34,10 @@ public class LoadingViewModel : BaseTestAppViewModel, IAppearingViewModel
 
     public IExecutingCommand AppearCommand { get; }
 
-    
+    public IExecutingCommand NavigateContainerCommand { get; }
+    public IExecutingCommand NavigateFullScreenCommand { get; }
+     
+
     private async Task HandleAppearingAsync()
     {
         Status = "Loading";

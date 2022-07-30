@@ -4,13 +4,13 @@ using Blauhaus.MVVM.Collections.Base;
 using Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands;
 using Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands.NavigationCommands;
 using Blauhaus.MVVM.ExecutingCommands.ExecutingParameterCommands;
+using Blauhaus.MVVM.Navigator;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Blauhaus.MVVM.Ioc
 {
     public static class ServiceCollectionExtensions
     {
-
         public static IServiceCollection AddAppLifecycleStateHandler<THandler>(this IServiceCollection services) where THandler : class, IAppLifecycleHandler
         {
             services.AddSingleton<IAppLifecycleHandler, THandler>();

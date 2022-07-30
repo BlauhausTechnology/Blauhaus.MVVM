@@ -1,18 +1,30 @@
 ﻿using Blauhaus.Ioc.Abstractions;
+using Blauhaus.MVVM.Abstractions.Commands;
 using Blauhaus.MVVM.Abstractions.Contracts;
+using Blauhaus.MVVM.Abstractions.Navigator;
 using Blauhaus.MVVM.Abstractions.ViewModels;
+using Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands;
 
 namespace Blauhaus.MVVM.Maui.TestApp.ViewModels.Base;
 
 public abstract class BaseTestAppViewModel : BaseViewModel, IIsExecuting
 {
-    private readonly IServiceLocator _serviceLocator;
+    protected readonly IServiceLocator ServiceLocator;
+    protected readonly INavigator Navigator;
 
-    protected BaseTestAppViewModel(IServiceLocator serviceLocator)
+    protected T Resolve<T>() where T : class => ServiceLocator.Resolve<T>();
+
+
+    protected BaseTestAppViewModel(
+        IServiceLocator serviceLocator,
+        INavigator navigator)
     {
-        _serviceLocator = serviceLocator;
+        ServiceLocator = serviceLocator;
+        Navigator = navigator;
     }
 
+    protected IExecutingCommand Navigate(NavigationTarget target) => Resolve<AsyncExecutingCommand>()
+        .WithExecute(async () => await Navigator.NavigateAsync(target));
     
     public string Title
     {

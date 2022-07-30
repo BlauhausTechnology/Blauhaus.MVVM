@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using Blauhaus.Common.ValueObjects.Base;
 
-namespace Blauhaus.MVVM.Abstractions.Navigation.Navigator
+namespace Blauhaus.MVVM.Abstractions.Navigator
 {
     public class NavigationTarget : BaseValueObject<NavigationTarget>
     {

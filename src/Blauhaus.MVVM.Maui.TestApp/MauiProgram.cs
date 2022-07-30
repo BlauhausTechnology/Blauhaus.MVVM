@@ -3,10 +3,12 @@ using Blauhaus.DeviceServices.Maui.Ioc;
 using Blauhaus.Ioc.DotNetCoreIocService;
 using Blauhaus.MVVM.Ioc;
 using Blauhaus.MVVM.Maui.Ioc;
+using Blauhaus.MVVM.Maui.TestApp.Navigation;
 using Blauhaus.MVVM.Maui.TestApp.ViewModels;
 using Blauhaus.MVVM.Maui.TestApp.Views;
 using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Markup;
+using static Blauhaus.MVVM.Maui.TestApp.Navigation.AppNavigation.Views;
 
 namespace Blauhaus.MVVM.Maui.TestApp
 {
@@ -27,6 +29,7 @@ namespace Blauhaus.MVVM.Maui.TestApp
 
             builder.Services
                 .AddMauiServices()
+                .AddMauiNavigator()
                 .AddMauiDeviceServices()
                 .AddServiceLocator()
                 .AddExecutingCommands()
@@ -34,8 +37,10 @@ namespace Blauhaus.MVVM.Maui.TestApp
 
 
             builder.Services
-                .AddShell<StartShell, StartViewModel>()
-                .AddView<LoadingView, LoadingViewModel>();
+                .AddView<LoadingView, LoadingViewModel>(LoadingViewIdentifier) 
+                .AddView<FullScreenView, FullScreenViewModel>(FullScreenViewIdentifier)  
+                .AddView<MainContainerView, MainContainerViewModel>(ContainerViewIdentifier)
+                ;
 
             return builder.Build();
         }

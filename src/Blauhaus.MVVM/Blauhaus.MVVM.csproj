@@ -28,4 +28,8 @@
     <ProjectReference Include="..\Blauhaus.MVVM.Abstractions\Blauhaus.MVVM.Abstractions.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Navigator\" />
+  </ItemGroup>
+
 </Project>

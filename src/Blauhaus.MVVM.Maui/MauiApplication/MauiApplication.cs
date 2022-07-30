@@ -3,9 +3,9 @@
 namespace Blauhaus.MVVM.Maui.MauiApplication;
 
 public class MauiApplication : IMauiApplication
-{ 
+{
 
-    public void SetMainPage<TPage>(TPage page) where TPage : Page
+    public void SetMainPage(Page page)
     {
         GetMainPage("navigate");
         Application.Current!.MainPage = page;

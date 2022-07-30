@@ -4,11 +4,11 @@ using CommunityToolkit.Maui.Markup;
 
 namespace Blauhaus.MVVM.Maui.TestApp.Views;
 
-public class LoadingView : BaseTestAppContentPage<LoadingViewModel>
+public class FullScreenView : BaseTestAppContentPage<FullScreenViewModel>
 {
-    public LoadingView(LoadingViewModel viewModel) : base(viewModel)
+    public FullScreenView(FullScreenViewModel viewModel) : base(viewModel)
     {
-        BackgroundColor = Color.FromRgb(100, 100, 100);
+        BackgroundColor = Color.FromRgb(10, 120, 100);
 
         Content = new VerticalStackLayout
         {            
@@ -18,16 +18,14 @@ public class LoadingView : BaseTestAppContentPage<LoadingViewModel>
             Children =
             {
                 new BoxView { HeightRequest = 100 },
+                 
                 
-                new Label()
-                    .Bind(nameof(ViewModel.Status)),
-                
-                new Button{Text = "Go to Full Screen screen"}
-                    .Bind(nameof(ViewModel.NavigateFullScreenCommand)),
+                new Button{Text = "Go to Loading screen"}
+                    .Bind(nameof(ViewModel.NavigateLoadingCommand)),
 
                 //new Button{Text = "Go to Container screen"}
                 //    .Bind(nameof(ViewModel.NavigateContainerCommand)),
             }
-        };
+        }.Fill();
     }
 }

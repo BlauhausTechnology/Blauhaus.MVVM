@@ -1,16 +1,18 @@
 ﻿using Blauhaus.MVVM.Abstractions.ViewModels;
+using Blauhaus.MVVM.Abstractions.Views;
 
 namespace Blauhaus.MVVM.Maui.Views;
 
-public abstract class BaseMauiContentPage<TViewModel> : ContentPage
+public abstract class BaseMauiContentPage<TViewModel> : ContentPage, IView<TViewModel> where TViewModel : class, IViewModel
 {
-    protected readonly TViewModel ViewModel;
 
     protected BaseMauiContentPage(TViewModel viewModel)
     {
         ViewModel = viewModel;
         BindingContext = ViewModel;
     }
+
+    public TViewModel ViewModel { get; }
 
     protected override void OnAppearing()
     {
@@ -33,4 +35,5 @@ public abstract class BaseMauiContentPage<TViewModel> : ContentPage
             }
         }
     }
+
 }
