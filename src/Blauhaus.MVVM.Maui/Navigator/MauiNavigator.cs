@@ -34,7 +34,8 @@ public class MauiNavigator : INavigator
         if (target.Path.Length == 1)
         {
             var page = ConstructPage<Page>(target.Path[0]);
-            _mauiApplication.SetMainPage(page);
+            _mauiApplication.AddShellContent(page);
+            //_mauiApplication.SetMainPage(page);
         }
 
     }

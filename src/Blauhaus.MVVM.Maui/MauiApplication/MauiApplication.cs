@@ -11,6 +11,33 @@ public class MauiApplication : IMauiApplication
         Application.Current!.MainPage = page;
     }
 
+    public void AddShellContent(Page page)
+    {
+        var shellContent = new ShellContent
+        {
+            Title = page.GetType().Name,
+            Route = page.GetType().Name,
+            Content = page
+        };
+
+        var mainPage = GetMainPage("navigate");
+        if (mainPage is not Shell shell)
+        {
+            shell = new Shell
+            {
+                Title = "Shell",
+                Items = { shellContent }
+            };
+            Application.Current!.MainPage = shell;
+        }
+        else
+        {
+            shell.Items.Add(shellContent);
+        }
+        
+        
+    }
+
     public Task<bool> DisplayAlertAsync(string title, string message, string cancel, string accept)
     {
      return GetMainPage("display alert")

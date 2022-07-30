@@ -25,8 +25,8 @@ public class LoadingView : BaseTestAppContentPage<LoadingViewModel>
                 new Button{Text = "Go to Full Screen screen"}
                     .Bind(nameof(ViewModel.NavigateFullScreenCommand)),
 
-                //new Button{Text = "Go to Container screen"}
-                //    .Bind(nameof(ViewModel.NavigateContainerCommand)),
+                new Button{Text = "Go to Main Container screen"}
+                    .Bind(nameof(ViewModel.NavigateContainerCommand)),
             }
         };
     }

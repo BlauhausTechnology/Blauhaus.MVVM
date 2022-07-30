@@ -4,7 +4,7 @@ using Android.Runtime;
 namespace Blauhaus.MVVM.Maui.TestApp
 {
     [Application]
-    public class MainApplication : MauiApplication
+    public class MainApplication : Microsoft.Maui.MauiApplication
     {
         public MainApplication(IntPtr handle, JniHandleOwnership ownership)
             : base(handle, ownership)
