@@ -2,7 +2,7 @@
 
 namespace Blauhaus.MVVM.Abstractions.TargetNavigation;
 
-public interface ITargetNavigator
+public interface INavigator
 {
     Task NavigateAsync(NavigationTarget target);
 }

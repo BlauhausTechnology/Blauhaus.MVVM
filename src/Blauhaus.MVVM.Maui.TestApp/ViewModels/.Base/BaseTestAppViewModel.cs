@@ -7,11 +7,11 @@ namespace Blauhaus.MVVM.Maui.TestApp.ViewModels.Base;
 public abstract class BaseTestAppViewModel : BaseViewModel
 {
     protected readonly IServiceLocator ServiceLocator;
-    protected readonly ITargetNavigator TargetNavigator;
+    protected readonly INavigator TargetNavigator;
 
     protected BaseTestAppViewModel(
         IServiceLocator serviceLocator,
-        ITargetNavigator targetNavigator)
+        INavigator targetNavigator)
     {
         ServiceLocator = serviceLocator;
         TargetNavigator = targetNavigator;

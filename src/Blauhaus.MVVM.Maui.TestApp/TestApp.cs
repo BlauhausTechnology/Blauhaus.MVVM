@@ -5,11 +5,11 @@ namespace Blauhaus.MVVM.Maui.TestApp
 {
     public class TestApp : Application
     {
-        private readonly ITargetNavigator _navigator;
+        private readonly INavigator _navigator;
 
         public TestApp(IServiceProvider serviceProvider)
         {
-            _navigator = serviceProvider.GetRequiredService<ITargetNavigator>();
+            _navigator = serviceProvider.GetRequiredService<INavigator>();
             MainPage = new ContentPage{BackgroundColor = Color.FromRgb(0,0,120)};
         }
 
@@ -17,7 +17,7 @@ namespace Blauhaus.MVVM.Maui.TestApp
         {
             base.OnStart();
 
-            await _navigator.NavigateAsync(AppTargets.LoadingView);
+            await _navigator.NavigateAsync(NavigationTarget.CreateView(AppViews.LoadingView));
         }
     }
 }

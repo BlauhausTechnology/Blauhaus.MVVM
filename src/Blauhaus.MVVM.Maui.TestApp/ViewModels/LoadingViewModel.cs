@@ -11,11 +11,11 @@ public class LoadingViewModel : BaseTestAppViewModel
 {
     public LoadingViewModel(
         IServiceLocator serviceLocator, 
-        ITargetNavigator targetNavigator) 
+        INavigator targetNavigator) 
             : base(serviceLocator, targetNavigator)
     {
         NavigateToContainerCommand = serviceLocator.Resolve<AsyncExecutingCommand>()
-            .WithExecute(async () => await targetNavigator.NavigateAsync(AppTargets.MainContainerView));
+            .WithExecute(async () => await targetNavigator.NavigateAsync(NavigationTarget.CreateContainer(AppViews.MainContainerView)));
     }
 
     public IExecutingCommand NavigateToContainerCommand { get; }

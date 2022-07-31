@@ -14,6 +14,13 @@ public abstract class BaseMauiShell<TViewModel> : Shell, IView<TViewModel>, INav
     }
     
     public TViewModel ViewModel { get; }
+    public ViewIdentifier ViewIdentifier { get; private set; }
+
+    
+    public void Initialize(ViewIdentifier viewIdentifier)
+    {
+        ViewIdentifier = viewIdentifier;
+    }
 
     protected override void OnAppearing()
     {
@@ -37,8 +44,10 @@ public abstract class BaseMauiShell<TViewModel> : Shell, IView<TViewModel>, INav
         }
     }
 
+
     public async Task NavigateAsync(NavigationTarget target)
     {
-        await GoToAsync(target.Uri);
+        //await GoToAsync(target.Uri);
     }
+
 }

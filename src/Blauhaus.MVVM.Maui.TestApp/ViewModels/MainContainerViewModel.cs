@@ -9,7 +9,7 @@ public class MainContainerViewModel : BaseTestAppViewModel
 {
     public MainContainerViewModel(
         IServiceLocator serviceLocator, 
-        ITargetNavigator targetNavigator) 
+        INavigator targetNavigator) 
             : base(serviceLocator, targetNavigator)
     {
     }

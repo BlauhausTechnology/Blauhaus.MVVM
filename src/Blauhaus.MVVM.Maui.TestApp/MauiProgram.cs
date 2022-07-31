@@ -4,7 +4,6 @@ using Blauhaus.Ioc.DotNetCoreIocService;
 using Blauhaus.MVVM.Abstractions.TargetNavigation;
 using Blauhaus.MVVM.Ioc;
 using Blauhaus.MVVM.Maui.Ioc;
-using Blauhaus.MVVM.Maui.Services.TargetNavigation;
 using Blauhaus.MVVM.Maui.TestApp.Navigation;
 using Blauhaus.MVVM.Maui.TestApp.ViewModels;
 using Blauhaus.MVVM.Maui.TestApp.Views;
@@ -29,18 +28,18 @@ namespace Blauhaus.MVVM.Maui.TestApp
             builder.Services
                 .AddMauiServices()
                 .AddMauiDeviceServices()
-                .AddMauiTargetNavigator()
+                .AddMauiNavigator()
                 .AddServiceLocator()
                 .AddExecutingCommands()
                 .AddMauiSerilogAnalytics("Test app", config => { });
 
 
-            builder.Services
-                .AddContainer<MainContainerView, MainContainerViewModel>(AppContainers.MainAppContainer);
+            //builder.Services
+            //    .AddContainer<MainContainerView, MainContainerViewModel>(AppContainers.MainAppContainer);
             
             builder.Services
-                .AddView<LoadingView, LoadingViewModel>(AppTargets.LoadingView)
-                /*.AddView<ContainerHomeView, ContainerHomeViewModel>(AppTargets.MainContainerView)*/;
+                .AddView<LoadingView, LoadingViewModel>(AppViews.LoadingView)
+                .AddView<MainContainerView, MainContainerViewModel>(AppViews.MainContainerView);
 
             return builder.Build();
         }

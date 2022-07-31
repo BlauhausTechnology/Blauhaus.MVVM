@@ -6,7 +6,7 @@ namespace Blauhaus.MVVM.Maui.TestApp.ViewModels;
 
 public class ContainerHomeViewModel : BaseTestAppViewModel
 {
-    public ContainerHomeViewModel(IServiceLocator serviceLocator, ITargetNavigator targetNavigator) : base(serviceLocator, targetNavigator)
+    public ContainerHomeViewModel(IServiceLocator serviceLocator, INavigator targetNavigator) : base(serviceLocator, targetNavigator)
     {
     }
 }

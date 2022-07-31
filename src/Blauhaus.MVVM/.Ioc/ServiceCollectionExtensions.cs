@@ -1,9 +1,14 @@
 ﻿using Blauhaus.MVVM.Abstractions.Application;
+using Blauhaus.MVVM.Abstractions.Navigation.Register;
+using Blauhaus.MVVM.Abstractions.TargetNavigation;
+using Blauhaus.MVVM.Abstractions.ViewModels;
+using Blauhaus.MVVM.Abstractions.Views;
 using Blauhaus.MVVM.Collections;
 using Blauhaus.MVVM.Collections.Base;
 using Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands;
 using Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands.NavigationCommands;
 using Blauhaus.MVVM.ExecutingCommands.ExecutingParameterCommands;
+using Blauhaus.MVVM.Navigation;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Blauhaus.MVVM.Ioc
@@ -11,11 +16,33 @@ namespace Blauhaus.MVVM.Ioc
     public static class ServiceCollectionExtensions
     {
 
+        private static readonly ViewRegister ViewRegister = new();
+
         public static IServiceCollection AddAppLifecycleStateHandler<THandler>(this IServiceCollection services) where THandler : class, IAppLifecycleHandler
         {
             services.AddSingleton<IAppLifecycleHandler, THandler>();
             return services;
         }
+
+        public static IServiceCollection AddNavigator(this IServiceCollection services)
+        {
+            services
+                .AddSingleton<INavigator, Navigator>()
+                .AddSingleton<IViewRegister>(_=> ViewRegister);
+            return services;
+        }
+        
+        public static IServiceCollection AddView<TView, TViewModel>(this IServiceCollection services, ViewIdentifier viewIdentifier) 
+            where TView : class, IView<TViewModel>
+            where TViewModel : class, IViewModel
+        {
+            services.AddTransient<TView>();
+            services.AddTransient<TViewModel>();
+            ViewRegister.RegisterView<TView>(viewIdentifier);
+
+            return services;
+        }
+
 
         public static IServiceCollection AddExecutingCommands(this IServiceCollection services)
         {
