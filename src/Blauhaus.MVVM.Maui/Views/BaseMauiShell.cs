@@ -14,7 +14,7 @@ public abstract class BaseMauiShell<TViewModel> : Shell, IView<TViewModel>, INav
     }
     
     public TViewModel ViewModel { get; }
-    public ViewIdentifier ViewIdentifier { get; private set; }
+    public ViewIdentifier ViewIdentifier { get; private set; } = null!;
 
     
     public void Initialize(ViewIdentifier viewIdentifier)

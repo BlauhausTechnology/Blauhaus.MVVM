@@ -1,0 +1,8 @@
+<Project> 
+	<ItemGroup>
+		<None Include="..\..\..\..\..\Users\Jedi\Dropbox\Blauhaus\Marketing\Logo\smallLogo.png">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+</Project>

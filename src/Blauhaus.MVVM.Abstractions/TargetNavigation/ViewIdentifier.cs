@@ -20,7 +20,7 @@ public class ViewIdentifier : BaseValueObject<ViewIdentifier>, IHasName, IHasPro
     public Dictionary<string, string> Properties { get; }
 
     public static ViewIdentifier Create([CallerMemberName] string name = "") => new(name);
-
+    
     
     #region Equality
     public override string ToString()

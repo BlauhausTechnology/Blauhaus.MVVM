@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Blauhaus.Errors;
 using Blauhaus.MVVM.Abstractions.Application;
 using Blauhaus.MVVM.Tests.Tests.AppLifecycleServiceTests.Base;
 using Blauhaus.Responses;
@@ -27,14 +28,14 @@ namespace Blauhaus.MVVM.Tests.Tests.AppLifecycleServiceTests
         {
             //Arrange
             MockHandlerOne.Mock.Setup(x => x.HandleAppStateChangeAsync(It.IsAny<AppLifecycleState>()))
-                .ReturnsAsync(Response.Failure(Errors.Errors.RequiredValue()));
+                .ReturnsAsync(Response.Failure(Error.RequiredValue()));
             
             //Act
             Sut.NotifyAppGoingToSleep();
             await Task.Delay(10);
             
             //Assert
-            MockErrorHandler.Mock.Verify(x => x.HandleErrorAsync(Errors.Errors.RequiredValue()));
+            MockErrorHandler.Mock.Verify(x => x.HandleErrorAsync(Error.RequiredValue()));
         }
         
         [Test]
