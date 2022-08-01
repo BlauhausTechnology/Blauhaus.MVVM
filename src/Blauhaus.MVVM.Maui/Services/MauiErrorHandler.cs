@@ -5,12 +5,12 @@ using Blauhaus.Errors.Handler;
 
 namespace Blauhaus.MVVM.Maui.Services;
 
-public class MauiShellErrorHandler : IErrorHandler
+public class MauiErrorHandler : IErrorHandler
 {
-    private readonly IAnalyticsLogger<MauiShellErrorHandler> _logger;
+    private readonly IAnalyticsLogger<MauiErrorHandler> _logger;
 
-    public MauiShellErrorHandler(
-        IAnalyticsLogger<MauiShellErrorHandler> logger)
+    public MauiErrorHandler(
+        IAnalyticsLogger<MauiErrorHandler> logger)
     {
         _logger = logger;
     }
@@ -24,17 +24,29 @@ public class MauiShellErrorHandler : IErrorHandler
         else
         {
             _logger.LogError(Error.Unexpected(sender.GetType().Name));
-            await Shell.Current.DisplayAlert("Error", "An unexpected error occured", "OK");
+
+            if (Application.Current is { MainPage: { } })
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "An unexpected error occured", "OK");
+            }
         }
     }
 
     public async Task HandleErrorAsync(string errorMessage)
     {
-        await Shell.Current.DisplayAlert("Error", "errorMessage", "OK");
+        if (Application.Current is { MainPage: { } })
+        {
+            await Application.Current.MainPage.DisplayAlert("Error", "errorMessage", "OK");
+        }
     }
 
     public async Task HandleErrorAsync(Error errorMessage)
     {
+        if (Application.Current is { MainPage: { } })
+        {
+            await Application.Current.MainPage.DisplayAlert(errorMessage.Code, errorMessage.Description, "OK");
+        }
+
         await Shell.Current.DisplayAlert(errorMessage.Code, errorMessage.Description, "OK");
     }
 }

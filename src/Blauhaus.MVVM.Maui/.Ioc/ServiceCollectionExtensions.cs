@@ -16,9 +16,8 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddMauiServices(this IServiceCollection services)
     {
         services
-            .AddTransient<IErrorHandler, MauiShellErrorHandler>()
-            .AddSingleton<IUriNavigator, MauiShellUriNavigator>()
-            .AddTransient<IDialogService, MauiShellDialogService>();
+            .AddTransient<IErrorHandler, MauiErrorHandler>()
+            .AddTransient<IDialogService, MauiDialogService>();
 
         return services;
     }
