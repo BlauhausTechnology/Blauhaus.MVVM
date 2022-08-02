@@ -25,11 +25,17 @@
 
 	<ItemGroup>
 	  <PackageReference Include="Blauhaus.DeviceServices.Abstractions" Version="1.1.12" />
+	  <PackageReference Include="Blauhaus.DeviceServices.Maui" Version="1.1.12" />
+	  <PackageReference Include="Blauhaus.Ioc.DotNetCoreIocService" Version="1.4.5" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Blauhaus.MVVM.Abstractions\Blauhaus.MVVM.Abstractions.csproj" />
 	  <ProjectReference Include="..\Blauhaus.MVVM\Blauhaus.MVVM.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Applications\" />
 	</ItemGroup>
 
 </Project>

@@ -1,23 +1,24 @@
-﻿using Blauhaus.MVVM.Abstractions.TargetNavigation;
+﻿using Blauhaus.Analytics.Abstractions;
+using Blauhaus.Ioc.Abstractions;
+using Blauhaus.MVVM.Abstractions.TargetNavigation;
+using Blauhaus.MVVM.Maui.Applications;
 using Blauhaus.MVVM.Maui.TestApp.Navigation;
 
 namespace Blauhaus.MVVM.Maui.TestApp
 {
-    public class TestApp : Application
+    public class TestApp : BaseMauiApplication
     {
-        private readonly INavigator _navigator;
-
-        public TestApp(IServiceProvider serviceProvider)
+        public TestApp(
+            IServiceLocator serviceLocator, 
+            IAnalyticsLogger<TestApp> logger, 
+            INavigator navigator) 
+                : base(serviceLocator, logger, navigator)
         {
-            _navigator = serviceProvider.GetRequiredService<INavigator>();
-            MainPage = new ContentPage{BackgroundColor = Color.FromRgb(0,0,120)};
         }
 
-        protected override async void OnStart()
+        protected override async Task HandleStartingAsync()
         {
-            base.OnStart();
-
-            await _navigator.NavigateAsync(NavigationTarget.CreateView(AppViews.LoadingView));
+            await Navigator.NavigateAsync(NavigationTarget.CreateView(AppViews.LoadingView));
         }
     }
 }

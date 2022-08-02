@@ -1,19 +1,40 @@
-﻿using Blauhaus.Errors.Handler;
+﻿using Blauhaus.DeviceServices.Maui.Ioc;
+using Blauhaus.Errors.Handler;
+using Blauhaus.Ioc.Abstractions;
+using Blauhaus.Ioc.DotNetCoreIocService;
+using Blauhaus.MVVM.Abstractions.Application;
 using Blauhaus.MVVM.Abstractions.Dialogs;
 using Blauhaus.MVVM.Abstractions.Navigation.UriNavigation;
 using Blauhaus.MVVM.Abstractions.TargetNavigation;
 using Blauhaus.MVVM.Abstractions.ViewModels;
 using Blauhaus.MVVM.Abstractions.Views;
+using Blauhaus.MVVM.AppLifecycle;
 using Blauhaus.MVVM.Ioc;
 using Blauhaus.MVVM.Maui.Services;
 using Blauhaus.MVVM.Maui.Services.Navigation;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Blauhaus.MVVM.Maui.Ioc;
 
 public static class ServiceCollectionExtensions
 {
 
-    public static IServiceCollection AddMauiServices(this IServiceCollection services)
+    public static IServiceCollection AddMauiApplication(this IServiceCollection services)
+    {
+
+        services
+            .AddMauiServices()
+            .AddMauiNavigator()
+            .AddMauiDeviceServices();
+
+        services.AddSingleton<IServiceLocator>(sp => new DotNetCoreServiceLocator(sp));
+        services.TryAddSingleton<IAppLifecycleService, AppLifecycleService>();
+
+
+        return services;
+    }
+
+    private static IServiceCollection AddMauiServices(this IServiceCollection services)
     {
         services
             .AddTransient<IErrorHandler, MauiErrorHandler>()
@@ -22,7 +43,7 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection AddMauiNavigator(this IServiceCollection services)
+    private static IServiceCollection AddMauiNavigator(this IServiceCollection services)
     {
         services
             .AddSingleton<IPlatformNavigator, MauiNavigator>()

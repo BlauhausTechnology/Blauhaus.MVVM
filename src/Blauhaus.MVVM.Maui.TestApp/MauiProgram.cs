@@ -26,17 +26,10 @@ namespace Blauhaus.MVVM.Maui.TestApp
                 });
 
             builder.Services
-                .AddMauiServices()
-                .AddMauiDeviceServices()
-                .AddMauiNavigator()
-                .AddServiceLocator()
+                .AddMauiApplication()
                 .AddExecutingCommands()
                 .AddMauiSerilogAnalytics("Test app", config => { });
 
-
-            //builder.Services
-            //    .AddContainer<MainContainerView, MainContainerViewModel>(AppContainers.MainAppContainer);
-            
             builder.Services
                 .AddView<LoadingView, LoadingViewModel>(AppViews.LoadingView)
                 .AddView<MainContainerView, MainContainerViewModel>(AppViews.MainContainerView);

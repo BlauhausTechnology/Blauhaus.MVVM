@@ -7,4 +7,6 @@ public class AppViews
 
     public static ViewIdentifier LoadingView = ViewIdentifier.Create();
     public static ViewIdentifier MainContainerView = ViewIdentifier.Create();
+
+
 }
