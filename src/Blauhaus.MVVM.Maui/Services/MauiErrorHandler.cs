@@ -46,7 +46,5 @@ public class MauiErrorHandler : IErrorHandler
         {
             await Application.Current.MainPage.DisplayAlert(errorMessage.Code, errorMessage.Description, "OK");
         }
-
-        await Shell.Current.DisplayAlert(errorMessage.Code, errorMessage.Description, "OK");
     }
 }

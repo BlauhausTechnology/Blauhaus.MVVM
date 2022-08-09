@@ -58,7 +58,7 @@
 	<ItemGroup>
 		<PackageReference Include="Blauhaus.Analytics.Serilog.Maui" Version="1.8.46" />
 		<PackageReference Include="Blauhaus.DeviceServices.Maui" Version="1.1.12" />
-		<PackageReference Include="Blauhaus.Ioc.DotNetCoreIocService" Version="1.4.5" />
+		<PackageReference Include="Blauhaus.Ioc.DotNetCoreIocService" Version="1.5.1" />
 		<PackageReference Include="CommunityToolkit.Maui.Markup" Version="1.0.1" />
 	</ItemGroup>
 
@@ -69,8 +69,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="TestApp.cs">
-	    <DependentUpon>%(Filename)</DependentUpon>
+	  <Compile Update="TestApp.xaml.cs">
+	    <DependentUpon>TestApp.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
