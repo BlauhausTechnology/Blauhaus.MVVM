@@ -1,4 +1,6 @@
-﻿using Blauhaus.Common.ValueObjects.BuildConfigs;
+﻿using System;
+using Blauhaus.Analytics.Abstractions;
+using Blauhaus.Common.ValueObjects.BuildConfigs;
 using Blauhaus.Ioc.Abstractions;
 using Blauhaus.Ioc.DotNetCoreIocService;
 using Blauhaus.MVVM.Abstractions.Application;
@@ -6,6 +8,7 @@ using Blauhaus.MVVM.AppLifecycle;
 using Blauhaus.MVVM.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging;
 using Xamarin.Forms;
 
 namespace Blauhaus.MVVM.Xamarin.App
@@ -14,6 +17,9 @@ namespace Blauhaus.MVVM.Xamarin.App
     {
         protected IBuildConfig CurrentBuildConfig = null!;
         private AppLifecycleService _appLifeCycleService = null!;
+        protected IAnalyticsLogger<BaseLeanFormsApp> Logger = null!;
+        private IDisposable? _analyticsSession;
+        private bool _isSleeping;
 
         protected BaseLeanFormsApp(IServiceCollection? platformServices)
         {
@@ -44,11 +50,17 @@ namespace Blauhaus.MVVM.Xamarin.App
             
             AppServiceLocator.Initialize(()=> serviceProvider.GetRequiredService<IServiceLocator>());
             _appLifeCycleService = (AppLifecycleService) serviceProvider.GetRequiredService<IAppLifecycleService>();
+            Logger = serviceProvider.GetRequiredService<IAnalyticsLogger<BaseLeanFormsApp>>();
         }
 
         protected sealed override void OnStart()
         {
+            Logger.SetValue("AppSessionId", Guid.NewGuid());
+            _analyticsSession = Logger.BeginTimedScope(LogLevel.Information, "App Session");
+            Logger.LogTrace("Application starting");
+
             _appLifeCycleService.NotifyAppStarting();
+
             HandleAppStarting();
         }
         protected virtual void HandleAppStarting()
@@ -57,8 +69,16 @@ namespace Blauhaus.MVVM.Xamarin.App
 
         protected sealed override void OnSleep()
         {
-            _appLifeCycleService.NotifyAppGoingToSleep();
+            base.OnSleep();
+            
+            Logger.LogTrace("Application going to sleep");
+        
             HandleAppGoingToSleep();
+
+            _isSleeping = true;
+            _appLifeCycleService.NotifyAppGoingToSleep();
+            _analyticsSession?.Dispose();
+
         }
         protected virtual void HandleAppGoingToSleep()
         {
@@ -66,8 +86,18 @@ namespace Blauhaus.MVVM.Xamarin.App
         
         protected sealed override void OnResume()
         {
-            _appLifeCycleService.NotifyAppWakingUp();
-            HandleAppWakingUp();
+            if (_isSleeping)
+            {
+                Logger.SetValue("AppSessionId", Guid.NewGuid());
+                _analyticsSession = Logger.BeginTimedScope(LogLevel.Information, "App Session");
+                Logger.LogTrace("Application waking up");
+        
+                _appLifeCycleService.NotifyAppWakingUp();
+                HandleAppWakingUp();
+
+                _isSleeping = false;
+            }
+
         }
         
         protected virtual void HandleAppWakingUp()
