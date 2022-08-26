@@ -58,38 +58,10 @@ public class NavigationTarget
         return new NavigationTarget(Container, Path, View);
     }
 
-
-    //todo maybe replace with ContainerName, RouteName, ViewName, Payload
-    //actually just make it IHasProperties
-
-    //if only ViewName, replace main page with page and initialize with payload
-
-    //if only containerName, replace main page with shell (and initialize)
-    //if containerName and route name, replace main page with shell, call GoTo with route
-    //if containerName and route name and viewname, replace main page with shell, call GoTo with route/page?param=param
-
-    //if only route, and main page is shell, navigate route (with parameter)
-
-
-
-    #region Eqaulity etc
-
     public override string ToString()
     {
         return _uri;
-    }
-
-    //protected override int GetHashCodeCore()
-    //{
-    //    return _uniqueName.GetHashCode();
-    //}
-
-    //protected override bool EqualsCore(NavigationTarget other)
-    //{
-    //    return GetHashCode().Equals(other.GetHashCode());
-    //}
-
-    #endregion;
+    } 
 }
 
  
