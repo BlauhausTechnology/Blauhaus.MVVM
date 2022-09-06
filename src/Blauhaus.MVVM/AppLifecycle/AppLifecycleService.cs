@@ -44,38 +44,35 @@ namespace Blauhaus.MVVM.AppLifecycle
             HandleStateChange(AppLifecycleState.WakingUp, () => AppWakingUp?.Invoke(this, EventArgs.Empty));
         }
 
-        private void HandleStateChange(AppLifecycleState state, Action eventHandler)
+        private async void HandleStateChange(AppLifecycleState state, Action eventHandler)
         {
-            Task.Run(async () =>
+            try
             {
-                try
-                {
-                    eventHandler.Invoke();
-                    
-                    _logger.LogTrace("App state changing to {AppState}", state);
+                eventHandler.Invoke();
+                
+                _logger.LogTrace("App state changing to {AppState}", state);
 
-                    if (_handlers.Count == 0)
+                if (_handlers.Count == 0)
+                {
+                    return;
+                }
+                
+                _logger.LogTrace("Notifying IAppLifecycleHandlers: {HandlerCount}", _handlers.Count);
+
+                foreach (var appLifecycleHandler in _handlers)
+                {
+                    var handlerResult = await appLifecycleHandler.HandleAppStateChangeAsync(state);
+                    if (handlerResult.IsFailure)
                     {
-                        return;
+                        _logger.LogWarning("AppLifeCycle handler failed! {Error}", handlerResult.Error.ToString());
+                        await _errorHandler.HandleErrorAsync(handlerResult.Error);
                     }
-                    
-                    _logger.LogTrace("Notifying IAppLifecycleHandlers: {HandlerCount}", _handlers.Count);
-
-                    foreach (var appLifecycleHandler in _handlers)
-                    {
-                        var handlerResult = await appLifecycleHandler.HandleAppStateChangeAsync(state);
-                        if (handlerResult.IsFailure)
-                        {
-                            _logger.LogWarning("AppLifeCycle handler failed! {Error}", handlerResult.Error.ToString());
-                            await _errorHandler.HandleErrorAsync(handlerResult.Error);
-                        }
-                    } 
-                }
-                catch (Exception e)
-                {
-                    await _errorHandler.HandleExceptionAsync(this, e);
-                }
-            });
+                } 
+            }
+            catch (Exception e)
+            {
+                await _errorHandler.HandleExceptionAsync(this, e);
+            }
         }
 
         public event EventHandler? AppStarting;

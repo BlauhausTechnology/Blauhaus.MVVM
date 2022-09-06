@@ -44,9 +44,10 @@ public abstract class BaseMauiShell<TViewModel> : Shell, IView<TViewModel>, INav
         }
     }
 
-    public async Task NavigateAsync(NavigationTarget target)
+    public Task NavigateAsync(NavigationTarget target)
     {
-        await GoToAsync(target.ToString());
+        Dispatcher.Dispatch(()=> GoToAsync(target.ToString()));
+        return Task.CompletedTask;
     }
 
 }
