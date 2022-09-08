@@ -27,7 +27,7 @@ public static class ServiceCollectionExtensions
             .AddMauiNavigator()
             .AddMauiDeviceServices();
 
-        services.AddSingleton<IServiceLocator>(sp => new DotNetCoreServiceLocator(sp));
+        services.TryAddSingleton<IServiceLocator>(sp => new DotNetCoreServiceLocator(sp));
         services.TryAddSingleton<IAppLifecycleService, AppLifecycleService>();
 
 
