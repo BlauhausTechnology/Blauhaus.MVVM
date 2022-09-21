@@ -88,13 +88,13 @@ namespace Blauhaus.MVVM.Collections.Base
             });
         }
 
-        public async Task UpdateAsync(IReadOnlyList<TId> sourceIds)
+        public async Task<bool> UpdateAsync(IReadOnlyList<TId> sourceIds)
         {
-
+            var somethingHasChanged = false;
             if (_isUpdating)
             {
                 _logger.LogTrace("Collection of {ListItemType} will not be updated with {ListItemCount} ids because it is already busy updating", typeof(T).Name, sourceIds.Count);
-                return;
+                return somethingHasChanged;
             }
             _isUpdating = true;
 
@@ -110,6 +110,7 @@ namespace Blauhaus.MVVM.Collections.Base
 
                         if (sourceId == null || sourceId.Equals(default(TId)))
                         {
+                            somethingHasChanged = true;
                             itemsToRemove.Add(existingItem);
                             _logger.LogTrace("Removing {ListItemType} with id {ListItemId} from collection", typeof(T).Name, existingItem.Id);
                         }
@@ -138,6 +139,7 @@ namespace Blauhaus.MVVM.Collections.Base
                         if (existingItem == null)
                         {
                             
+                            somethingHasChanged = true;
                             _logger.LogTrace("Adding {ListItemType} with id {ListItemId} to collection", typeof(T).Name, sourceIds[i]);
 
                             var newItem = _serviceLocator.Resolve<T>();
@@ -155,6 +157,7 @@ namespace Blauhaus.MVVM.Collections.Base
 
                             if (IndexOf(existingItem) != i)
                             {
+                                somethingHasChanged = true;
                                 _logger.LogTrace("Moving {ListItemType} with id {ListItemId} from {OldListPosition} to {ListPosition}", typeof(T).Name, sourceIds[i], IndexOf(existingItem), i);
                                 Move(IndexOf(existingItem), i);
                             }
@@ -169,7 +172,10 @@ namespace Blauhaus.MVVM.Collections.Base
                 {
                     _isUpdating = false;
                 }
+
             });
+
+            return somethingHasChanged;
         }
          
     }
