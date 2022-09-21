@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Blauhaus.Analytics.Abstractions;
 using Blauhaus.Common.Abstractions;
@@ -46,6 +47,45 @@ namespace Blauhaus.MVVM.Collections.Base
         public async Task UpdateAsync(IReadOnlyList<IHasId<TId>> idSources)
         {
             await UpdateAsync(idSources.Select(x => x.Id).ToArray());
+        }
+
+        public async Task OrberByAsync<TProp>(Expression<Func<T, TProp>> property, bool isAscending = true)
+        {
+            if (_isUpdating)
+            {
+                return;
+            }
+            _isUpdating = true;
+
+
+            await _threadService.InvokeOnMainThreadAsync(async () =>
+            {
+                try
+                {
+                    var orderedCollection = isAscending 
+                        ? Items.OrderBy(property.Compile()).ToArray() 
+                        : Items.OrderByDescending(property.Compile()).ToArray();
+
+                    for (var i = 0; i < orderedCollection.Count(); i++)
+                    {
+                        
+                        var existingItem = this.FirstOrDefault(x => x.Id != null && x.Id.Equals(orderedCollection[i].Id));
+                        if (IndexOf(existingItem) != i)
+                        {
+                            _logger.LogTrace("Moving {ListItemType} with id {ListItemId} from {OldListPosition} to {ListPosition}", typeof(T).Name, orderedCollection[i].Id, IndexOf(existingItem), i);
+                            Move(IndexOf(existingItem), i);
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    await _errorHandler.HandleExceptionAsync(this, e);
+                }
+                finally
+                {
+                    _isUpdating = false;
+                }
+            });
         }
 
         public async Task UpdateAsync(IReadOnlyList<TId> sourceIds)

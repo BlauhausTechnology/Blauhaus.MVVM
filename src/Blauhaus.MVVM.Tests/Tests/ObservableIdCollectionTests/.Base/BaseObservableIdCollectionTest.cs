@@ -12,6 +12,7 @@ namespace Blauhaus.MVVM.Tests.Tests.ObservableIdCollectionTests.Base
 {
     public interface IIdObject<TId> : IHasId<TId>, IAsyncInitializable<TId>, IAsyncReloadable, IAsyncDisposable
     {
+        public int Index { get; }
     }
 
     public class BaseObservableIdCollectionTest<TId>: BaseMvvmTest<ObservableIdCollection<IIdObject<TId>, TId>>
@@ -34,9 +35,9 @@ namespace Blauhaus.MVVM.Tests.Tests.ObservableIdCollectionTests.Base
 
             AddService(MockServiceLocator.Object);
 
-            _outputObject1 = new MockBuilder<IIdObject<TId>>().With(x => x.Id, Ids[0]);
-            _outputObject2 = new MockBuilder<IIdObject<TId>>().With(x => x.Id, Ids[1]);
-            _outputObject3 = new MockBuilder<IIdObject<TId>>().With(x => x.Id, Ids[2]);
+            _outputObject1 = new MockBuilder<IIdObject<TId>>().With(x => x.Id, Ids[0]).With(x => x.Index, 3);
+            _outputObject2 = new MockBuilder<IIdObject<TId>>().With(x => x.Id, Ids[1]).With(x => x.Index, 1);
+            _outputObject3 = new MockBuilder<IIdObject<TId>>().With(x => x.Id, Ids[2]).With(x => x.Index, 2);
              
             MockServiceLocator.Mock.Setup(x => x.Resolve<IIdObject<TId>>()).Returns(new Queue<IIdObject<TId>>(new[]
             {
