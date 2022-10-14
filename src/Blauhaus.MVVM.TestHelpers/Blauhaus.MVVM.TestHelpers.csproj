@@ -9,7 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Blauhaus.Analytics.TestHelpers" Version="1.9.11" />
     <PackageReference Include="Blauhaus.Ioc.DotNetCoreIocService" Version="1.5.1" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.1" />
   </ItemGroup>
 
   <ItemGroup>
