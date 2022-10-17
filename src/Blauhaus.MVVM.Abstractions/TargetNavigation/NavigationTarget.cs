@@ -6,7 +6,7 @@ using Blauhaus.Common.ValueObjects.Base;
 
 namespace Blauhaus.MVVM.Abstractions.TargetNavigation;
 
-public class NavigationTarget 
+public class NavigationTarget : BaseValueObject<NavigationTarget>
 {
     private readonly string _uri;
 
@@ -61,7 +61,17 @@ public class NavigationTarget
     public override string ToString()
     {
         return _uri;
-    } 
+    }
+
+    protected override int GetHashCodeCore()
+    {
+        return _uri.GetHashCode();
+    }
+
+    protected override bool EqualsCore(NavigationTarget other)
+    {
+        return other.ToString().Equals(_uri);
+    }
 }
 
  
