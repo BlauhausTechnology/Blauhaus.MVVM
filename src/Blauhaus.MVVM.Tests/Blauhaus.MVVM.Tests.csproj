@@ -38,8 +38,4 @@
     <ProjectReference Include="..\Blauhaus.MVVM\Blauhaus.MVVM.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Tests\NavigatorTests\NavigationTargetTests\" />
-  </ItemGroup>
-
 </Project>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Blauhaus.Common.ValueObjects.Base;
@@ -58,6 +59,41 @@ public class NavigationTarget : BaseValueObject<NavigationTarget>
         return new NavigationTarget(Container, Path, View);
     }
 
+    public static NavigationTarget Deserialize(string serialized)
+    {
+        if (serialized.StartsWith("/"))
+        {
+            serialized = serialized.TrimStart('/');
+        }
+
+        var pathSplit = serialized.Split('/');
+
+        string[]? path = null;
+        ViewIdentifier? view = null;
+
+        if (pathSplit.Length > 0)
+        {
+            var viewString = pathSplit.Last();
+            view = ViewIdentifier.Deserialize(viewString);
+        }
+
+        if (pathSplit.Length > 1)
+        {
+            path = new string[ pathSplit.Length - 1];
+            for (var i = 0; i < pathSplit.Length-1; i++)
+            {
+                path[i] = pathSplit[i];
+            }
+        }
+
+ 
+        return new NavigationTarget(null, path, view);
+    }
+
+    public string Serialize()
+    {
+        return _uri;
+    }
     public override string ToString()
     {
         return _uri;

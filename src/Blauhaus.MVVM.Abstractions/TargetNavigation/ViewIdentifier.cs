@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Blauhaus.Common.Abstractions;
@@ -20,7 +21,38 @@ public class ViewIdentifier : BaseValueObject<ViewIdentifier>, IHasName, IHasPro
     public Dictionary<string, string> Properties { get; }
 
     public static ViewIdentifier Create([CallerMemberName] string name = "") => new(name);
-    
+
+    public string Serialize() => ToString();
+
+    public static ViewIdentifier Deserialize(string serialized)
+    {
+        if (serialized.StartsWith("/"))
+        {
+            serialized = serialized.TrimStart('/');
+        }
+
+        var split = serialized.Split('?');
+        if (split.Length == 0)
+        {
+            throw new InvalidOperationException($"{serialized} is not a valid serialized ViewIdentifier");
+        }
+        var name = split[0];
+        Dictionary<string, string>? properties = null;
+
+        if (split.Length > 1)
+        {
+            properties = new Dictionary<string, string>();
+            var queryString = split[1];
+            var queryStringParameters = queryString.Split('&');
+            foreach (var queryStringParameter in queryStringParameters)
+            {
+                var kvp = queryStringParameter.Split('=');
+                properties[kvp[0]] = kvp[1];
+            }
+        }
+   
+        return new ViewIdentifier(name, properties);
+    }
     
     #region Equality
     public override string ToString()

@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace Blauhaus.MVVM.Tests.Tests.NavigatorTests.ViewIdentifierTests;
 
-public class ToStringTests
+public class DeserializeTests
 {
      
     [Test]
@@ -13,8 +13,11 @@ public class ToStringTests
         //Arrange
         var sut = new ViewIdentifier("MyView");
 
+        //Act
+        var result = ViewIdentifier.Deserialize(sut.Serialize());
+
         //Assert
-        Assert.That(sut.ToString(), Is.EqualTo("/MyView"));
+        Assert.That(result, Is.EqualTo(sut));
     }
 
     [Test]
@@ -28,9 +31,12 @@ public class ToStringTests
                 ["one"] = "1"
             }
         };
+        
+        //Act
+        var result = ViewIdentifier.Deserialize(sut.Serialize());
 
         //Assert
-        Assert.That(sut.ToString(), Is.EqualTo("/MyView?one=1"));
+        Assert.That(result, Is.EqualTo(sut));
     }
 
     [Test]
@@ -45,9 +51,12 @@ public class ToStringTests
                 ["two"] = "2"
             }
         };
+        
+        //Act
+        var result = ViewIdentifier.Deserialize(sut.Serialize());
 
         //Assert
-        Assert.That(sut.ToString(), Is.EqualTo("/MyView?one=1&two=2"));
+        Assert.That(result, Is.EqualTo(sut));
     }
 		
 }

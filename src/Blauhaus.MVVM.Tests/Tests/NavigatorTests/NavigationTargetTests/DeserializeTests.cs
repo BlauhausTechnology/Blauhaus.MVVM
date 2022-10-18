@@ -3,7 +3,7 @@ using Blauhaus.MVVM.Abstractions.TargetNavigation;
 
 namespace Blauhaus.MVVM.Tests.Tests.NavigatorTests.NavigationTargetTests;
 
-public class ToStringTests
+public class DeserializeTests
 {
 
     private ViewIdentifier _viewOne = null!;
@@ -25,10 +25,10 @@ public class ToStringTests
             .WithViewProperty("key2", "value2");
         
         //Act
-        var result = sut.ToString();
+        var result = NavigationTarget.Deserialize(sut.Serialize());
 
         //Assert
-        Assert.That(result, Is.EqualTo("/Home/Choices/Content?key1=value1&key2=value2"));
+        Assert.That(result, Is.EqualTo(sut));
     }
 
     [Test]
@@ -41,10 +41,10 @@ public class ToStringTests
             .WithViewProperty("key2", "value2");
         
         //Act
-        var result = sut.ToString();
+        var result = NavigationTarget.Deserialize(sut.Serialize());
 
         //Assert
-        Assert.That(result, Is.EqualTo("/Content?key1=value1&key2=value2"));
+        Assert.That(result, Is.EqualTo(sut));
     }
 
     [Test]
@@ -55,10 +55,10 @@ public class ToStringTests
             .WithPath("Home", "Choices");
         
         //Act
-        var result = sut.ToString();
+        var result = NavigationTarget.Deserialize(sut.Serialize());
 
         //Assert
-        Assert.That(result, Is.EqualTo("/Home/Choices"));
+        Assert.That(result, Is.EqualTo(sut));
     }
 		
 }
