@@ -60,5 +60,14 @@ public static class ServiceCollectionExtensions
         Routing.RegisterRoute(viewIdentifier.Name, typeof(TView));
         return services;
     }
-     
+
+    public static IServiceCollection AddMauiView<TView, TViewModel>(this IServiceCollection services, string name)
+        where TView : Page, IView<TViewModel>
+        where TViewModel : class, IViewModel
+    {
+        services.AddView<TView, TViewModel>(name);
+        Routing.RegisterRoute(name, typeof(TView));
+        return services;
+    }
+
 }

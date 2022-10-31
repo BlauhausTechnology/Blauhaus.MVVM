@@ -16,7 +16,13 @@ public class ViewRegister : IViewRegister
     {
         _viewTypes[identifier.Name] = typeof(TView);
     }
-     
+
+    public void RegisterView<TView>(string name)
+        where TView : IView
+    {
+        _viewTypes[name] = typeof(TView);
+    }
+
     public Type GetViewType(ViewIdentifier viewIdentifier)
     {
         if (!_viewTypes.TryGetValue(viewIdentifier.Name, out var viewType))

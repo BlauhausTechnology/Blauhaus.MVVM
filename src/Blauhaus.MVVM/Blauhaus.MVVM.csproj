@@ -18,7 +18,7 @@
 
 
   <ItemGroup>
-    <PackageReference Include="Blauhaus.Analytics.Abstractions" Version="1.9.11" />
+    <PackageReference Include="Blauhaus.Analytics.Abstractions" Version="1.9.12" />
     <PackageReference Include="Blauhaus.DeviceServices.Abstractions" Version="1.1.19" />
     <PackageReference Include="Blauhaus.Ioc.Abstractions" Version="1.5.1" />
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="6.0.0" />

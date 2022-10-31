@@ -43,6 +43,17 @@ namespace Blauhaus.MVVM.Ioc
             return services;
         }
 
+        public static IServiceCollection AddView<TView, TViewModel>(this IServiceCollection services, string name)
+            where TView : class, IView<TViewModel>
+            where TViewModel : class, IViewModel
+        {
+            services.AddTransient<TView>();
+            services.AddTransient<TViewModel>();
+            ViewRegister.RegisterView<TView>(name);
+
+            return services;
+        }
+
 
         public static IServiceCollection AddExecutingCommands(this IServiceCollection services)
         {
