@@ -13,6 +13,8 @@
     <Compile Include="ExecutingCommands\.Base\InternalExtensions.cs" />
     <Compile Include="ExecutingCommands\ExecutingNoParameterCommands\.Base\BaseExecutingNoParameterCommand.cs" />
     <Compile Include="ExecutingCommands\ExecutingParameterCommands\.Base\BaseExecutingParameterCommand.cs" />
+    <Compile Include="ValueProperties\.Base\BaseValueProperty.cs" />
+    <Compile Include="ValueProperties\.Base\IValueProperty.cs" />
   </ItemGroup>
 
 

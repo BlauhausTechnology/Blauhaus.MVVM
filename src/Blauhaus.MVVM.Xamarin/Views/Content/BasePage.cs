@@ -1,5 +1,6 @@
 ﻿using System;
 using Blauhaus.MVVM.Abstractions.Contracts;
+using Blauhaus.MVVM.Abstractions.TargetNavigation;
 using Blauhaus.MVVM.Abstractions.ViewModels;
 using Blauhaus.MVVM.Abstractions.Views;
 
@@ -45,6 +46,11 @@ namespace Blauhaus.MVVM.Xamarin.Views.Content
             }
 
             return false;
+        }
+
+        public void Initialize(ViewIdentifier initialValue)
+        {
+            throw new NotImplementedException();
         }
     }
 }
