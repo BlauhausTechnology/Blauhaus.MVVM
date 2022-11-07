@@ -6,8 +6,11 @@ using Blauhaus.MVVM.Abstractions.Navigation;
 
 namespace Blauhaus.MVVM.Abstractions.ViewModels
 {
-    public abstract class BaseViewModel : BaseBindableObject, IViewModel
+    public abstract class BaseViewModel : BaseBindableObject, IViewModel, IPropertyChanger
     {
-        
+        public void Notify(string propertyName)
+        {
+            RaisePropertyChanged(propertyName);
+        }
     }
 }

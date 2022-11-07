@@ -1,17 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using Blauhaus.Common.ValueObjects.Base;
+using Blauhaus.MVVM.Abstractions.ViewModels;
 
 namespace Blauhaus.MVVM.ValueProperties.Base;
 
 public class BaseValueProperty<T> : BaseValueObject<BaseValueProperty<T>>, IValueProperty<T>
 {
+    private readonly IPropertyChanger _viewModel;
     private T? _value;
     private bool _isVisible;
 
-    protected BaseValueProperty(string name, T? value, bool isVisible = true)
+    protected BaseValueProperty(IPropertyChanger viewModel, string name, T? value, bool isVisible = true)
     {
         Name = name;
+        _viewModel = viewModel;
         _value = value;
         _isVisible = isVisible;
     }
@@ -21,13 +24,13 @@ public class BaseValueProperty<T> : BaseValueObject<BaseValueProperty<T>>, IValu
     public T? Value
     {
         get => _value;
-        set => SetValue(ref _value, value);
+        set => SetValue(ref _value, value, Name);
     }
 
     public bool IsVisible
     {
         get => _isVisible;
-        set => SetValue(ref _isVisible, value);
+        set => SetValue(ref _isVisible, value, $"{Name}.IsVisible");
 
     }
 
@@ -67,17 +70,16 @@ public class BaseValueProperty<T> : BaseValueObject<BaseValueProperty<T>>, IValu
 
     #region INotifyPropertyChanged
 
-    public event PropertyChangedEventHandler? PropertyChanged;
 
-    private void SetValue<TProperty>(ref TProperty? field, TProperty? value)
+    private void SetValue<TProperty>(ref TProperty? field, TProperty? value, string name)
     {
-        if (EqualityComparer<TProperty>.Default.Equals(field, value))
+        if(EqualityComparer<TProperty>.Default.Equals(field!, value!))
         {
             return;
         }
 
         field = value;
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Name));
+        _viewModel.Notify(name);
         OnValueChanged();
     }
     

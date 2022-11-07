@@ -1,20 +1,21 @@
 ﻿using System.Runtime.CompilerServices;
+using Blauhaus.MVVM.Abstractions.ViewModels;
 using Blauhaus.MVVM.ValueProperties.Base;
 
 namespace Blauhaus.MVVM.ValueProperties;
 
 public class DecimalValueProperty : BaseValueProperty<decimal?>
 {
-    protected DecimalValueProperty(string name, decimal? value, bool isVisible = true) : base(name, value, isVisible)
+    protected DecimalValueProperty(IPropertyChanger viewModel, string name, decimal? value, bool isVisible = true) : base(viewModel, name, value, isVisible)
     {
     }
 
-    public static DecimalValueProperty Create(decimal? value = null, [CallerMemberName] string name = "")
+    public static DecimalValueProperty Create(IPropertyChanger viewModel, decimal? value = null, [CallerMemberName] string name = "")
     {
-        return new DecimalValueProperty(name, value, true);
+        return new DecimalValueProperty(viewModel, name, value, true);
     }
-    public static DecimalValueProperty CreateInvisible(decimal? value = null, [CallerMemberName] string name = "")
+    public static DecimalValueProperty CreateInvisible(IPropertyChanger viewModel, decimal? value = null, [CallerMemberName] string name = "")
     {
-        return new DecimalValueProperty(name, value, false);
+        return new DecimalValueProperty(viewModel, name, value, false);
     }
 }
