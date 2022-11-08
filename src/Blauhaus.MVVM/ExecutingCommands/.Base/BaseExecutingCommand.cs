@@ -116,6 +116,7 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
         protected async void Fail(Exception e)
         {
             IsExecuting = false;
+            if (_externalIsExecuting != null) _externalIsExecuting.IsExecuting = false;
             await ErrorHandler.HandleExceptionAsync(this, e); 
             _cleanup?.Dispose(); //dispose after handling error else analytics logged without operation
         }

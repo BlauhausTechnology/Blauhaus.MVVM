@@ -49,5 +49,5 @@ public abstract class BaseMauiShell<TViewModel> : Shell, IView<TViewModel>, INav
         Dispatcher.Dispatch(()=> GoToAsync(target.ToString()));
         return Task.CompletedTask;
     }
-
+    
 }
