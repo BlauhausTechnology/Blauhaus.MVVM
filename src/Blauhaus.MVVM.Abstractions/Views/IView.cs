@@ -1,4 +1,5 @@
-﻿using Blauhaus.MVVM.Abstractions.ViewModels;
+﻿using Blauhaus.MVVM.Abstractions.TargetNavigation;
+using Blauhaus.MVVM.Abstractions.ViewModels;
 
 namespace Blauhaus.MVVM.Abstractions.Views
 {

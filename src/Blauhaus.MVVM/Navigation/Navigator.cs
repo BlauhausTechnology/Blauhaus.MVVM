@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Blauhaus.Analytics.Abstractions;
+using Blauhaus.Common.Abstractions;
 using Blauhaus.Ioc.Abstractions;
 using Blauhaus.MVVM.Abstractions.TargetNavigation;
 using Blauhaus.MVVM.Abstractions.Views;
@@ -44,7 +45,16 @@ public class Navigator : INavigator
             {
                 throw new Exception($"{constructedView.GetType().Name} must implement {nameof(IView)}");
             }
-            
+
+            if (constructedView is IAsyncInitializable<NavigationTarget> initializeable)
+            {
+                await initializeable.InitializeAsync(target);
+            }
+            if (constructedView is IAsyncInitializable<string> stringInitializeable)
+            {
+                await stringInitializeable.InitializeAsync(target.Serialize());
+            }
+
             _platformNavigator.SetCurrentMainView(newView);
              
         }
@@ -64,6 +74,15 @@ public class Navigator : INavigator
             if (constructedContainerView is not INavigationContainerView newContainerView)
             {
                 throw new Exception($"{constructedContainerView.GetType().Name} must implement {nameof(INavigationContainerView)} to be a navigation container");
+            }
+            
+            if (constructedContainerView is IAsyncInitializable<NavigationTarget> initializeable)
+            {
+                await initializeable.InitializeAsync(target);
+            }
+            if (constructedContainerView is IAsyncInitializable<string> stringInitializeable)
+            {
+                await stringInitializeable.InitializeAsync(target.Serialize());
             }
 
             _platformNavigator.SetCurrentMainView(newContainerView);
