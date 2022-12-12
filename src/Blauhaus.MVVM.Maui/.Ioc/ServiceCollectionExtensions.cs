@@ -4,12 +4,14 @@ using Blauhaus.Ioc.Abstractions;
 using Blauhaus.Ioc.DotNetCoreIocService;
 using Blauhaus.MVVM.Abstractions.Application;
 using Blauhaus.MVVM.Abstractions.Dialogs;
+using Blauhaus.MVVM.Abstractions.Navigation.NavigationService;
 using Blauhaus.MVVM.Abstractions.Navigation.UriNavigation;
 using Blauhaus.MVVM.Abstractions.TargetNavigation;
 using Blauhaus.MVVM.Abstractions.ViewModels;
 using Blauhaus.MVVM.Abstractions.Views;
 using Blauhaus.MVVM.AppLifecycle;
 using Blauhaus.MVVM.Ioc;
+using Blauhaus.MVVM.Maui.Applications;
 using Blauhaus.MVVM.Maui.Services;
 using Blauhaus.MVVM.Maui.Services.Navigation;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -37,8 +39,17 @@ public static class ServiceCollectionExtensions
     private static IServiceCollection AddMauiServices(this IServiceCollection services)
     {
         services
+            .AddSingleton<IMauiApplicationProxy, MauiApplicationProxy>()
             .AddTransient<IErrorHandler, MauiErrorHandler>()
             .AddTransient<IDialogService, MauiDialogService>();
+
+        return services;
+    }
+    
+    public static IServiceCollection AddMauiNavigationService(this IServiceCollection services)
+    {
+        services
+            .AddSingleton<INavigationService, MauiNavigationService>();
 
         return services;
     }
