@@ -59,7 +59,7 @@
 		<PackageReference Include="Blauhaus.Analytics.Serilog.Maui" Version="2.0.1" />
 		<PackageReference Include="Blauhaus.DeviceServices.Maui" Version="1.1.19" />
 		<PackageReference Include="Blauhaus.Ioc.DotNetCoreIocService" Version="1.5.1" />
-		<PackageReference Include="CommunityToolkit.Maui.Markup" Version="2.0.0" />
+		<PackageReference Include="CommunityToolkit.Maui.Markup" Version="2.1.0" />
 	</ItemGroup>
 
 	<ItemGroup>

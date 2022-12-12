@@ -27,5 +27,6 @@ namespace Blauhaus.MVVM.Abstractions.Navigation.NavigationService
 
         Task GoBackAsync();
         Task GoBackToRootAsync();
+        Task GoBackToAsync<TViewModel>();
     }
 }

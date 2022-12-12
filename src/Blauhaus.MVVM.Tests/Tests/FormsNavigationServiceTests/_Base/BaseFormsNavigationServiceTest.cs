@@ -1,4 +1,5 @@
-﻿using Blauhaus.DeviceServices.TestHelpers.MockBuilders;
+﻿using Blauhaus.Analytics.TestHelpers.MockBuilders;
+using Blauhaus.DeviceServices.TestHelpers.MockBuilders;
 using Blauhaus.Ioc.Abstractions;
 using Blauhaus.Ioc.TestHelpers;
 using Blauhaus.MVVM.Tests.Tests.Base;
@@ -23,6 +24,7 @@ namespace Blauhaus.MVVM.Tests.Tests.FormsNavigationServiceTests._Base
             var thread = new ThreadServiceMockBuilder();
 
             return new FormsNavigationService(
+                new AnalyticsLoggerMockBuilder<FormsNavigationService>().Object,
                 MockServiceLocator.Object,
                 MockNavigationLookup.Object,
                 MockFormsApplicationProxy.Object,

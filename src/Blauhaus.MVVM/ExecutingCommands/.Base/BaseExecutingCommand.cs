@@ -164,6 +164,11 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
             }
         }
 
+        public bool IsVisible
+        {
+            get => GetProperty<bool>();
+            set => SetProperty(value);
+        }
     }
 
 

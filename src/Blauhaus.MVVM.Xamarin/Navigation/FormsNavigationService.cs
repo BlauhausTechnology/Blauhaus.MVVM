@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Blauhaus.Analytics.Abstractions;
 using Blauhaus.Common.Abstractions;
 using Blauhaus.DeviceServices.Abstractions.Thread;
 using Blauhaus.Ioc.Abstractions;
@@ -12,6 +13,7 @@ using Blauhaus.MVVM.Abstractions.ViewModels;
 using Blauhaus.MVVM.Abstractions.Views;
 using Blauhaus.MVVM.Xamarin.Navigation.FormsApplicationProxy;
 using Blauhaus.MVVM.Xamarin.Views.Navigation;
+using Microsoft.Extensions.Logging;
 using Xamarin.Forms;
 // ReSharper disable SuspiciousTypeConversion.Global
 
@@ -19,6 +21,7 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
 {
     public class FormsNavigationService : INavigationService
     {
+        private readonly IAnalyticsLogger<FormsNavigationService> _logger;
         private readonly IServiceLocator _serviceLocator;
         private readonly INavigationRegister _navigationRegister;
         private readonly IFormsApplicationProxy _application;
@@ -39,11 +42,13 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
         private IFlyoutView? _currentFlyoutPage;
 
         public FormsNavigationService(
+            IAnalyticsLogger<FormsNavigationService> logger,
             IServiceLocator serviceLocator,
             INavigationRegister navigationRegister,
             IFormsApplicationProxy application, 
             IThreadService threadService)
         {
+            _logger = logger;
             _serviceLocator = serviceLocator;
             _navigationRegister = navigationRegister;
             _application = application;
@@ -204,6 +209,37 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
                 {
                     await CurrentNavigationPage.PopToRootAsync();
                 });
+            };
+        }
+
+        public async Task GoBackToAsync<TViewModel>()
+        {
+            if (CurrentNavigationPage != null)
+            {
+                var pages = CurrentNavigationPage.Pages.Reverse().ToArray();
+
+                foreach (var page in pages)
+                {
+                    var pageViewModelType = page.BindingContext.GetType();
+                    if (pageViewModelType is TViewModel)
+                    {
+                        _logger.LogDebug("{ViewModelType} is {RequiredViewModel}", pageViewModelType, typeof(TViewModel));
+                        break;
+                    }
+
+                    if (page.BindingContext is IAsyncDisposable asyncDisposable)
+                        await asyncDisposable.DisposeAsync();
+                 
+                    if (page.BindingContext is IDisposable disposable)
+                        disposable.Dispose();
+                        
+                    await _threadService.InvokeOnMainThreadAsync(async () =>
+                    {
+                        _logger.LogDebug("{ViewModelType} is not {RequiredViewModel}. Continue navigating back...", pageViewModelType, typeof(TViewModel));
+                        await CurrentNavigationPage.PopAsync();
+                    });
+                }
+                 
             };
         }
 

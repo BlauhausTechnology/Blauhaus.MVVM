@@ -19,7 +19,7 @@
     <PackageReference Include="Blauhaus.Ioc.DotNetCoreIocService" Version="1.5.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0" />
     <PackageReference Include="Xamarin.CommunityToolkit.Markup" Version="2.0.5" />
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2515" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2545" />
   </ItemGroup>
 
   <ItemGroup>
