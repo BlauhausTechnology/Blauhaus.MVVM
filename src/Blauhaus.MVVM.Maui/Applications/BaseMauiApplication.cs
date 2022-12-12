@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Blauhaus.MVVM.Maui.Applications;
 
-public abstract class BaseMauiApplication : Application, IMauiApplicationProxy
+public abstract class BaseMauiApplication : Application
 {
     private IDisposable? _analyticsSession;
     private bool _isSleeping;
@@ -76,4 +76,5 @@ public abstract class BaseMauiApplication : Application, IMauiApplicationProxy
     protected abstract Task HandleStartingAsync();
     protected virtual Task HandleGoingToSleepAsync() => Task.CompletedTask;
     protected virtual Task HandleWakingUpAsync() => Task.CompletedTask;
+
 }
