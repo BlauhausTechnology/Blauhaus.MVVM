@@ -109,8 +109,13 @@ namespace Blauhaus.MVVM.MonoGame.Services
         {
             throw new System.NotImplementedException();
         }
-        
-        
+
+        public async Task GoBackToAsync<TViewModel>()
+        {
+            throw new NotImplementedException();
+        }
+
+
         private IGameScreen GetScreenForViewModel(Type viewModelType) 
         {
             var viewType = _navigationRegister.GetViewType(viewModelType);
