@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Blauhaus.MVVM.Maui.Applications;
 
-public abstract class BaseMauiApplication : Application
+public abstract class BaseMauiApplication<TApplication> : Application where TApplication : BaseMauiApplication<TApplication>
 {
     private IDisposable? _analyticsSession;
     private bool _isSleeping;
@@ -16,12 +16,12 @@ public abstract class BaseMauiApplication : Application
     private readonly AppLifecycleService _appLifecycleService;
 
     protected readonly IServiceLocator ServiceLocator;
-    protected readonly IAnalyticsLogger Logger;
+    protected readonly IAnalyticsLogger<TApplication> Logger;
     protected readonly INavigator Navigator;
 
     protected BaseMauiApplication(
         IServiceLocator serviceLocator,
-        IAnalyticsLogger logger, 
+        IAnalyticsLogger<TApplication> logger, 
         INavigator navigator)
     {
         ServiceLocator = serviceLocator;

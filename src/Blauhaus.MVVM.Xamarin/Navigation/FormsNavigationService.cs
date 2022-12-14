@@ -216,41 +216,39 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
         {
             if (CurrentNavigationPage != null)
             {
-                var pages = CurrentNavigationPage.Pages.Reverse().ToArray();
-                var pageIsFound = false;
-
-                foreach (var page in pages)
+                await _threadService.InvokeOnMainThreadAsync(async () =>
                 {
-                    var pageViewModelType = page.BindingContext.GetType();
-                    if (pageViewModelType == typeof(TViewModel))
-                    {
-                        _logger.LogDebug("{ViewModelType} is {RequiredViewModel}", pageViewModelType, typeof(TViewModel));
-                        pageIsFound = true;
-                    }
+                    var pages = CurrentNavigationPage.Pages.Reverse().ToArray();
+                    var pageIsFound = false;
 
-                    if (pageIsFound)
+                    foreach (var page in pages)
                     {
-                        
-                        _logger.LogDebug("Page already found, ignoring {ViewModelType}", pageViewModelType);
-
-                    }
-                    else
-                    {
-                        
-                        if (page.BindingContext is IAsyncDisposable asyncDisposable)
-                            await asyncDisposable.DisposeAsync();
-                 
-                        if (page.BindingContext is IDisposable disposable)
-                            disposable.Dispose();
-                        
-                        await _threadService.InvokeOnMainThreadAsync(async () =>
+                        var pageViewModelType = page.BindingContext.GetType();
+                        if (pageViewModelType == typeof(TViewModel))
                         {
+                            _logger.LogDebug("{ViewModelType} is {RequiredViewModel}", pageViewModelType, typeof(TViewModel));
+                            pageIsFound = true;
+                        }
+
+                        if (pageIsFound)
+                        {
+                            _logger.LogDebug("Page already found, ignoring {ViewModelType}", pageViewModelType);
+                        }
+                        else
+                        {
+
+                            if (page.BindingContext is IAsyncDisposable asyncDisposable)
+                                await asyncDisposable.DisposeAsync();
+
+                            if (page.BindingContext is IDisposable disposable)
+                                disposable.Dispose();
+
                             _logger.LogDebug("{ViewModelType} is not {RequiredViewModel}. Continue navigating back...", pageViewModelType, typeof(TViewModel));
                             await CurrentNavigationPage.PopAsync();
-                        });
+                        }
                     }
-                }
-                 
+                });
+
             };
         }
 
