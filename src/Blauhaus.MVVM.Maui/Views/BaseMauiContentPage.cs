@@ -3,6 +3,8 @@ using Blauhaus.MVVM.Abstractions.TargetNavigation;
 using Blauhaus.MVVM.Abstractions.ViewModels;
 using Blauhaus.MVVM.Abstractions.Views;
 using Blauhaus.MVVM.Maui.Services;
+using Microsoft.Maui.Controls.PlatformConfiguration;
+using Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;
 
 namespace Blauhaus.MVVM.Maui.Views;
 
@@ -18,6 +20,9 @@ public abstract class BaseMauiContentPage<TViewModel> : ContentPage, IView<TView
     {
         ViewModel = viewModel;
         BindingContext = ViewModel;
+        
+        SubscribeToHotReload();
+        On<iOS>().SetUseSafeArea(true);
     }
     
     public virtual Task InitializeAsync(NavigationTarget value)
