@@ -30,9 +30,9 @@ public abstract class BaseMauiContentPage<TViewModel> : ContentPage, IView<TView
         return Task.CompletedTask;
     }
     
-    protected override void OnNavigatedTo(NavigatedToEventArgs args)
+    protected override void OnAppearing()
     {
-        base.OnNavigatedTo(args);
+        base.OnAppearing();
 
         if (ViewModel is IAppearingViewModel appearViewModel)
         {
@@ -45,10 +45,10 @@ public abstract class BaseMauiContentPage<TViewModel> : ContentPage, IView<TView
         SubscribeToHotReload();
 
     }
-
-    protected override void OnNavigatedFrom(NavigatedFromEventArgs args)
+    
+    protected override void OnDisappearing()
     {
-        base.OnNavigatedFrom(args);
+        base.OnDisappearing();
 
         if (ViewModel is IDisappearingViewModel disappearViewModel)
         {
