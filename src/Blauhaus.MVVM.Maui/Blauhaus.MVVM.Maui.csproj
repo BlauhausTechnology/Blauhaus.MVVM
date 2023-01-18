@@ -36,7 +36,6 @@
 
 	<ItemGroup>
 	  <Folder Include="Applications\" />
-	  <Folder Include="Styling\Extensions\" />
 	</ItemGroup>
 
 </Project>

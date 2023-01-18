@@ -13,7 +13,6 @@ using Blauhaus.MVVM.AppLifecycle;
 using Blauhaus.MVVM.Ioc;
 using Blauhaus.MVVM.Maui.Applications;
 using Blauhaus.MVVM.Maui.Services;
-using Blauhaus.MVVM.Maui.Services.Navigation;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Blauhaus.MVVM.Maui.Ioc;

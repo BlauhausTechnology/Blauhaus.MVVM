@@ -1,10 +1,12 @@
-﻿namespace Blauhaus.MVVM.Maui.Styling.Extensions;
+﻿using static Blauhaus.MVVM.Maui.Styling.AppTheme;
+
+namespace Blauhaus.MVVM.Maui.Extensions.StylingExtensions;
 
 public static class ActivityIndicatorExtensions
 {
     public static T AsPrimary<T>(this T control) where T : ActivityIndicator
     {
-        control.Color = AppTheme.Colours.Primary;
+        control.Color = Colours.Primary;
         return control;
     }
 }

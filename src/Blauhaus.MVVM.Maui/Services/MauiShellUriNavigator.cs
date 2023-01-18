@@ -4,7 +4,7 @@ using Blauhaus.Errors.Handler;
 using Blauhaus.MVVM.Abstractions.Navigation.UriNavigation;
 using Microsoft.Extensions.Logging;
 
-namespace Blauhaus.MVVM.Maui.Services.Navigation;
+namespace Blauhaus.MVVM.Maui.Services;
 
 public class MauiShellUriNavigator : IUriNavigator
 {
