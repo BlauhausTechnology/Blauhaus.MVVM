@@ -4,16 +4,10 @@ using static Blauhaus.MVVM.Maui.Styling.AppStyling;
 namespace Blauhaus.MVVM.Maui.Extensions.StylingExtensions;
 
 public static class ButtonExtensions
-{
-    public static T WithText<T>(this T control, string text) where T : Button
-    {
-        control.Text = text;
-        return control;
-    }
-
+{ 
     public static T AsPrimary<T>(this T control) where T : Button
     {
-        control.BackgroundColor = Styling.AppStyling.Colours.Primary;
+        control.BackgroundColor = Colours.Primary;
         control.TextColor = Colours.OnPrimary;
 
         if (control is DisablingButton buttonControl)

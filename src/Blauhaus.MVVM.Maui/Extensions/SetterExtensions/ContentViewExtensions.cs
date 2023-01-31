@@ -1,4 +1,4 @@
-﻿namespace Blauhaus.MVVM.Maui.Extensions.StylingExtensions;
+﻿namespace Blauhaus.MVVM.Maui.Extensions.SetterExtensions;
 
 public static class ContentViewExtensions
 {

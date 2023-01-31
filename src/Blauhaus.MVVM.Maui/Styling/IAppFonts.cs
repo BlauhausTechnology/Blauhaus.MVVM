@@ -4,4 +4,5 @@ public interface IAppFonts
 {
     string DefaultFontFamily { get; }
     double DefaultCharacterSpacing { get; }
+    double DefaultFontSize { get; }
 }
