@@ -8,7 +8,7 @@ public interface IAppColours
     Color OnPrimaryFaded { get; }
 
     Color Background { get; }
-    Color BackgroundOffset { get; }
+    Color BackgroundFaded { get; }
     Color OnBackground { get; }
     Color OnBackgroundFaded { get; }
 }
