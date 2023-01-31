@@ -8,7 +8,7 @@ public static class EntryExtensions
     public static T AsOnBackground<T>(this T control) where T : Entry
     {
         control.FontFamily = Fonts.DefaultFontFamily;
-        control.BackgroundColor = Colours.BackgroundOffset;
+        control.BackgroundColor = Colours.BackgroundFaded;
         control.TextColor = Colours.OnBackground;
         control.PlaceholderColor = Colours.OnBackgroundFaded;
         return control;
