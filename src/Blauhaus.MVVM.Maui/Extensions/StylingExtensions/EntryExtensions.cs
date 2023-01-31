@@ -1,4 +1,4 @@
-﻿using static Blauhaus.MVVM.Maui.Styling.AppVisuals;
+﻿using static Blauhaus.MVVM.Maui.Styling.AppStyling;
 
 namespace Blauhaus.MVVM.Maui.Extensions.StylingExtensions;
 

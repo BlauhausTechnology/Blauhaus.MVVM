@@ -1,5 +1,5 @@
 ﻿using Blauhaus.MVVM.Maui.Controls.ButtonControls;
-using static Blauhaus.MVVM.Maui.Styling.AppVisuals;
+using static Blauhaus.MVVM.Maui.Styling.AppStyling;
 
 namespace Blauhaus.MVVM.Maui.Extensions.StylingExtensions;
 
@@ -13,7 +13,7 @@ public static class ButtonExtensions
 
     public static T AsPrimary<T>(this T control) where T : Button
     {
-        control.BackgroundColor = Styling.AppVisuals.Colours.Primary;
+        control.BackgroundColor = Styling.AppStyling.Colours.Primary;
         control.TextColor = Colours.OnPrimary;
 
         if (control is DisablingButton buttonControl)

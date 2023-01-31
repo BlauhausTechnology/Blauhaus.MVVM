@@ -8,7 +8,8 @@ using Microsoft.Extensions.Logging;
 
 namespace Blauhaus.MVVM.Maui.Applications;
 
-public abstract class BaseMauiApplication<TApplication> : Application where TApplication : BaseMauiApplication<TApplication>
+public abstract class BaseMauiApplication<TApplication> : Application 
+    where TApplication : BaseMauiApplication<TApplication>
 {
     private IDisposable? _analyticsSession;
     private bool _isSleeping;
