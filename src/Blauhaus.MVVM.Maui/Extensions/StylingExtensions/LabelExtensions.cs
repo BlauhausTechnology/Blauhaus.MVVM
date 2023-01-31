@@ -10,7 +10,7 @@ public static class LabelExtensions
 
     public static T AsPrimary<T>(this T control) where T : Label
     {
-        control.TextColor = Styling.AppTheme.Colours.Primary;
+        control.TextColor = Styling.AppVisuals.Colours.Primary;
         return control.AsDefault();
     }
     
@@ -23,8 +23,8 @@ public static class LabelExtensions
     public static T AsDefault<T>(this T control) where T : Label
     {
         control.FontSize = 14;
-        control.FontFamily = Styling.AppTheme.Fonts.DefaultFontFamily;
-        control.CharacterSpacing = Styling.AppTheme.Fonts.DefaultCharacterSpacing;
+        control.FontFamily = Styling.AppVisuals.Fonts.DefaultFontFamily;
+        control.CharacterSpacing = Styling.AppVisuals.Fonts.DefaultCharacterSpacing;
         return control;
     }
 }
