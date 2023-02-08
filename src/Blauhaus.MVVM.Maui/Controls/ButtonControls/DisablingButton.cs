@@ -30,7 +30,7 @@ public partial class DisablingButton : Button
             else
             {
                 BackgroundColor = DisabledBackgroundColour;
-                TextColor = DisabledBackgroundColour;
+                TextColor = DisabledTextColour;
             }
         }
 
