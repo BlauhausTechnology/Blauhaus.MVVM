@@ -60,7 +60,7 @@ public class Navigator : INavigator
         }
         else
         {
-            if (applicationMainView is INavigationContainerView containerView && containerView.ViewIdentifier == target.Container)
+            if (applicationMainView is INavigationContainerView containerView && containerView.ContainerViewIdentifier == target.Container)
             {
                 _logger.LogTrace("Target container {ContainerName} is already the application main screen, target will be relayed to it", target.Container.Name);
                 await containerView.NavigateAsync(target);
@@ -75,17 +75,12 @@ public class Navigator : INavigator
             {
                 throw new Exception($"{constructedContainerView.GetType().Name} must implement {nameof(INavigationContainerView)} to be a navigation container");
             }
-            
-            if (constructedContainerView is IAsyncInitializable<NavigationTarget> initializeable)
-            {
-                await initializeable.InitializeAsync(target);
-            }
-            if (constructedContainerView is IAsyncInitializable<string> stringInitializeable)
-            {
-                await stringInitializeable.InitializeAsync(target.Serialize());
-            }
 
+            newContainerView.Initialize(target.Container);
             _platformNavigator.SetCurrentMainView(newContainerView);
+
+            _logger.LogTrace("Target container {ContainerName} constructed and set as main screen", target.Container.Name);
+
             if (target.View is not null)
             {
                 await newContainerView.NavigateAsync(target);
