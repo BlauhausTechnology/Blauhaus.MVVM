@@ -1,6 +1,7 @@
 ﻿using Blauhaus.MVVM.Abstractions.TargetNavigation;
 using Blauhaus.MVVM.Abstractions.ViewModels;
 using Blauhaus.MVVM.Abstractions.Views;
+using IView = Blauhaus.MVVM.Abstractions.Views.IView;
 
 namespace Blauhaus.MVVM.Maui.Views;
 
@@ -15,8 +16,12 @@ public abstract class BaseMauiShell<TViewModel> : Shell, IView<TViewModel>, INav
     
     public TViewModel ViewModel { get; }
     public ViewIdentifier ContainerViewIdentifier { get; private set; } = null!;
+    public async Task NavigateAsync(NavigationTarget target, IView view)
+    {
+        throw new NotImplementedException();
+    }
 
-    
+
     public void Initialize(ViewIdentifier viewIdentifier)
     {
         ContainerViewIdentifier = viewIdentifier;
