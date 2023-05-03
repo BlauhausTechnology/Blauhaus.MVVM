@@ -224,7 +224,7 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
                     foreach (var page in pages)
                     {
                         var pageViewModelType = page.BindingContext.GetType();
-                        if (pageViewModelType == typeof(TViewModel))
+                        if (pageViewModelType is TViewModel)
                         {
                             _logger.LogDebug("{ViewModelType} is {RequiredViewModel}", pageViewModelType, typeof(TViewModel));
                             pageIsFound = true;
