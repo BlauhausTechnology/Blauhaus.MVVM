@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Threading.Tasks;
 using Blauhaus.Analytics.Abstractions;
 using Blauhaus.Analytics.Abstractions.Operation;
@@ -26,7 +27,7 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
         private IAnalyticsLogger? _logger;
         private Func<IDisposable>? _loggerFunc;
         private IIsExecuting? _externalIsExecuting;
-        private IExecutingCommand?[] _externalExecutingCommands = Array.Empty<IExecutingCommand?>();
+        private PropertyInfo[] _externalCommandProperties = Array.Empty<PropertyInfo>();
 
         protected BaseExecutingCommand(
             IServiceLocator serviceLocator,
@@ -60,7 +61,7 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
         public TExecutingCommand WithIsExecuting(IIsExecuting externalIsExecuting)
         {
             _externalIsExecuting = externalIsExecuting;
-            _externalExecutingCommands = externalIsExecuting.GetExecutingCommands().ToArray();
+            _externalCommandProperties = externalIsExecuting.GetExecutingCommandProperties();
             return (TExecutingCommand)this;
         }
         public bool CanExecute(object parameter) => CanExecute();
@@ -103,9 +104,13 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
             if (_externalIsExecuting != null)
             {
                 _externalIsExecuting.IsExecuting = true;
-                foreach (var externalExecutingCommand in _externalExecutingCommands)
+                foreach (var externalCommandProperty in _externalCommandProperties)
                 {
-                    externalExecutingCommand?.RaiseCanExecuteChanged();
+                    if (_logger != null)
+                    {
+                        _logger.LogInformation("Calling RaiseCanExecuteChanged on " + externalCommandProperty.Name);
+                    }
+                    externalCommandProperty.GetCommand(this)?.RaiseCanExecuteChanged();
                 }
             }
             
@@ -121,9 +126,13 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
             if (_externalIsExecuting != null)
             {
                 _externalIsExecuting.IsExecuting = false;
-                foreach (var externalExecutingCommand in _externalExecutingCommands)
+                foreach (var externalCommandProperty in _externalCommandProperties)
                 {
-                    externalExecutingCommand?.RaiseCanExecuteChanged();
+                    if (_logger != null)
+                    {
+                        _logger.LogInformation("Calling RaiseCanExecuteChanged on " + externalCommandProperty.Name);
+                    }
+                    externalCommandProperty.GetCommand(this)?.RaiseCanExecuteChanged();
                 }
             }
             
@@ -133,7 +142,18 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
         protected async void Fail(Exception e)
         {
             IsExecuting = false;
-            if (_externalIsExecuting != null) _externalIsExecuting.IsExecuting = false;
+            if (_externalIsExecuting != null)
+            {
+                _externalIsExecuting.IsExecuting = false;
+                foreach (var externalCommandProperty in _externalCommandProperties)
+                {
+                    if (_logger != null)
+                    {
+                        _logger.LogInformation("Calling RaiseCanExecuteChanged on " + externalCommandProperty.Name);
+                    }
+                    externalCommandProperty.GetCommand(this)?.RaiseCanExecuteChanged();
+                }
+            }
             await ErrorHandler.HandleExceptionAsync(this, e); 
             _cleanup?.Dispose(); //dispose after handling error else analytics logged without operation
         }

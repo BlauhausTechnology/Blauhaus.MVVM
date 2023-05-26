@@ -1,6 +1,7 @@
 ﻿using Blauhaus.MVVM.Abstractions.Commands;
 using Blauhaus.MVVM.Abstractions.Contracts;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace Blauhaus.MVVM.Abstractions.Extensions;
 
@@ -21,5 +22,23 @@ public static class IsExecutingExtensions
         }
 
         return commands;
+    }
+
+    public static IExecutingCommand? GetCommand(this PropertyInfo property, object obj)
+    {
+        if (typeof(IExecutingCommand).IsAssignableFrom(property.PropertyType) && property.GetGetMethod().IsPublic)
+        {
+            return property.GetValue(obj) as IExecutingCommand;
+        }
+
+        return null;
+    }
+    public static PropertyInfo[] GetExecutingCommandProperties(this IIsExecuting obj)
+    {
+        var commands = new List<PropertyInfo>();
+        var type = obj.GetType();
+        var properties = type.GetProperties();
+        
+        return properties;
     }
 }
