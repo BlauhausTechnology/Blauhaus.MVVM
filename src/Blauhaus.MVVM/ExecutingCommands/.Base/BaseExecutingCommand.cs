@@ -27,7 +27,7 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
         private IAnalyticsLogger? _logger;
         private Func<IDisposable>? _loggerFunc;
         private IIsExecuting? _externalIsExecuting;
-        private PropertyInfo[] _externalCommandProperties = Array.Empty<PropertyInfo>();
+        private PropertyInfo[]? _externalCommandProperties;
 
         protected BaseExecutingCommand(
             IServiceLocator serviceLocator,
@@ -61,7 +61,6 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
         public TExecutingCommand WithIsExecuting(IIsExecuting externalIsExecuting)
         {
             _externalIsExecuting = externalIsExecuting;
-            _externalCommandProperties = externalIsExecuting.GetExecutingCommandProperties();
             return (TExecutingCommand)this;
         }
         public bool CanExecute(object parameter) => CanExecute();
@@ -101,18 +100,7 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
         protected void Start()
         {
             IsExecuting = true;
-            if (_externalIsExecuting != null)
-            {
-                _externalIsExecuting.IsExecuting = true;
-                foreach (var externalCommandProperty in _externalCommandProperties)
-                {
-                    if (_logger != null)
-                    {
-                        _logger.LogInformation("Calling RaiseCanExecuteChanged on " + externalCommandProperty.Name);
-                    }
-                    externalCommandProperty.GetCommand(this)?.RaiseCanExecuteChanged();
-                }
-            }
+            SetIsExecuting(true);
             
             if (_loggerFunc != null)
             {
@@ -122,38 +110,36 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
 
         protected void Finish()
         {
-            IsExecuting = false;
-            if (_externalIsExecuting != null)
-            {
-                _externalIsExecuting.IsExecuting = false;
-                foreach (var externalCommandProperty in _externalCommandProperties)
-                {
-                    if (_logger != null)
-                    {
-                        _logger.LogInformation("Calling RaiseCanExecuteChanged on " + externalCommandProperty.Name);
-                    }
-                    externalCommandProperty.GetCommand(this)?.RaiseCanExecuteChanged();
-                }
-            }
-            
+            SetIsExecuting(false);
             _cleanup?.Dispose();
+        }
+
+        private void SetIsExecuting(bool value)
+        {
+            IsExecuting = value;
+            if (_externalIsExecuting == null) return;
+
+            _externalIsExecuting.IsExecuting = value;
+            _externalCommandProperties ??= _externalIsExecuting.GetExecutingCommandProperties();
+
+            foreach (var externalCommandProperty in _externalCommandProperties)
+            {
+                var command = externalCommandProperty.GetCommand(this);
+                if (command == null)
+                {
+                    _logger?.LogInformation($"Command for {externalCommandProperty.Name} is null");
+                }
+                else
+                {
+                    command.RaiseCanExecuteChanged();
+                    _logger?.LogInformation($"RaiseCanExecuteChanged called on {externalCommandProperty.Name}");
+                } 
+            }
         }
 
         protected async void Fail(Exception e)
         {
-            IsExecuting = false;
-            if (_externalIsExecuting != null)
-            {
-                _externalIsExecuting.IsExecuting = false;
-                foreach (var externalCommandProperty in _externalCommandProperties)
-                {
-                    if (_logger != null)
-                    {
-                        _logger.LogInformation("Calling RaiseCanExecuteChanged on " + externalCommandProperty.Name);
-                    }
-                    externalCommandProperty.GetCommand(this)?.RaiseCanExecuteChanged();
-                }
-            }
+            SetIsExecuting(false);
             await ErrorHandler.HandleExceptionAsync(this, e); 
             _cleanup?.Dispose(); //dispose after handling error else analytics logged without operation
         }
