@@ -20,12 +20,12 @@
 
 
   <ItemGroup>
-    <PackageReference Include="Blauhaus.Analytics.Abstractions" Version="2.0.9" />
+    <PackageReference Include="Blauhaus.Analytics.Abstractions" Version="2.0.10" />
     <PackageReference Include="Blauhaus.DeviceServices.Abstractions" Version="1.2.18" />
     <PackageReference Include="Blauhaus.Ioc.Abstractions" Version="1.5.3" />
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
-    <PackageReference Include="System.Reactive" Version="5.0.0" />
+    <PackageReference Include="System.Reactive" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>

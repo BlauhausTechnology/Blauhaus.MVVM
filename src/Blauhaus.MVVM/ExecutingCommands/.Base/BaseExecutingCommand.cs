@@ -9,6 +9,7 @@ using Blauhaus.Errors.Handler;
 using Blauhaus.Ioc.Abstractions;
 using Blauhaus.MVVM.Abstractions.Commands;
 using Blauhaus.MVVM.Abstractions.Contracts;
+using Blauhaus.MVVM.Abstractions.Extensions;
 using Blauhaus.MVVM.Services;
 using Microsoft.Extensions.Logging;
 
@@ -25,6 +26,7 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
         private IAnalyticsLogger? _logger;
         private Func<IDisposable>? _loggerFunc;
         private IIsExecuting? _externalIsExecuting;
+        private IExecutingCommand[] _externalExecutingCommands = Array.Empty<IExecutingCommand>();
 
         protected BaseExecutingCommand(
             IServiceLocator serviceLocator,
@@ -58,6 +60,7 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
         public TExecutingCommand WithIsExecuting(IIsExecuting externalIsExecuting)
         {
             _externalIsExecuting = externalIsExecuting;
+            _externalExecutingCommands = externalIsExecuting.GetExecutingCommands().ToArray();
             return (TExecutingCommand)this;
         }
         public bool CanExecute(object parameter) => CanExecute();
@@ -97,7 +100,15 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
         protected void Start()
         {
             IsExecuting = true;
-            if (_externalIsExecuting != null) _externalIsExecuting.IsExecuting = true;
+            if (_externalIsExecuting != null)
+            {
+                _externalIsExecuting.IsExecuting = true;
+                foreach (var externalExecutingCommand in _externalExecutingCommands)
+                {
+                    externalExecutingCommand.RaiseCanExecuteChanged();
+                }
+             
+            }
             
             if (_loggerFunc != null)
             {
@@ -108,7 +119,14 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
         protected void Finish()
         {
             IsExecuting = false;
-            if (_externalIsExecuting != null) _externalIsExecuting.IsExecuting = false;
+            if (_externalIsExecuting != null)
+            {
+                _externalIsExecuting.IsExecuting = false;
+                foreach (var externalExecutingCommand in _externalExecutingCommands)
+                {
+                    externalExecutingCommand.RaiseCanExecuteChanged();
+                }
+            }
             
             _cleanup?.Dispose();
         }
