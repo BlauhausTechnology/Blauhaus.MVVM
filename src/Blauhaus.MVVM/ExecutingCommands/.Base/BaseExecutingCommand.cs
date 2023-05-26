@@ -175,6 +175,9 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
             IsExecuting = value;
             if (_externalIsExecuting == null) return;
 
+            return;
+
+            //todo
             _externalIsExecuting.IsExecuting = value;
             _externalCommandProperties ??= _externalIsExecuting.GetExecutingCommandProperties();
 
