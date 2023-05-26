@@ -24,11 +24,11 @@ public static class IsExecutingExtensions
         return commands;
     }
 
-    public static IExecutingCommand? GetCommand(this PropertyInfo property, object obj)
+    public static IExecutingCommand? GetCommand(this IIsExecuting obj, PropertyInfo property)
     {
         if (typeof(IExecutingCommand).IsAssignableFrom(property.PropertyType) && property.GetGetMethod().IsPublic)
         {
-            return property.GetValue(obj) as IExecutingCommand;
+            if (property.GetValue(obj) is IExecutingCommand command) return command;
         }
 
         return null;

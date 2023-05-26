@@ -114,29 +114,6 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
             _cleanup?.Dispose();
         }
 
-        private void SetIsExecuting(bool value)
-        {
-            IsExecuting = value;
-            if (_externalIsExecuting == null) return;
-
-            _externalIsExecuting.IsExecuting = value;
-            _externalCommandProperties ??= _externalIsExecuting.GetExecutingCommandProperties();
-
-            foreach (var externalCommandProperty in _externalCommandProperties)
-            {
-                var command = externalCommandProperty.GetCommand(this);
-                if (command == null)
-                {
-                    _logger?.LogInformation($"Command for {externalCommandProperty.Name} is null");
-                }
-                else
-                {
-                    command.RaiseCanExecuteChanged();
-                    _logger?.LogInformation($"RaiseCanExecuteChanged called on {externalCommandProperty.Name}");
-                } 
-            }
-        }
-
         protected async void Fail(Exception e)
         {
             SetIsExecuting(false);
@@ -192,6 +169,37 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
             get => GetProperty<bool>();
             set => SetProperty(value);
         }
+
+        private void SetIsExecuting(bool value)
+        {
+            IsExecuting = value;
+            if (_externalIsExecuting == null) return;
+
+            _externalIsExecuting.IsExecuting = value;
+            _externalCommandProperties ??= _externalIsExecuting.GetExecutingCommandProperties();
+
+            foreach (var externalCommandProperty in _externalCommandProperties)
+            {
+                try
+                {
+                    var command = this.GetCommand(externalCommandProperty);
+                    if (command == null)
+                    {
+                        _logger?.LogInformation($"Command for {externalCommandProperty.Name} is null");
+                    }
+                    else
+                    {
+                        command.RaiseCanExecuteChanged();
+                        _logger?.LogInformation($"RaiseCanExecuteChanged called on {externalCommandProperty.Name}");
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("Failed to raise external IsExecuting for " + externalCommandProperty.Name, e);
+                }
+            }
+        }
+
     }
 
 
