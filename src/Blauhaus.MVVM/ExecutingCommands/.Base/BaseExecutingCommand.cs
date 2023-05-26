@@ -26,7 +26,7 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
         private IAnalyticsLogger? _logger;
         private Func<IDisposable>? _loggerFunc;
         private IIsExecuting? _externalIsExecuting;
-        private IExecutingCommand[] _externalExecutingCommands = Array.Empty<IExecutingCommand>();
+        private IExecutingCommand?[] _externalExecutingCommands = Array.Empty<IExecutingCommand?>();
 
         protected BaseExecutingCommand(
             IServiceLocator serviceLocator,
@@ -105,9 +105,8 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
                 _externalIsExecuting.IsExecuting = true;
                 foreach (var externalExecutingCommand in _externalExecutingCommands)
                 {
-                    externalExecutingCommand.RaiseCanExecuteChanged();
+                    externalExecutingCommand?.RaiseCanExecuteChanged();
                 }
-             
             }
             
             if (_loggerFunc != null)
@@ -124,7 +123,7 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
                 _externalIsExecuting.IsExecuting = false;
                 foreach (var externalExecutingCommand in _externalExecutingCommands)
                 {
-                    externalExecutingCommand.RaiseCanExecuteChanged();
+                    externalExecutingCommand?.RaiseCanExecuteChanged();
                 }
             }
             
