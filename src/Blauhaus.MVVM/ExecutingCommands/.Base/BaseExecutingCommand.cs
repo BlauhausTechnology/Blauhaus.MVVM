@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Blauhaus.Analytics.Abstractions;
 using Blauhaus.Analytics.Abstractions.Operation;
 using Blauhaus.Analytics.Abstractions.Service;
+using Blauhaus.Common.Utils.Disposables;
 using Blauhaus.Common.Utils.NotifyPropertyChanged;
 using Blauhaus.Errors.Handler;
 using Blauhaus.Ioc.Abstractions;
@@ -53,7 +54,14 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
                 _logger.SetValue("ActionName",actionName);
                 _logger.SetValue("ActionSource",typeof(TSource).Name);
                 var disposable = _logger.BeginTimedScope(logLevel, actionName);
-                return disposable;
+                return new ActionDisposable(() =>
+                {
+                    disposable.Dispose();
+                    _logger.SetValue("ActionId", string.Empty);
+                    _logger.SetValue("ActionName", string.Empty);
+                    _logger.SetValue("ActionSource", string.Empty);
+
+                });
             };
             return (TExecutingCommand)this;
         }
@@ -173,32 +181,15 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
         {
             IsExecuting = value;
             if (_externalIsExecuting == null) return;
+            
             _externalIsExecuting.IsExecuting = value;
 
-            return;
-
-            //todo
             _externalCommandProperties ??= _externalIsExecuting.GetExecutingCommandProperties();
 
-            foreach (var externalCommandProperty in _externalCommandProperties)
+            var commands = _externalIsExecuting.GetExecutingCommands();
+            foreach (var executingCommand in commands)
             {
-                try
-                {
-                    var command = this.GetCommand(externalCommandProperty);
-                    if (command == null)
-                    {
-                        _logger?.LogInformation($"Command for {externalCommandProperty.Name} is null");
-                    }
-                    else
-                    {
-                        command.RaiseCanExecuteChanged();
-                        _logger?.LogInformation($"RaiseCanExecuteChanged called on {externalCommandProperty.Name}");
-                    }
-                }
-                catch (Exception e)
-                {
-                    throw new Exception("Failed to raise external IsExecuting for " + externalCommandProperty.Name, e);
-                }
+                executingCommand?.RaiseCanExecuteChanged();
             }
         }
 
