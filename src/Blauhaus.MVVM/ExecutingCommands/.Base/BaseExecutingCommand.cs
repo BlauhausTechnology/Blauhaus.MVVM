@@ -99,7 +99,6 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
 
         protected void Start()
         {
-            IsExecuting = true;
             SetIsExecuting(true);
             
             if (_loggerFunc != null)
@@ -174,11 +173,11 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
         {
             IsExecuting = value;
             if (_externalIsExecuting == null) return;
+            _externalIsExecuting.IsExecuting = value;
 
             return;
 
             //todo
-            _externalIsExecuting.IsExecuting = value;
             _externalCommandProperties ??= _externalIsExecuting.GetExecutingCommandProperties();
 
             foreach (var externalCommandProperty in _externalCommandProperties)
