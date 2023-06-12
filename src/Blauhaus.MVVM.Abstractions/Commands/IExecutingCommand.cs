@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Windows.Input;
+using Blauhaus.Common.Abstractions;
 using Blauhaus.MVVM.Abstractions.Contracts;
 
 namespace Blauhaus.MVVM.Abstractions.Commands

@@ -1,4 +1,5 @@
-﻿using Blauhaus.MVVM.Abstractions.Contracts;
+﻿using Blauhaus.Common.Abstractions;
+using Blauhaus.MVVM.Abstractions.Contracts;
 using Blauhaus.MVVM.Xamarin.Converters;
 using Xamarin.Forms;
 
@@ -22,6 +23,15 @@ namespace Blauhaus.MVVM.Xamarin.Extensions
             visualElement.SetBinding(VisualElement.IsVisibleProperty, 
                 new Binding($"{propertyName}.{IsExecuting}", BindingMode.Default, new BoolInverseConverter()));
 
+            return visualElement;
+        }
+
+        
+
+        public static TVisualElement BindIsVisible<TVisualElement>(this TVisualElement visualElement, string propertyName) 
+            where TVisualElement : View
+        {
+            visualElement.SetBinding(VisualElement.IsVisibleProperty, new Binding($"{propertyName}.{nameof(IIsVisible.IsVisible)}"));
             return visualElement;
         }
 
