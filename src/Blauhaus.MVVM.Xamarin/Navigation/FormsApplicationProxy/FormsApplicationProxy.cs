@@ -20,6 +20,10 @@ namespace Blauhaus.MVVM.Xamarin.Navigation.FormsApplicationProxy
         {
             return Application.Current.MainPage.DisplayAlert(title, message, cancel);
         }
+        public Task<string> DisplayActionSheetAsync(string title, string cancel, string destruction, params string[] buttons)
+        {
+            return Application.Current.MainPage.DisplayActionSheet(title, cancel, destruction, buttons);
+        }
 
         public Task GoToAsync(string route, bool animate)
         {

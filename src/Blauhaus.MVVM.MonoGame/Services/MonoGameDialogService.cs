@@ -14,5 +14,10 @@ namespace Blauhaus.MVVM.MonoGame.Services
         {
             return Task.FromResult(true);
         }
+
+        public Task<string> DisplayActionSheetAsync(string title, string cancel, string destruction, params string[] buttons)
+        {
+            return Task.FromResult("");
+        }
     }
 }
