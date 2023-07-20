@@ -1,6 +1,7 @@
 ﻿using Blauhaus.MVVM.Abstractions.Views;
 using System.Threading.Tasks;
 using Blauhaus.Common.Abstractions;
+using Blauhaus.Common.ValueObjects.Navigation;
 
 namespace Blauhaus.MVVM.Abstractions.TargetNavigation;
 

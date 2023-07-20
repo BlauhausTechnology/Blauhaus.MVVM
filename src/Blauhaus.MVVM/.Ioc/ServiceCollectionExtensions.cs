@@ -1,4 +1,5 @@
-﻿using Blauhaus.MVVM.Abstractions.Application;
+﻿using Blauhaus.Common.ValueObjects.Navigation;
+using Blauhaus.MVVM.Abstractions.Application;
 using Blauhaus.MVVM.Abstractions.Navigation.Register;
 using Blauhaus.MVVM.Abstractions.TargetNavigation;
 using Blauhaus.MVVM.Abstractions.ViewModels;

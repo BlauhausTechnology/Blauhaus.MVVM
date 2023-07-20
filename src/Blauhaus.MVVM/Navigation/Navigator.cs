@@ -3,6 +3,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Blauhaus.Analytics.Abstractions;
 using Blauhaus.Common.Abstractions;
+using Blauhaus.Common.ValueObjects.Navigation;
 using Blauhaus.Ioc.Abstractions;
 using Blauhaus.MVVM.Abstractions.TargetNavigation;
 using Blauhaus.MVVM.Abstractions.Views;

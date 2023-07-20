@@ -1,4 +1,5 @@
-﻿using Blauhaus.DeviceServices.Maui.Ioc;
+﻿using Blauhaus.Common.ValueObjects.Navigation;
+using Blauhaus.DeviceServices.Maui.Ioc;
 using Blauhaus.Errors.Handler;
 using Blauhaus.Ioc.Abstractions;
 using Blauhaus.Ioc.DotNetCoreIocService;

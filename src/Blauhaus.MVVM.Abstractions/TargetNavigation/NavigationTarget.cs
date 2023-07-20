@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Blauhaus.Common.ValueObjects.Base;
+using Blauhaus.Common.ValueObjects.Navigation;
 
 namespace Blauhaus.MVVM.Abstractions.TargetNavigation;
 
