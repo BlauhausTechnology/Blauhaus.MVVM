@@ -7,15 +7,12 @@ namespace Blauhaus.MVVM.Maui.ViewNavigator.Containers;
 
 public class MauiNavigationPage : NavigationPage, IMauiViewContainer
 {
-    private readonly IAnalyticsLogger<MauiNavigationPage> _logger;
-    private readonly IMauiViewFactory _viewFactory;
+    private readonly IMauiViewNavigator _viewNavigator;
 
-    public MauiNavigationPage(
-        IAnalyticsLogger<MauiNavigationPage> logger,
-        IMauiViewFactory viewFactory)
+    public MauiNavigationPage( 
+        IMauiViewNavigator viewNavigator)
     {
-        _logger = logger;
-        _viewFactory = viewFactory;
+        _viewNavigator = viewNavigator;
     }
 
     public ViewIdentifier Identifier { get; private set; } = null!;
@@ -26,6 +23,11 @@ public class MauiNavigationPage : NavigationPage, IMauiViewContainer
         return Task.CompletedTask;
     }
 
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        _viewNavigator.SetActive(this);
+    }
 
     Task IMauiViewContainer.PushAsync(Page page)
     {
