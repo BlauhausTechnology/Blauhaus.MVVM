@@ -36,6 +36,7 @@
 
 	<ItemGroup>
 	  <Folder Include="Applications\" />
+	  <Folder Include="ViewNavigator\Containers\" />
 	</ItemGroup>
 
 </Project>
