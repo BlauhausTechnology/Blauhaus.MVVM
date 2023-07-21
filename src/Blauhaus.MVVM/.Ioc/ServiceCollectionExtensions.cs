@@ -29,6 +29,13 @@ namespace Blauhaus.MVVM.Ioc
         {
             services
                 .AddSingleton<INavigator, Navigator>()
+                .AddViewRegister();
+            return services;
+        }
+
+        public static IServiceCollection AddViewRegister(this IServiceCollection services)
+        {
+            services 
                 .AddSingleton<IViewRegister>(_=> ViewRegister);
             return services;
         }

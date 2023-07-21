@@ -14,6 +14,7 @@ using Blauhaus.MVVM.AppLifecycle;
 using Blauhaus.MVVM.Ioc;
 using Blauhaus.MVVM.Maui.Applications;
 using Blauhaus.MVVM.Maui.Services;
+using Blauhaus.MVVM.Maui.ViewNavigator;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Blauhaus.MVVM.Maui.Ioc;
@@ -59,6 +60,16 @@ public static class ServiceCollectionExtensions
         services
             .AddSingleton<IPlatformNavigator, MauiNavigator>()
             .AddNavigator();
+
+        return services;
+    }
+    private static IServiceCollection AddMauiViewNavigator(this IServiceCollection services)
+    {
+        services
+            .AddSingleton<IMauiViewNavigator, MauiViewNavigator>()
+            .AddSingleton<IViewNavigator>(sp => sp.GetRequiredService<IMauiViewNavigator>())
+            .AddSingleton<IMauiViewFactory, MauiViewFactory>()
+            .AddViewRegister();
 
         return services;
     }

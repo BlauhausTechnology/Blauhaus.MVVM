@@ -11,6 +11,7 @@ using Blauhaus.MVVM.Abstractions.TargetNavigation;
 using Blauhaus.MVVM.AppLifecycle;
 using Blauhaus.MVVM.Blazor.DummyServices;
 using Blauhaus.MVVM.Blazor.Services;
+using Blauhaus.MVVM.Blazor.ViewNavigator;
 using Blauhaus.MVVM.Ioc;
 using Blauhaus.Push.Abstractions.Client;
 using Blazored.LocalStorage;
@@ -21,6 +22,16 @@ namespace Blauhaus.MVVM.Blazor.Ioc;
 
 public static class ServiceCollectionExtensions
 {
+    
+    private static IServiceCollection AddBlazorViewNavigator(this IServiceCollection services)
+    {
+        services
+            .AddSingleton<IViewNavigator, BlazorViewNavigator>()
+            .AddViewRegister();
+
+        return services;
+    }
+
     public static IServiceCollection AddBlazorServerDeviceServices<TKeyValueStore>(this IServiceCollection services) where TKeyValueStore : class, IKeyValueStore
     {
         services
