@@ -16,10 +16,10 @@ public interface IViewTarget : IReadOnlyList<ViewIdentifier>
 
 public class ViewTarget : IViewTarget
 {
-    private readonly ViewIdentifier[] _viewIdentifiers;
+    private readonly IReadOnlyList<ViewIdentifier> _viewIdentifiers;
     private string? _path;
 
-    public ViewTarget(ViewIdentifier[] viewIdentifiers)
+    public ViewTarget(IReadOnlyList<ViewIdentifier> viewIdentifiers)
     {   
         _viewIdentifiers = viewIdentifiers;
     }
@@ -27,9 +27,9 @@ public class ViewTarget : IViewTarget
     public static ViewTarget Create (params ViewIdentifier[] viewIdentifiers) => new(viewIdentifiers);
     
 
-    public IEnumerator<ViewIdentifier> GetEnumerator() => (IEnumerator<ViewIdentifier>)_viewIdentifiers.GetEnumerator();
+    public IEnumerator<ViewIdentifier> GetEnumerator() => _viewIdentifiers.GetEnumerator();
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-    public int Count => _viewIdentifiers.Length;
+    public int Count => _viewIdentifiers.Count;
     public ViewIdentifier this[int index] => _viewIdentifiers[index];
 
     public string Path
