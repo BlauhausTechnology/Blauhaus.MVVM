@@ -22,6 +22,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blauhaus.MVVM.MonoGame", "B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blauhaus.MVVM.Maui", "Blauhaus.MVVM.Maui\Blauhaus.MVVM.Maui.csproj", "{396927F6-D09E-4C94-9F3D-D37545559DC5}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blauhaus.MVVM.Blazor", "Blauhaus.MVVM.Blazor\Blauhaus.MVVM.Blazor.csproj", "{266E4F16-AA08-4A94-AF96-73DB5DF40627}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +58,10 @@ Global
 		{396927F6-D09E-4C94-9F3D-D37545559DC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{396927F6-D09E-4C94-9F3D-D37545559DC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{396927F6-D09E-4C94-9F3D-D37545559DC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{266E4F16-AA08-4A94-AF96-73DB5DF40627}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{266E4F16-AA08-4A94-AF96-73DB5DF40627}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{266E4F16-AA08-4A94-AF96-73DB5DF40627}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{266E4F16-AA08-4A94-AF96-73DB5DF40627}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
