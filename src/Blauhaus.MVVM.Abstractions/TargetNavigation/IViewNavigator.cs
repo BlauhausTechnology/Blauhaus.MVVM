@@ -62,8 +62,8 @@ public class ViewTarget : IReadOnlyList<ViewIdentifier>
 
 public interface IViewNavigator
 {
-    Task PushAsync(IViewTarget viewTarget);
-    Task PopAsync();
+    Task NavigateAsync(IViewTarget viewTarget);
+    Task GoBackAsync();
 }
 
 

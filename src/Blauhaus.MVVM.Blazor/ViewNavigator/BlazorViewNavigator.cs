@@ -24,13 +24,13 @@ public class BlazorViewNavigator : IViewNavigator
     }
 
 
-    public Task PushAsync(IViewTarget viewTarget)
+    public Task NavigateAsync(IViewTarget viewTarget)
     {
         _navigationManager.NavigateTo(viewTarget.Path);
         return Task.CompletedTask;
     }
 
-    public async Task PopAsync()
+    public async Task GoBackAsync()
     {
         await _jsRuntime.InvokeVoidAsync("history.back");
     }

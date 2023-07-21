@@ -27,7 +27,7 @@ public class MauiViewNavigator : IMauiViewNavigator
         _viewFactory = viewFactory;
     }
 
-    public async Task PushAsync(IViewTarget viewTarget)
+    public async Task NavigateAsync(IViewTarget viewTarget)
     {
         if (viewTarget.Count == 1)
         {
@@ -56,7 +56,7 @@ public class MauiViewNavigator : IMauiViewNavigator
         _activeContainer = container;
     }
 
-    public Task PopAsync()
+    public Task GoBackAsync()
     {
         return _activeContainer is not null ? _activeContainer.PopAsync() : Task.CompletedTask;
     }
