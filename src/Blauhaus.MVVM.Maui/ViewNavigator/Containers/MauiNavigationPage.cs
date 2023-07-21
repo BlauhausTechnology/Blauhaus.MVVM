@@ -10,7 +10,8 @@ public class MauiNavigationPage : NavigationPage, IMauiViewContainer
     private readonly IMauiViewNavigator _viewNavigator;
 
     public MauiNavigationPage( 
-        IMauiViewNavigator viewNavigator)
+        IMauiViewNavigator viewNavigator, Page rootPage) 
+            : base(rootPage)
     {
         _viewNavigator = viewNavigator;
     }

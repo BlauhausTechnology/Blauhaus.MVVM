@@ -5,7 +5,7 @@ using Blauhaus.MVVM.Abstractions.Views;
 
 namespace Blauhaus.MVVM.Maui.ViewNavigator;
 
-public interface IMauiViewContainer : INavigableView, IAsyncInitializable<ViewIdentifier>
+public interface IMauiViewContainer : INavigableView
 {
     Task PushAsync(Page page);
     Task PopAsync();

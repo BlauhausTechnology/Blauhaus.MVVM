@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Blauhaus.Common.Abstractions;
 using Blauhaus.Common.ValueObjects.Navigation;
 using Blauhaus.MVVM.Abstractions.Views;
 using Blauhaus.Responses;
@@ -67,7 +68,7 @@ public interface IViewNavigator
 }
 
 
-public interface INavigableView : IView
+public interface INavigableView : IView, IAsyncInitializable<ViewIdentifier>
 {
     ViewIdentifier Identifier { get; }
 }

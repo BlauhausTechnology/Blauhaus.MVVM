@@ -63,7 +63,7 @@ public static class ServiceCollectionExtensions
 
         return services;
     }
-    private static IServiceCollection AddMauiViewNavigator(this IServiceCollection services)
+    public static IServiceCollection AddMauiViewNavigator(this IServiceCollection services)
     {
         services
             .AddSingleton<IMauiViewNavigator, MauiViewNavigator>()
