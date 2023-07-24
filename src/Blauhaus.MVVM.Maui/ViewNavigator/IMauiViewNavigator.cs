@@ -1,4 +1,4 @@
-﻿using Blauhaus.MVVM.Abstractions.TargetNavigation;
+﻿using Blauhaus.MVVM.Abstractions.Navigator;
 
 namespace Blauhaus.MVVM.Maui.ViewNavigator;
 

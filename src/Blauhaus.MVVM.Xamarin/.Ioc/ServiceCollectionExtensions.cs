@@ -3,7 +3,6 @@ using Blauhaus.MVVM.Abstractions.Dialogs;
 using Blauhaus.MVVM.Abstractions.Localization;
 using Blauhaus.MVVM.Abstractions.Navigation.NavigationService;
 using Blauhaus.MVVM.Abstractions.Navigation.Register;
-using Blauhaus.MVVM.Abstractions.TargetNavigation;
 using Blauhaus.MVVM.Abstractions.ViewModels;
 using Blauhaus.MVVM.Abstractions.Views;
 using Blauhaus.MVVM.Ioc;
@@ -40,15 +39,7 @@ namespace Blauhaus.MVVM.Xamarin.Ioc
                 .AddSingleton<INavigationRegister>(x => NavigationRegister)
                 .AddSingleton<IErrorHandler, TErrorHandler>();
         }
-
-        private static IServiceCollection AddFormsNavigator(this IServiceCollection services)
-        {
-            services
-                .AddSingleton<IPlatformNavigator, FormsNavigator>()
-                .AddNavigator();
-
-            return services;
-        }
+         
 
         public static IServiceCollection AddPageSingleton<TView, TViewModel>(this IServiceCollection services) 
             where TView : Page, IView 

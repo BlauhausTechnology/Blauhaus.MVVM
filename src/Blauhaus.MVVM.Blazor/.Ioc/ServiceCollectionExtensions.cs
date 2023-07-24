@@ -7,7 +7,7 @@ using Blauhaus.Errors.Handler;
 using Blauhaus.Ioc.Abstractions;
 using Blauhaus.Ioc.DotNetCoreIocService;
 using Blauhaus.MVVM.Abstractions.Application;
-using Blauhaus.MVVM.Abstractions.TargetNavigation;
+using Blauhaus.MVVM.Abstractions.Navigator;
 using Blauhaus.MVVM.AppLifecycle;
 using Blauhaus.MVVM.Blazor.DummyServices;
 using Blauhaus.MVVM.Blazor.Services;
@@ -51,7 +51,7 @@ public static class ServiceCollectionExtensions
         //MVVM services
         services
             .AddScoped<IAppLifecycleService, AppLifecycleService>()
-            .AddScoped<INavigator, BlazorNavigator>()
+            .AddScoped<IViewNavigator, BlazorViewNavigator>()
             .AddExecutingCommands()
             .AddScoped<IErrorHandler, BlazorErrorHandler>();
 

@@ -1,7 +1,7 @@
 ﻿using Blauhaus.Common.ValueObjects.Navigation;
 using Blauhaus.MVVM.Abstractions.Application;
 using Blauhaus.MVVM.Abstractions.Navigation.Register;
-using Blauhaus.MVVM.Abstractions.TargetNavigation;
+using Blauhaus.MVVM.Abstractions.Navigator;
 using Blauhaus.MVVM.Abstractions.ViewModels;
 using Blauhaus.MVVM.Abstractions.Views;
 using Blauhaus.MVVM.Collections;
@@ -24,15 +24,7 @@ namespace Blauhaus.MVVM.Ioc
             services.AddSingleton<IAppLifecycleHandler, THandler>();
             return services;
         }
-
-        public static IServiceCollection AddNavigator(this IServiceCollection services)
-        {
-            services
-                .AddSingleton<INavigator, Navigator>()
-                .AddViewRegister();
-            return services;
-        }
-
+         
         public static IServiceCollection AddViewRegister(this IServiceCollection services)
         {
             services 

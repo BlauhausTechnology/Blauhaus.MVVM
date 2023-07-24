@@ -1,12 +1,11 @@
 ﻿using Blauhaus.Common.ValueObjects.Navigation;
-using Blauhaus.MVVM.Abstractions.TargetNavigation;
 using Blauhaus.MVVM.Abstractions.ViewModels;
 using Blauhaus.MVVM.Abstractions.Views;
 using IView = Blauhaus.MVVM.Abstractions.Views.IView;
 
 namespace Blauhaus.MVVM.Maui.Views;
 
-public abstract class BaseMauiShell<TViewModel> : Shell, IView<TViewModel>, INavigationContainerView
+public abstract class BaseMauiShell<TViewModel> : Shell, IView<TViewModel>
     where TViewModel : IViewModel
 {
     protected BaseMauiShell(TViewModel viewModel)
@@ -17,11 +16,7 @@ public abstract class BaseMauiShell<TViewModel> : Shell, IView<TViewModel>, INav
     
     public TViewModel ViewModel { get; }
     public ViewIdentifier ContainerViewIdentifier { get; private set; } = null!;
-    public async Task NavigateAsync(NavigationTarget target, IView view)
-    {
-        throw new NotImplementedException();
-    }
-
+  
 
     public void Initialize(ViewIdentifier viewIdentifier)
     {
@@ -49,11 +44,6 @@ public abstract class BaseMauiShell<TViewModel> : Shell, IView<TViewModel>, INav
             }
         }
     }
-
-    public Task NavigateAsync(NavigationTarget target)
-    {
-        Dispatcher.Dispatch(()=> GoToAsync(target.ToString()));
-        return Task.CompletedTask;
-    }
+     
     
 }

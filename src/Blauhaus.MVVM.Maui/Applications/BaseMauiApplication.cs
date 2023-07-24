@@ -2,7 +2,7 @@
 using Blauhaus.Ioc.Abstractions;
 using Blauhaus.Ioc.DotNetCoreIocService;
 using Blauhaus.MVVM.Abstractions.Application;
-using Blauhaus.MVVM.Abstractions.TargetNavigation;
+using Blauhaus.MVVM.Abstractions.Navigator;
 using Blauhaus.MVVM.AppLifecycle;
 using Microsoft.Extensions.Logging;
 
@@ -18,16 +18,16 @@ public abstract class BaseMauiApplication<TApplication> : Application
 
     protected readonly IServiceLocator ServiceLocator;
     protected readonly IAnalyticsLogger<TApplication> Logger;
-    protected readonly INavigator Navigator;
+    protected readonly IViewNavigator _viewNavigator;
 
     protected BaseMauiApplication(
         IServiceLocator serviceLocator,
         IAnalyticsLogger<TApplication> logger, 
-        INavigator navigator)
+        IViewNavigator viewNavigator)
     {
         ServiceLocator = serviceLocator;
         Logger = logger;
-        Navigator = navigator;
+        _viewNavigator = viewNavigator;
         _appLifecycleService = ServiceLocator.ResolveAs<AppLifecycleService>(typeof(IAppLifecycleService));
         MainPage = new ContentPage();
     }

@@ -1,5 +1,6 @@
 ﻿using Blauhaus.Common.Abstractions;
-using Blauhaus.MVVM.Abstractions.TargetNavigation;
+using Blauhaus.Common.ValueObjects.Navigation;
+using Blauhaus.MVVM.Abstractions.Navigator;
 using Blauhaus.MVVM.Abstractions.ViewModels;
 using Blauhaus.MVVM.Abstractions.Views;
 using Blauhaus.MVVM.Maui.Services;
@@ -8,13 +9,11 @@ using Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;
 
 namespace Blauhaus.MVVM.Maui.Views;
 
-public abstract class BaseMauiContentPage<TViewModel> : ContentPage, IView<TViewModel>, IAsyncInitializable<NavigationTarget>
+public abstract class BaseMauiContentPage<TViewModel> : ContentPage, IView<TViewModel>, INavigableView
     where TViewModel : IViewModel
 {
     public TViewModel ViewModel { get; }
     
-    private bool _isSubscribedToHotReload;
-    protected abstract bool IsHotReloadEnabled { get; }
 
     protected BaseMauiContentPage(TViewModel viewModel)
     {
@@ -24,11 +23,15 @@ public abstract class BaseMauiContentPage<TViewModel> : ContentPage, IView<TView
         SubscribeToHotReload();
         On<iOS>().SetUseSafeArea(true);
     }
-    
-    public virtual Task InitializeAsync(NavigationTarget value)
+
+    public ViewIdentifier Identifier { get; private set; } = null!;
+
+    public Task InitializeAsync(ViewIdentifier identifier)
     {
+        Identifier = identifier;
         return Task.CompletedTask;
     }
+
     
     protected override void OnAppearing()
     {
@@ -63,6 +66,10 @@ public abstract class BaseMauiContentPage<TViewModel> : ContentPage, IView<TView
 
      
     #region HotReload
+    
+    private bool _isSubscribedToHotReload;
+    protected abstract bool IsHotReloadEnabled { get; }
+
     private void SubscribeToHotReload()
     {
         if (IsHotReloadEnabled)

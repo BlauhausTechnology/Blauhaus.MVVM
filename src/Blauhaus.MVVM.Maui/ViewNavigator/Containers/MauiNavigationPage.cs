@@ -1,6 +1,5 @@
 ﻿using Blauhaus.Analytics.Abstractions;
 using Blauhaus.Common.ValueObjects.Navigation;
-using Blauhaus.MVVM.Abstractions.TargetNavigation;
 using Blauhaus.Responses;
 
 namespace Blauhaus.MVVM.Maui.ViewNavigator.Containers;

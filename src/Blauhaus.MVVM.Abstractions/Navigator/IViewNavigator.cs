@@ -1,14 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Blauhaus.Common.Abstractions;
 using Blauhaus.Common.ValueObjects.Navigation;
 using Blauhaus.MVVM.Abstractions.Views;
-using Blauhaus.Responses;
 
-namespace Blauhaus.MVVM.Abstractions.TargetNavigation;
+namespace Blauhaus.MVVM.Abstractions.Navigator;
 
 public interface IViewTarget : IReadOnlyList<ViewIdentifier>
 {

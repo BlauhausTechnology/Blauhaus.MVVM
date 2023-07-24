@@ -7,7 +7,7 @@ using Blauhaus.MVVM.Abstractions.Application;
 using Blauhaus.MVVM.Abstractions.Dialogs;
 using Blauhaus.MVVM.Abstractions.Navigation.NavigationService;
 using Blauhaus.MVVM.Abstractions.Navigation.UriNavigation;
-using Blauhaus.MVVM.Abstractions.TargetNavigation;
+using Blauhaus.MVVM.Abstractions.Navigator;
 using Blauhaus.MVVM.Abstractions.ViewModels;
 using Blauhaus.MVVM.Abstractions.Views;
 using Blauhaus.MVVM.AppLifecycle;
@@ -27,7 +27,7 @@ public static class ServiceCollectionExtensions
 
         services
             .AddMauiServices()
-            .AddMauiNavigator()
+            .AddMauiViewNavigator()
             .AddMauiDeviceServices();
 
         services.TryAddSingleton<IServiceLocator>(sp => new DotNetCoreServiceLocator(sp));
@@ -54,15 +54,7 @@ public static class ServiceCollectionExtensions
 
         return services;
     }
-
-    private static IServiceCollection AddMauiNavigator(this IServiceCollection services)
-    {
-        services
-            .AddSingleton<IPlatformNavigator, MauiNavigator>()
-            .AddNavigator();
-
-        return services;
-    }
+     
     public static IServiceCollection AddMauiViewNavigator(this IServiceCollection services)
     {
         services
