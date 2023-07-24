@@ -31,7 +31,7 @@ public class MauiViewNavigator : IMauiViewNavigator
     {
         if (viewTarget.Count == 1)
         {
-            var page = await _viewFactory.GetViewAsync(viewTarget[0]);
+            var page = await _viewFactory.GetViewAsync(viewTarget);
             if (_activeContainer is null)
             {
                 _logger.LogDebug("There is no active navigation container - setting application main page to {PageType} with identifier {ViewIdentifier}", page.GetType().Name, viewTarget[0].Serialize());

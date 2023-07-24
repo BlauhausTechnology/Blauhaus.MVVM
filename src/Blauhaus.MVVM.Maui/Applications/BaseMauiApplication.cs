@@ -18,7 +18,7 @@ public abstract class BaseMauiApplication<TApplication> : Application
 
     protected readonly IServiceLocator ServiceLocator;
     protected readonly IAnalyticsLogger<TApplication> Logger;
-    protected readonly IViewNavigator _viewNavigator;
+    protected readonly IViewNavigator ViewNavigator;
 
     protected BaseMauiApplication(
         IServiceLocator serviceLocator,
@@ -27,7 +27,7 @@ public abstract class BaseMauiApplication<TApplication> : Application
     {
         ServiceLocator = serviceLocator;
         Logger = logger;
-        _viewNavigator = viewNavigator;
+        ViewNavigator = viewNavigator;
         _appLifecycleService = ServiceLocator.ResolveAs<AppLifecycleService>(typeof(IAppLifecycleService));
         MainPage = new ContentPage();
     }

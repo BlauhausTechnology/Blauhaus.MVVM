@@ -1,5 +1,6 @@
 ﻿using Blauhaus.Analytics.Abstractions;
 using Blauhaus.Common.ValueObjects.Navigation;
+using Blauhaus.MVVM.Abstractions.Navigator;
 using Blauhaus.Responses;
 
 namespace Blauhaus.MVVM.Maui.ViewNavigator.Containers;
@@ -14,14 +15,14 @@ public class MauiNavigationPage : NavigationPage, IMauiViewContainer
     {
         _viewNavigator = viewNavigator;
     }
-
-    public ViewIdentifier Identifier { get; private set; } = null!;
     
-    public Task InitializeAsync(ViewIdentifier value)
+    public Task InitializeAsync(IViewTarget value)
     {
-        Identifier = value;
+        ViewTarget = value;
         return Task.CompletedTask;
     }
+
+    public IViewTarget ViewTarget { get; private set; } = null!;
 
     protected override void OnAppearing()
     {
@@ -39,4 +40,5 @@ public class MauiNavigationPage : NavigationPage, IMauiViewContainer
     {
         return PopAsync();
     }
+
 }

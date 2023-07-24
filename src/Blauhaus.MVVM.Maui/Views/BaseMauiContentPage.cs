@@ -12,9 +12,6 @@ namespace Blauhaus.MVVM.Maui.Views;
 public abstract class BaseMauiContentPage<TViewModel> : ContentPage, IView<TViewModel>, INavigableView
     where TViewModel : IViewModel
 {
-    public TViewModel ViewModel { get; }
-    
-
     protected BaseMauiContentPage(TViewModel viewModel)
     {
         ViewModel = viewModel;
@@ -23,16 +20,21 @@ public abstract class BaseMauiContentPage<TViewModel> : ContentPage, IView<TView
         SubscribeToHotReload();
         On<iOS>().SetUseSafeArea(true);
     }
+    
+    public TViewModel ViewModel { get; }
+    public IViewTarget ViewTarget { get; private set; } = null!;
 
-    public ViewIdentifier Identifier { get; private set; } = null!;
-
-    public Task InitializeAsync(ViewIdentifier identifier)
+    public Task InitializeAsync(IViewTarget viewTarget)
     {
-        Identifier = identifier;
+        ViewTarget = viewTarget;
+        return OnInitializedAsync(viewTarget);
+    }
+
+    protected virtual Task OnInitializedAsync(IViewTarget viewIdentifier)
+    {
         return Task.CompletedTask;
     }
 
-    
     protected override void OnAppearing()
     {
         base.OnAppearing();

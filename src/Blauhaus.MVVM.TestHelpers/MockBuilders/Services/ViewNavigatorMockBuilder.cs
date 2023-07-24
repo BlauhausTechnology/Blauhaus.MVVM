@@ -1,5 +1,6 @@
 ﻿using Blauhaus.Common.ValueObjects.Navigation;
 using Blauhaus.MVVM.Abstractions.Navigator;
+using Blauhaus.MVVM.Navigation;
 using Blauhaus.TestHelpers.MockBuilders;
 
 namespace Blauhaus.MVVM.TestHelpers.MockBuilders.Services;

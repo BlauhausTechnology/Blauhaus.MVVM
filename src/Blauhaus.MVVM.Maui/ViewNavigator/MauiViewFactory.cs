@@ -2,6 +2,7 @@
 using Blauhaus.Common.ValueObjects.Navigation;
 using Blauhaus.Ioc.Abstractions;
 using Blauhaus.MVVM.Abstractions.Navigator;
+using Blauhaus.MVVM.Abstractions.Views;
 
 namespace Blauhaus.MVVM.Maui.ViewNavigator;
 
@@ -18,27 +19,20 @@ public class MauiViewFactory : IMauiViewFactory
         _serviceLocator = serviceLocator;
     }
 
-    public async Task<Page> GetViewAsync(ViewIdentifier viewIdentifier)
+    public async Task<Page> GetViewAsync(IViewTarget viewTarget)
     {
-        var viewType = _viewRegister.GetViewType(viewIdentifier);
+        var viewType = _viewRegister.GetViewType(viewTarget.View);
         object? constructedView = _serviceLocator.Resolve(viewType);
         if (constructedView is not INavigableView navigableView)
         {
             throw new Exception($"{constructedView.GetType().Name} must implement {nameof(INavigableView)}");
         }
         
+        await navigableView.InitializeAsync(viewTarget);
+
         if (constructedView is not Page page)
         {
             throw new Exception($"{constructedView.GetType().Name} must implement {nameof(INavigableView)}");
-        }
-
-        if (constructedView is IAsyncInitializable<ViewIdentifier> initializeable)
-        {
-            await initializeable.InitializeAsync(viewIdentifier);
-        }
-        if (constructedView is IAsyncInitializable<string> stringInitializeable)
-        {
-            await stringInitializeable.InitializeAsync(viewIdentifier.Serialize());
         }
 
         return page;

@@ -1,6 +1,7 @@
 ﻿using Blauhaus.Common.Abstractions.Extensions;
 using Blauhaus.Common.ValueObjects.Navigation;
 using Blauhaus.MVVM.Abstractions.Navigator;
+using Blauhaus.MVVM.Navigation;
 
 namespace Blauhaus.MVVM.Tests.Tests.NavigatorTests.ViewTargetTests;
 

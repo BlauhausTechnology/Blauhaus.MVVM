@@ -1,8 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Blauhaus.Common.ValueObjects.Navigation;
 using Blauhaus.MVVM.Abstractions.Navigator;
+using Blauhaus.MVVM.Navigation;
 
-namespace Blauhaus.MVVM.Abstractions.Extensions;
+namespace Blauhaus.MVVM.Extensions;
 
 public static class ViewNavigatorExtensions
 {
