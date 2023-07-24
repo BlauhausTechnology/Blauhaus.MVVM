@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Blauhaus.Analytics.Abstractions;
 using Blauhaus.Common.Abstractions;
+using Blauhaus.Common.ValueObjects.Navigation;
 using Blauhaus.Ioc.Abstractions;
 using Blauhaus.MVVM.Abstractions.TargetNavigation;
 using Blauhaus.MVVM.Abstractions.Views;
@@ -28,16 +30,21 @@ public class Navigator : INavigator
         _viewRegister = viewRegister;
     }
 
-    public async Task NavigateAsync(NavigationTarget target)
+    public async Task<INavigationContainerView> GetContainerViewAsync(NavigationTarget target, ViewIdentifier viewIdentifier)
     {
-        var applicationMainView = _platformNavigator.GetCurrentMainView();
-        
-        if (target.View is null)
+        var view = await GetViewAsync(target, viewIdentifier);
+        if (view is not INavigationContainerView newContainerView)
         {
-            throw new Exception("A navigation target must specify a View");
+            throw new Exception($"{view.GetType().Name} must implement {nameof(INavigationContainerView)} to be a navigation container");
         }
-        
-        var viewType = _viewRegister.GetViewType(target.View);
+
+        newContainerView.Initialize(viewIdentifier);
+        return newContainerView;
+    }
+
+    public async Task<IView> GetViewAsync(NavigationTarget target, ViewIdentifier viewIdentifier)
+    {
+        var viewType = _viewRegister.GetViewType(viewIdentifier);
         var constructedView = _serviceLocator.Resolve(viewType);
         if (constructedView is not IView newView)
         {
@@ -52,6 +59,19 @@ public class Navigator : INavigator
         {
             await stringInitializeable.InitializeAsync(target.Serialize());
         }
+
+        return newView;
+    }
+    public async Task NavigateAsync(NavigationTarget target)
+    {
+        var applicationMainView = _platformNavigator.GetCurrentMainView();
+        
+        if (target.View is null)
+        {
+            throw new Exception("A navigation target must specify a View");
+        }
+
+        var newView = await GetViewAsync(target, target.View);
 
 
         if (target.Container is null)
@@ -69,19 +89,13 @@ public class Navigator : INavigator
             else
             {
                 _logger.LogTrace("Target container {ContainerName} is not the application main screen, it will be created", target.Container.Name);
-            
-                var containerViewType = _viewRegister.GetViewType(target.Container);
-                var constructedContainerView = _serviceLocator.Resolve(containerViewType);
-                if (constructedContainerView is not INavigationContainerView newContainerView)
-                {
-                    throw new Exception($"{constructedContainerView.GetType().Name} must implement {nameof(INavigationContainerView)} to be a navigation container");
-                }
 
-                newContainerView.Initialize(target.Container);
-                _platformNavigator.SetCurrentMainView(newContainerView);
+                var constructedContainerView = await GetContainerViewAsync(target, target.Container);
+                 
+                _platformNavigator.SetCurrentMainView(constructedContainerView);
                 _logger.LogTrace("Target container {ContainerName} constructed and set as main screen", target.Container.Name);
                 
-                containerView = newContainerView;
+                containerView = constructedContainerView;
             }
 
             _logger.LogTrace("Showing view {ViewName} in Container {ContainerName}", target.View.Name, target.Container.Name);
@@ -90,5 +104,6 @@ public class Navigator : INavigator
 
         }
          
+
     }
 }

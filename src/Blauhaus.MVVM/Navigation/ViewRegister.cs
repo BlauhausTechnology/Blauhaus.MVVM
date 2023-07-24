@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Blauhaus.Common.ValueObjects.Navigation;
 using Blauhaus.MVVM.Abstractions.TargetNavigation;
 using Blauhaus.MVVM.Abstractions.ViewModels;
 using Blauhaus.MVVM.Abstractions.Views;

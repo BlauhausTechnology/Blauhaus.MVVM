@@ -223,16 +223,16 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
 
                     foreach (var page in pages)
                     {
-                        var pageViewModelType = page.BindingContext.GetType();
-                        if (pageViewModelType == typeof(TViewModel))
+                        var pageViewModel = page.BindingContext;
+                        if (pageViewModel is TViewModel)
                         {
-                            _logger.LogDebug("{ViewModelType} is {RequiredViewModel}", pageViewModelType, typeof(TViewModel));
+                            _logger.LogDebug("{ViewModelType} is {RequiredViewModel}", pageViewModel.GetType().Name, typeof(TViewModel).Name);
                             pageIsFound = true;
                         }
 
                         if (pageIsFound)
                         {
-                            _logger.LogDebug("Page already found, ignoring {ViewModelType}", pageViewModelType);
+                            _logger.LogDebug("Page already found, ignoring {ViewModelType}", pageViewModel.GetType().Name);
                         }
                         else
                         {
@@ -243,7 +243,7 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
                             if (page.BindingContext is IDisposable disposable)
                                 disposable.Dispose();
 
-                            _logger.LogDebug("{ViewModelType} is not {RequiredViewModel}. Continue navigating back...", pageViewModelType, typeof(TViewModel));
+                            _logger.LogDebug("{ViewModelType} is not {RequiredViewModel}. Continue navigating back...", pageViewModel.GetType().Name, typeof(TViewModel).Name);
                             await CurrentNavigationPage.PopAsync();
                         }
                     }

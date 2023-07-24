@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Threading.Tasks;
 using Blauhaus.Analytics.Abstractions;
 using Blauhaus.Analytics.Abstractions.Operation;
 using Blauhaus.Analytics.Abstractions.Service;
+using Blauhaus.Common.Utils.Disposables;
 using Blauhaus.Common.Utils.NotifyPropertyChanged;
 using Blauhaus.Errors.Handler;
 using Blauhaus.Ioc.Abstractions;
 using Blauhaus.MVVM.Abstractions.Commands;
 using Blauhaus.MVVM.Abstractions.Contracts;
+using Blauhaus.MVVM.Abstractions.Extensions;
 using Blauhaus.MVVM.Services;
 using Microsoft.Extensions.Logging;
 
@@ -25,6 +28,7 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
         private IAnalyticsLogger? _logger;
         private Func<IDisposable>? _loggerFunc;
         private IIsExecuting? _externalIsExecuting;
+        private PropertyInfo[]? _externalCommandProperties;
 
         protected BaseExecutingCommand(
             IServiceLocator serviceLocator,
@@ -50,7 +54,14 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
                 _logger.SetValue("ActionName",actionName);
                 _logger.SetValue("ActionSource",typeof(TSource).Name);
                 var disposable = _logger.BeginTimedScope(logLevel, actionName);
-                return disposable;
+                return new ActionDisposable(() =>
+                {
+                    disposable.Dispose();
+                    _logger.SetValue("ActionId", string.Empty);
+                    _logger.SetValue("ActionName", string.Empty);
+                    _logger.SetValue("ActionSource", string.Empty);
+
+                });
             };
             return (TExecutingCommand)this;
         }
@@ -96,8 +107,7 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
 
         protected void Start()
         {
-            IsExecuting = true;
-            if (_externalIsExecuting != null) _externalIsExecuting.IsExecuting = true;
+            SetIsExecuting(true);
             
             if (_loggerFunc != null)
             {
@@ -107,16 +117,13 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
 
         protected void Finish()
         {
-            IsExecuting = false;
-            if (_externalIsExecuting != null) _externalIsExecuting.IsExecuting = false;
-            
+            SetIsExecuting(false);
             _cleanup?.Dispose();
         }
 
         protected async void Fail(Exception e)
         {
-            IsExecuting = false;
-            if (_externalIsExecuting != null) _externalIsExecuting.IsExecuting = false;
+            SetIsExecuting(false);
             await ErrorHandler.HandleExceptionAsync(this, e); 
             _cleanup?.Dispose(); //dispose after handling error else analytics logged without operation
         }
@@ -169,6 +176,23 @@ namespace Blauhaus.MVVM.ExecutingCommands.Base
             get => GetProperty<bool>();
             set => SetProperty(value);
         }
+
+        private void SetIsExecuting(bool value)
+        {
+            IsExecuting = value;
+            if (_externalIsExecuting == null) return;
+            
+            _externalIsExecuting.IsExecuting = value;
+
+            _externalCommandProperties ??= _externalIsExecuting.GetExecutingCommandProperties();
+
+            var commands = _externalIsExecuting.GetExecutingCommands();
+            foreach (var executingCommand in commands)
+            {
+                executingCommand?.RaiseCanExecuteChanged();
+            }
+        }
+
     }
 
 

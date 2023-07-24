@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Blauhaus.Analytics.TestHelpers.MockBuilders;
 using Blauhaus.MVVM.Abstractions.Contracts;
 using Blauhaus.MVVM.ExecutingCommands.Base;
 using Blauhaus.MVVM.Tests.Tests.Base;
+using Blauhaus.TestHelpers.Extensions;
 using Blauhaus.TestHelpers.PropertiesChanged.CanExecuteChanged;
 using Blauhaus.TestHelpers.PropertiesChanged.PropertiesChanged;
 using Microsoft.Extensions.Logging;
@@ -28,34 +30,50 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Base
         public void SHOULD_set_and_reset_IsExecuting()
         {
             //Act
-            using (var isExecutingChanges = Sut.SubscribeToPropertyChanged(x => x.IsExecuting))
-            {
-                //Act
-                Sut.Execute(default);
-                isExecutingChanges.WaitForChangeCount(2);
+            using var isExecutingChanges = Sut.SubscribeToPropertyChanged(x => x.IsExecuting);
+
+            //Act
+            Sut.Execute(default);
+            isExecutingChanges.WaitForChangeCount(2);
                 
-                //Assert
-                Assert.AreEqual(true, isExecutingChanges[0]);
-                Assert.AreEqual(false, isExecutingChanges[1]);
-            }
+            //Assert
+            Assert.AreEqual(true, isExecutingChanges[0]);
+            Assert.AreEqual(false, isExecutingChanges[1]);
         }
 
         [Test]
         public void SHOULD_set_and_reset_CanExecute()
         {
             //Act
-            using (var canExecuteChanges = Sut.SubscribeToCanExecuteChanged())
-            {
-                //Act
-                Sut.Execute(null);
-                canExecuteChanges.WaitForChangeCount(2);
+            using var canExecuteChanges = Sut.SubscribeToCanExecuteChanged();
+
+            //Act
+            Sut.Execute(null);
+            canExecuteChanges.WaitForChangeCount(2);
                 
-                //Assert
-                Assert.AreEqual(false, canExecuteChanges[0]);
-                Assert.AreEqual(true, canExecuteChanges[1]);
-            }
+            //Assert
+            Assert.AreEqual(false, canExecuteChanges[0]);
+            Assert.AreEqual(true, canExecuteChanges[1]);
         }
 
+        [Test]
+        public void IF_LogAction_is_set_SHOULD_clear_values()
+        {
+            //Arrange 
+            Sut.LogAction<TCommand>("MyAction", LogLevel.Critical);
+
+            //Act
+            Sut.Execute();
+
+            //Assert
+            MockLogger.Mock.Verify(x => x.SetValue("ActionId", It.Is<string>(y => y.Length > 30)), Times.Once);
+            MockLogger.Mock.Verify(x => x.SetValue("ActionName", It.Is<string>(y => y == "MyAction")), Times.Once);
+            MockLogger.Mock.Verify(x => x.SetValue("ActionSource", It.Is<string>(y => y == typeof(TCommand).Name)), Times.Once);
+            MockLogger.Mock.Verify(x => x.SetValue("ActionId", It.Is<string>(y => y == "")), Times.Once);
+            MockLogger.Mock.Verify(x => x.SetValue("ActionName", It.Is<string>(y => y == "")), Times.Once);
+            MockLogger.Mock.Verify(x => x.SetValue("ActionSource", It.Is<string>(y => y == "")), Times.Once);
+        }
+        
         [Test]
         public void IF_LogAction_is_set_SHOULD_log()
         {
@@ -68,6 +86,35 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Base
             //Assert
             MockLogger.VerifyBeginTimedScope(LogLevel.Critical, "MyAction");
             _mockDisposable.Verify(x => x.Dispose(), Times.Once);
+            MockLogger.MockScopeDisposable.Verify(x => x.Dispose());
+        }
+
+        [Test]
+        public void IF_IsExecuting_is_given_SHOULD_notify()
+        {
+            //Arrange 
+            var mock = new MockIsExecuting();
+            Sut.WithIsExecuting(mock.Object);
+
+            //Act
+            Sut.Execute();
+
+            //Assert
+            mock.Mock.VerifySet(x => x.IsExecuting = true, Times.Once);
+            mock.Mock.VerifySet(x => x.IsExecuting = false, Times.Once);
+        }
+        [Test]
+        public void IF_IsExecuting_has_executing_commands_SHOULD_raise()
+        {
+            //Arrange 
+            var mock = new MockIsExecuting();
+            Sut.WithIsExecuting(mock.Object);
+
+            //Act
+            Sut.Execute();
+
+            //Assert
+            mock.MockCommand.Verify(x => x.RaiseCanExecuteChanged(), Times.Exactly(2));
         }
 
         [Test]
