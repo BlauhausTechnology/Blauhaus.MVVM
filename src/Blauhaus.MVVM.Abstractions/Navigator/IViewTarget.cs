@@ -11,6 +11,7 @@ public interface IViewTarget : IReadOnlyList<ViewIdentifier>
 {
     string Path { get; }
     ViewIdentifier View { get; }
+    
 }
 
 

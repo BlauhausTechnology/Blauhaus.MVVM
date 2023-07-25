@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Blauhaus.Common.ValueObjects.Navigation;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,22 +34,43 @@ public class ViewTarget : IViewTarget
             if (_path == null)
             {
                 var path = new StringBuilder();
-                var paramaters = new StringBuilder();
                 foreach (var viewIdentifier in _viewIdentifiers)
                 {
                     path.Append('/').Append(viewIdentifier.Name);
 
+                    var parameterAdded = false;
                     foreach (var prop in viewIdentifier.Properties)
                     {
-                        paramaters.Append(paramaters.Length == 0 ? '?' : '&');
-                        paramaters.Append(prop.Key).Append('=').Append(prop.Value);
+                        if (!parameterAdded)
+                        {
+                            
+                            parameterAdded = true;
+                            path.Append('?');
+                        }
+                        else
+                        {
+                            path.Append('&');
+                        }
+                        path.Append(prop.Key).Append('=').Append(prop.Value);
                     }
                 }
 
-                _path = path.Append(paramaters).ToString();
+                _path = path.ToString();
             }
 
             return _path;
         }
+    }
+
+    public static IViewTarget Deserialize(string serialized)
+    {
+        string[] pathComponents = serialized.Split('/');
+
+        var viewIdentifiers = pathComponents
+            .Skip(1) //the first component is empty from the leading '/'
+            .Select(ViewIdentifier.Deserialize)
+            .ToArray();
+         
+        return new ViewTarget(viewIdentifiers);
     }
 }

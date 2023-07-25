@@ -16,13 +16,14 @@ public class PathTests
                 new ViewIdentifier("Container")
                     .WithValue("key1", "value1"),
                 new ViewIdentifier("Content")
-                    .WithValue("key2", "value2"));
+                    .WithValue("key2", "value2")
+                    .WithValue("key3", "value3"));
         
         //Act
         string result = sut.Path;
 
         //Assert
-        Assert.That(result, Is.EqualTo("/Container/Content?key1=value1&key2=value2"));
+        Assert.That(result, Is.EqualTo("/Container?key1=value1/Content?key2=value2&key3=value3"));
     }
      
 		
