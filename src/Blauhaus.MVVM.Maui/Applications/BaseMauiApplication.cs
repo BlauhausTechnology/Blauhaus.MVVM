@@ -4,6 +4,7 @@ using Blauhaus.Ioc.DotNetCoreIocService;
 using Blauhaus.MVVM.Abstractions.Application;
 using Blauhaus.MVVM.Abstractions.Navigator;
 using Blauhaus.MVVM.AppLifecycle;
+using Blauhaus.MVVM.Services;
 using Microsoft.Extensions.Logging;
 
 namespace Blauhaus.MVVM.Maui.Applications;
@@ -30,6 +31,8 @@ public abstract class BaseMauiApplication<TApplication> : Application
         ViewNavigator = viewNavigator;
         _appLifecycleService = ServiceLocator.ResolveAs<AppLifecycleService>(typeof(IAppLifecycleService));
         MainPage = new ContentPage();
+        
+        AppServiceLocator.Initialize(serviceLocator.Resolve<IServiceLocator>);
     }
 
     protected sealed override async void OnStart()
