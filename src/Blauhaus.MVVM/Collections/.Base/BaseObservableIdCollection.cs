@@ -140,7 +140,6 @@ namespace Blauhaus.MVVM.Collections.Base
                         {
                             
                             somethingHasChanged = true;
-                            _logger.LogTrace("Adding {ListItemType} with id {ListItemId} to collection", typeof(T).Name, sourceIds[i]);
 
                             var newItem = _serviceLocator.Resolve<T>();
                             await newItem.InitializeAsync(sourceIds[i]);
