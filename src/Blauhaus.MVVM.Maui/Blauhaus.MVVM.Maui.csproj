@@ -24,8 +24,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Blauhaus.DeviceServices.Abstractions" Version="1.2.19" />
-	  <PackageReference Include="Blauhaus.DeviceServices.Maui" Version="1.2.19" />
+	  <PackageReference Include="Blauhaus.DeviceServices.Abstractions" Version="1.2.26" />
+	  <PackageReference Include="Blauhaus.DeviceServices.Maui" Version="1.2.26" />
 	  <PackageReference Include="Blauhaus.Ioc.DotNetCoreIocService" Version="1.5.4" />
 	</ItemGroup>
 
