@@ -177,7 +177,7 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
             _currentFlyoutPage = flyoutView;
         }
 
-        public async Task GoBackAsync()
+        public async Task GoBackAsync(bool animated = true)
         {
             if (CurrentNavigationPage != null)
             {
@@ -185,14 +185,14 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
                     await asyncDisposable.DisposeAsync();
                 
                 if (CurrentNavigationPage.CurrentPage.BindingContext is IDisposable disposable)
-                    disposable.Dispose();
+                    disposable.Dispose(); 
 
                 await _threadService.InvokeOnMainThreadAsync(async () => 
-                    await CurrentNavigationPage.PopAsync());
+                    await CurrentNavigationPage.PopAsync(animated));
             };
         }
 
-        public async Task GoBackToRootAsync()
+        public async Task GoBackToRootAsync(bool animated = true)
         {
             if (CurrentNavigationPage != null)
             {
@@ -207,12 +207,12 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
 
                 await _threadService.InvokeOnMainThreadAsync(async () =>
                 {
-                    await CurrentNavigationPage.PopToRootAsync();
+                    await CurrentNavigationPage.PopToRootAsync(animated);
                 });
             };
         }
 
-        public async Task GoBackToAsync<TViewModel>()
+        public async Task GoBackToAsync<TViewModel>(bool animated = true)
         {
             if (CurrentNavigationPage != null)
             {
@@ -244,7 +244,7 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
                                 disposable.Dispose();
 
                             _logger.LogDebug("{ViewModelType} is not {RequiredViewModel}. Continue navigating back...", pageViewModel.GetType().Name, typeof(TViewModel).Name);
-                            await CurrentNavigationPage.PopAsync();
+                            await CurrentNavigationPage.PopAsync(animated);
                         }
                     }
                 });

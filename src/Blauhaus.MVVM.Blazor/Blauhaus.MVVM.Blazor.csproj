@@ -14,8 +14,8 @@
   <ItemGroup>
     <PackageReference Include="Blauhaus.Ioc.DotNetCoreIocService" Version="1.5.4" />
     <PackageReference Include="Blauhaus.Push.Abstractions" Version="1.2.5" />
-    <PackageReference Include="Blazored.LocalStorage" Version="4.3.0" />
-    <PackageReference Include="MudBlazor" Version="6.9.0" />
+    <PackageReference Include="Blazored.LocalStorage" Version="4.4.0" />
+    <PackageReference Include="MudBlazor" Version="6.10.0" />
   </ItemGroup>
 
   <ItemGroup>

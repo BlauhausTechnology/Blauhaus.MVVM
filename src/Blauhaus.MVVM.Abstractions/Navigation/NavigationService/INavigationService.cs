@@ -25,8 +25,8 @@ namespace Blauhaus.MVVM.Abstractions.Navigation.NavigationService
         void SetCurrentNavigationStack(string navigationStackName);
         void SetCurrentFlyoutView(IFlyoutView flyoutView);
 
-        Task GoBackAsync();
-        Task GoBackToRootAsync();
-        Task GoBackToAsync<TViewModel>();
+        Task GoBackAsync(bool animated = true);
+        Task GoBackToRootAsync(bool animated = true);
+        Task GoBackToAsync<TViewModel>(bool animated = true);
     }
 }

@@ -69,17 +69,17 @@ namespace Blauhaus.MVVM.TestHelpers.MockBuilders.Services
         
         public void Verify_GoBackAsync(Times times)
         {
-            Mock.Verify(x => x.GoBackAsync(), times);
+            Mock.Verify(x => x.GoBackAsync(It.IsAny<bool>()), times);
         }
 
         public void Verify_GoBackAsync()
         {
-            Mock.Verify(x => x.GoBackAsync());
+            Mock.Verify(x => x.GoBackAsync(It.IsAny<bool>()));
         }
         
         public void Verify_GoBackToRootAsync()
         {
-            Mock.Verify(x => x.GoBackToRootAsync());
+            Mock.Verify(x => x.GoBackToRootAsync(It.IsAny<bool>()));
         }
     }
 }

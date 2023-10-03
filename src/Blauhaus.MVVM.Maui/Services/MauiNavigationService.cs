@@ -172,7 +172,7 @@ public class MauiNavigationService : INavigationService
             _currentFlyoutPage = flyoutView;
         }
 
-        public async Task GoBackAsync()
+        public async Task GoBackAsync(bool animated)
         {
             if (CurrentNavigationPage != null)
             {
@@ -187,7 +187,7 @@ public class MauiNavigationService : INavigationService
             };
         }
 
-        public async Task GoBackToRootAsync()
+        public async Task GoBackToRootAsync(bool animated = true)
         {
             if (CurrentNavigationPage != null)
             {
@@ -204,14 +204,14 @@ public class MauiNavigationService : INavigationService
 
                     await _threadService.InvokeOnMainThreadAsync(async () =>
                     {
-                        await CurrentNavigationPage.PopAsync();
+                        await CurrentNavigationPage.PopAsync(animated);
                     });
                 } 
             };
         }
 
      
-        public async Task GoBackToAsync<TViewModel>()
+        public async Task GoBackToAsync<TViewModel>(bool animated = true)
         {
             if (CurrentNavigationPage != null)
             {
@@ -227,7 +227,7 @@ public class MauiNavigationService : INavigationService
 
                     await _threadService.InvokeOnMainThreadAsync(async () =>
                     {
-                        await CurrentNavigationPage.PopAsync();
+                        await CurrentNavigationPage.PopAsync(animated);
                     });
                 } 
             };
