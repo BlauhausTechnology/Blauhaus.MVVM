@@ -6,7 +6,6 @@ using Blauhaus.Analytics.Abstractions;
 using Blauhaus.Common.Abstractions;
 using Blauhaus.DeviceServices.Abstractions.Thread;
 using Blauhaus.Ioc.Abstractions;
-using Blauhaus.MVVM.Abstractions.Navigation;
 using Blauhaus.MVVM.Abstractions.Navigation.NavigationService;
 using Blauhaus.MVVM.Abstractions.Navigation.Register;
 using Blauhaus.MVVM.Abstractions.ViewModels;
@@ -15,6 +14,7 @@ using Blauhaus.MVVM.Xamarin.Navigation.FormsApplicationProxy;
 using Blauhaus.MVVM.Xamarin.Views.Navigation;
 using Microsoft.Extensions.Logging;
 using Xamarin.Forms;
+
 // ReSharper disable SuspiciousTypeConversion.Global
 
 namespace Blauhaus.MVVM.Xamarin.Navigation
@@ -35,7 +35,7 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
             get
             {
                 var currentNavigationView = _navigationViews.Values.FirstOrDefault(x => x.IsCurrent);
-                return (NavigationPage?) currentNavigationView;
+                return (NavigationPage?)currentNavigationView;
             }
         }
 
@@ -45,7 +45,7 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
             IAnalyticsLogger<FormsNavigationService> logger,
             IServiceLocator serviceLocator,
             INavigationRegister navigationRegister,
-            IFormsApplicationProxy application, 
+            IFormsApplicationProxy application,
             IThreadService threadService)
         {
             _logger = logger;
@@ -62,11 +62,11 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
             if (rootPage.BindingContext is IAsyncInitializable initializable)
             {
                 await initializable.InitializeAsync();
-            }             
+            }
 
             var navigationView = new NavigationView(this, rootPage, navigationStackName);
 
-            SetCurrentNavigationView(navigationView);            
+            SetCurrentNavigationView(navigationView);
 
             await _threadService.InvokeOnMainThreadAsync(() =>
             {
@@ -79,12 +79,12 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
         {
             var rootPage = GetPageForViewModel<Page>(typeof(TViewModel));
 
-            var viewModel = (IAsyncInitializable<T>) rootPage.BindingContext;
+            var viewModel = (IAsyncInitializable<T>)rootPage.BindingContext;
             await viewModel.InitializeAsync(parameter);
 
             var navigationView = new NavigationView(this, rootPage, navigationStackName);
 
-            SetCurrentNavigationView(navigationView);            
+            SetCurrentNavigationView(navigationView);
 
             await _threadService.InvokeOnMainThreadAsync(() =>
             {
@@ -125,7 +125,7 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
 
             var viewModel = (TViewModel)page.BindingContext;
             await viewModel.InitializeAsync(parameter);
-            
+
             await NavigateToAsync(page);
         }
 
@@ -135,7 +135,7 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
 
             var viewModel = (TViewModel)page.BindingContext;
             await viewModel.InitializeAsync(parameter);
-            
+
             await ShowMainPageAsync(page);
         }
 
@@ -145,11 +145,11 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
             {
                 throw new InvalidOperationException("No Flyout Page has been set");
             }
-            
+
             var page = GetPageForViewModel<Page>(typeof(TViewModel));
             if (page is IView view)
             {
-                return _threadService.InvokeOnMainThreadAsync(() => 
+                return _threadService.InvokeOnMainThreadAsync(() =>
                     _currentFlyoutPage.ShowDetail(view));
             }
 
@@ -159,7 +159,7 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
         public void SetCurrentNavigationStack(string navigationStackName)
         {
             //todo consider registering view models with their navigation stack in the first place so we don't need to remember to do this all the time
-            
+
             if (!_navigationViews.ContainsKey(navigationStackName))
             {
                 throw new InvalidOperationException("No navigation page exists for " + navigationStackName);
@@ -177,22 +177,22 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
             _currentFlyoutPage = flyoutView;
         }
 
-        public async Task GoBackAsync(bool animated = true)
+        public async Task GoBackAsync()
         {
             if (CurrentNavigationPage != null)
             {
                 if (CurrentNavigationPage.CurrentPage.BindingContext is IAsyncDisposable asyncDisposable)
                     await asyncDisposable.DisposeAsync();
-                
-                if (CurrentNavigationPage.CurrentPage.BindingContext is IDisposable disposable)
-                    disposable.Dispose(); 
 
-                await _threadService.InvokeOnMainThreadAsync(async () => 
-                    await CurrentNavigationPage.PopAsync(animated));
+                if (CurrentNavigationPage.CurrentPage.BindingContext is IDisposable disposable)
+                    disposable.Dispose();
+
+                await _threadService.InvokeOnMainThreadAsync(async () =>
+                    await CurrentNavigationPage.PopAsync(false));
             };
         }
 
-        public async Task GoBackToRootAsync(bool animated = true)
+        public async Task GoBackToRootAsync()
         {
             if (CurrentNavigationPage != null)
             {
@@ -200,19 +200,61 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
                 {
                     if (page.BindingContext is IAsyncDisposable asyncDisposable)
                         await asyncDisposable.DisposeAsync();
-                 
+
                     if (page.BindingContext is IDisposable disposable)
                         disposable.Dispose();
                 }
 
                 await _threadService.InvokeOnMainThreadAsync(async () =>
                 {
-                    await CurrentNavigationPage.PopToRootAsync(animated);
+                    await CurrentNavigationPage.PopToRootAsync(false);
                 });
             };
         }
 
-        public async Task GoBackToAsync<TViewModel>(bool animated = true)
+        public async Task GoBackToAsync<TViewModel>()
+        {
+            if (CurrentNavigationPage != null)
+            {
+                await _threadService.InvokeOnMainThreadAsync(async () =>
+                {
+                    var pages = CurrentNavigationPage.Pages.Reverse().ToArray();
+
+                    for(var i =  1; i < pages.Length; i++)
+                    {
+                        var page = pages[i];
+
+                        var pageViewModel = page.BindingContext;
+                        if (pageViewModel is TViewModel)
+                        {
+                            _logger.LogDebug("Page found, popping to {ViewModelType}", pageViewModel.GetType().Name);
+
+                            await GoBackAsync();
+                            break;
+                        }
+
+                        if (i == pages.Length - 1)
+                        {
+                            await GoBackAsync();
+                        }
+                        else
+                        {
+                            if (page.BindingContext is IAsyncDisposable asyncDisposable)
+                                await asyncDisposable.DisposeAsync();
+
+                            if (page.BindingContext is IDisposable disposable)
+                                disposable.Dispose();
+
+                            CurrentNavigationPage.Navigation.RemovePage(page);
+
+                            _logger.LogDebug("{ViewModelType} is not {RequiredViewModel}. Remove page from stack and continue searching...", pageViewModel.GetType().Name, typeof(TViewModel).Name);
+                        }
+                    }
+                });
+            }
+        }
+
+        public async Task GoBackOrShowAsync<TViewModel>()
         {
             if (CurrentNavigationPage != null)
             {
@@ -221,35 +263,58 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
                     var pages = CurrentNavigationPage.Pages.Reverse().ToArray();
                     var pageIsFound = false;
 
-                    foreach (var page in pages)
+                    for (var i = 1; i < pages.Length; i++)
                     {
+                        var page = pages[i];
+
                         var pageViewModel = page.BindingContext;
                         if (pageViewModel is TViewModel)
                         {
-                            _logger.LogDebug("{ViewModelType} is {RequiredViewModel}", pageViewModel.GetType().Name, typeof(TViewModel).Name);
                             pageIsFound = true;
+                            _logger.LogDebug("Page found, popping to {ViewModelType}", pageViewModel.GetType().Name);
+                            await GoBackAsync();
+                            break;
                         }
 
-                        if (pageIsFound)
+                        if (i != pages.Length - 1)
                         {
-                            _logger.LogDebug("Page already found, ignoring {ViewModelType}", pageViewModel.GetType().Name);
-                        }
-                        else
-                        {
-
                             if (page.BindingContext is IAsyncDisposable asyncDisposable)
                                 await asyncDisposable.DisposeAsync();
 
                             if (page.BindingContext is IDisposable disposable)
                                 disposable.Dispose();
 
-                            _logger.LogDebug("{ViewModelType} is not {RequiredViewModel}. Continue navigating back...", pageViewModel.GetType().Name, typeof(TViewModel).Name);
-                            await CurrentNavigationPage.PopAsync(animated);
+                            CurrentNavigationPage.Navigation.RemovePage(page);
+
+                            _logger.LogDebug("{ViewModelType} is not {RequiredViewModel}. Remove page from stack and continue searching...", pageViewModel.GetType().Name, typeof(TViewModel).Name);
                         }
                     }
-                });
 
-            };
+                    if (!pageIsFound)
+                    {
+                        await ShowViewAndRemoveCurrent<TViewModel>();
+                    }
+                });
+            }
+        }
+
+        public async Task ShowViewAndRemoveCurrent<TViewModel>()
+        {
+            var page = GetPageForViewModel<Page>(typeof(TViewModel));
+            await NavigateToAsync(page);
+
+            if (CurrentNavigationPage != null)
+            {
+                var previousPage = CurrentNavigationPage.Navigation.NavigationStack[CurrentNavigationPage.Navigation.NavigationStack.Count - 2];
+
+                if (previousPage.BindingContext is IAsyncDisposable asyncDisposable)
+                    await asyncDisposable.DisposeAsync();
+
+                if (previousPage.BindingContext is IDisposable disposable)
+                    disposable.Dispose();
+
+                CurrentNavigationPage.Navigation.RemovePage(previousPage);
+            }
         }
 
         public void SetCurrentNavigationView(INavigationView navigationView)
@@ -263,32 +328,32 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
             if (page.BindingContext is IAsyncInitializable initializable)
             {
                 await initializable.InitializeAsync();
-            }        
-            
+            }
+
             await _threadService.InvokeOnMainThreadAsync(() =>
             {
                 _application.SetMainPage(page);
             });
         }
-        
+
         private async Task NavigateToAsync(Page page)
         {
             if (CurrentNavigationPage == null)
             {
                 throw new InvalidOperationException("No NavigationPage has been set");
             }
-            
+
             if (page.BindingContext is IAsyncInitializable initializable)
             {
                 await initializable.InitializeAsync();
-            } 
+            }
 
             await _threadService.InvokeOnMainThreadAsync(() =>
             {
-                CurrentNavigationPage.PushAsync(page, true);
+                CurrentNavigationPage.PushAsync(page, false);
             });
         }
-          
+
         private TPage GetPageForViewModel<TPage>(Type viewModelType) where TPage : Page
         {
             var viewType = _navigationRegister.GetViewType(viewModelType);
@@ -302,7 +367,7 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
             {
                 throw new NavigationException($"No View of type {viewType.Name} has been registered with the Ioc container");
             }
-            
+
             if (!(view is TPage page))
             {
                 throw new NavigationException($"View type {viewType.Name} is not a {typeof(TPage).Name}");
@@ -310,84 +375,5 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
 
             return page;
         }
-
-
-        #region Maybe
-        
-        
-
-
-        
-        //public async Task ShowMasterDetailViewAsync<TMasterViewModel, TDetailViewModel>() where TMasterViewModel : IViewModel where TDetailViewModel : IViewModel
-        //{ 
-        //    var masterDetail = new MasterDetailPage
-        //    {
-        //        Master =  GetPageForViewModel<Page>(typeof(TMasterViewModel)),
-        //        Detail =  GetPageForViewModel<Page>(typeof(TDetailViewModel)),
-        //        MasterBehavior = MasterBehavior.Popover
-        //    };
-        //    await ShowMainPageAsync(masterDetail);
-        //    _currentMasterDetail = masterDetail;
-        //}
-
-        ////does not retain the gucking master FFS
-        //public void ChangeCurrentDetailView<TDetailViewModel>() where TDetailViewModel : IViewModel
-        //{
-        //    var detail = GetPageForViewModel<Page>(typeof(TDetailViewModel));
-        //    _currentMasterDetail.Detail = detail;
-        //    _currentMasterDetail.IsPresented = false;
-        //}
-
-        //public async Task ShowMasterDetailTabsViewAsync<TMasterViewModel>(IList<Type> tabViewModelTypes) where TMasterViewModel : IViewModel
-        //{
-        //    var tabbedPage = new TabbedView();
-
-        //    foreach (var tabViewModelType in tabViewModelTypes)
-        //    {
-        //        var tabRootPage = GetPageForViewModel<Page>(tabViewModelType);
-        //        var tabNavigationRoot = new NavigationView(tabRootPage);
-        //        tabbedPage.Children.Add(tabNavigationRoot);
-        //    }
-
-        //    var masterDetail = new MasterDetailPage
-        //    {
-        //        Master =  GetPageForViewModel<Page>(typeof(TMasterViewModel)),
-        //        Detail =  tabbedPage,
-        //        MasterBehavior = MasterBehavior.Popover
-        //    };
-
-        //    await ShowMainPageAsync(masterDetail);
-        //    _currentMasterDetail = masterDetail;
-        //}
-
-        //public void SetCurrentNavigationView(INavigationView navigationView)
-        //{
-        //    _currentNavigation = (NavigationPage) navigationView;
-        //}
-        
-        //public Task NavigateAsync<TViewModel>() where TViewModel : IViewModel
-        //{
-        //    var viewToShow = GetPageForViewModel<TViewModel, Page>();
-        //    return _currentNavigation.PushAsync(viewToShow, true);
-        //}
-
-
-        //public void ShowMasterDetailNavigationView<TMasterViewModel, TDetailViewModel>() where TMasterViewModel : IViewModel where TDetailViewModel : IViewModel
-        //{ 
-        //    var navigationDetailView = new NavigationPage(GetPageForViewModel<TDetailViewModel, Page>());
-        //    var masterDetail = new MasterDetailPage
-        //    {
-        //        Master =  GetPageForViewModel<TMasterViewModel, Page>(),
-        //        Detail =  navigationDetailView,
-        //        MasterBehavior = MasterBehavior.Popover
-        //    };
-        //    ShowMainPage(masterDetail);
-            
-        //    _currentNavigation = navigationDetailView;
-        //    _currentMasterDetail = masterDetail;
-        //}
-
-        #endregion
-
     }
 }

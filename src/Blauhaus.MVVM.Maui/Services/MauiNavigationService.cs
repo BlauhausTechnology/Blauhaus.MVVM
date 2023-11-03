@@ -172,7 +172,12 @@ public class MauiNavigationService : INavigationService
             _currentFlyoutPage = flyoutView;
         }
 
-        public async Task GoBackAsync(bool animated)
+        public Task GoBackOrShowAsync<TViewModel>()
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task GoBackAsync()
         {
             if (CurrentNavigationPage != null)
             {
@@ -187,7 +192,7 @@ public class MauiNavigationService : INavigationService
             };
         }
 
-        public async Task GoBackToRootAsync(bool animated = true)
+        public async Task GoBackToRootAsync()
         {
             if (CurrentNavigationPage != null)
             {
@@ -204,14 +209,14 @@ public class MauiNavigationService : INavigationService
 
                     await _threadService.InvokeOnMainThreadAsync(async () =>
                     {
-                        await CurrentNavigationPage.PopAsync(animated);
+                        await CurrentNavigationPage.PopAsync();
                     });
                 } 
             };
         }
 
      
-        public async Task GoBackToAsync<TViewModel>(bool animated = true)
+        public async Task GoBackToAsync<TViewModel>()
         {
             if (CurrentNavigationPage != null)
             {
@@ -227,10 +232,15 @@ public class MauiNavigationService : INavigationService
 
                     await _threadService.InvokeOnMainThreadAsync(async () =>
                     {
-                        await CurrentNavigationPage.PopAsync(animated);
+                        await CurrentNavigationPage.PopAsync();
                     });
                 } 
             };
+        }
+
+        public Task ShowViewAndRemoveCurrent<TViewModel>()
+        {
+            throw new NotImplementedException();
         }
 
         public void SetCurrentNavigationView(INavigationView navigationView)

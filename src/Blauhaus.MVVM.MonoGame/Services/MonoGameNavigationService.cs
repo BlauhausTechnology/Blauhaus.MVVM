@@ -100,17 +100,27 @@ namespace Blauhaus.MVVM.MonoGame.Services
             throw new System.NotImplementedException();
         }
 
-        public Task GoBackAsync(bool animated = true)
+        public Task GoBackOrShowAsync<TViewModel>()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task GoBackAsync()
         {
             throw new System.NotImplementedException();
         }
 
-        public Task GoBackToRootAsync(bool animated = true)
+        public Task GoBackToRootAsync()
         {
             throw new System.NotImplementedException();
         }
 
-        public async Task GoBackToAsync<TViewModel>(bool animated = true)
+        public async Task GoBackToAsync<TViewModel>()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task ShowViewAndRemoveCurrent<TViewModel>()
         {
             throw new NotImplementedException();
         }

@@ -24,9 +24,18 @@ namespace Blauhaus.MVVM.Abstractions.Navigation.NavigationService
         void SetCurrentNavigationView(INavigationView navigationView);
         void SetCurrentNavigationStack(string navigationStackName);
         void SetCurrentFlyoutView(IFlyoutView flyoutView);
+        
+        /// <summary>
+        /// Navigates back to the last page for TViewModel or resets the navigation stack and navigates to the page for TViewModel.
+        /// </summary>
+        Task GoBackOrShowAsync<TViewModel>();
+        Task GoBackAsync();
+        Task GoBackToRootAsync();
+        Task GoBackToAsync<TViewModel>();
 
-        Task GoBackAsync(bool animated = true);
-        Task GoBackToRootAsync(bool animated = true);
-        Task GoBackToAsync<TViewModel>(bool animated = true);
+        /// <summary>
+        /// Navigates to the next page for TViewModel and removes the current page from the navigation stack.
+        /// </summary>
+        Task ShowViewAndRemoveCurrent<TViewModel>();
     }
 }
