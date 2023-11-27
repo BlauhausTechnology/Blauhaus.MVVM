@@ -5,6 +5,7 @@ using Blauhaus.MVVM.Tests.TestObjects;
 using Blauhaus.MVVM.Tests.Tests.FormsNavigationServiceTests._Base;
 using Blauhaus.MVVM.Xamarin.Views.Navigation;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace Blauhaus.MVVM.Tests.Tests.FormsNavigationServiceTests
 {
@@ -64,7 +65,7 @@ namespace Blauhaus.MVVM.Tests.Tests.FormsNavigationServiceTests
             await Sut.ShowViewAsync<TestViewModel>();
 
             //Assert
-            Assert.AreEqual(_testNavigationView.CurrentPage as TestView, _testView);
+            ClassicAssert.AreEqual(_testNavigationView.CurrentPage as TestView, _testView);
         }
         
         [Test]

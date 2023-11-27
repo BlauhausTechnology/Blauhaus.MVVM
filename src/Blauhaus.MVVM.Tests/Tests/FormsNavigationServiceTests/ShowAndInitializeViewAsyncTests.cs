@@ -5,6 +5,7 @@ using Blauhaus.MVVM.Tests.TestObjects;
 using Blauhaus.MVVM.Tests.Tests.FormsNavigationServiceTests._Base;
 using Blauhaus.MVVM.Xamarin.Views.Navigation;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace Blauhaus.MVVM.Tests.Tests.FormsNavigationServiceTests
 {
@@ -50,7 +51,7 @@ namespace Blauhaus.MVVM.Tests.Tests.FormsNavigationServiceTests
             await Sut.ShowAndInitializeViewAsync<TestInitializingViewModel, Guid>(_parameter);
 
             //Assert
-            Assert.AreEqual(_testNavigationView.CurrentPage as TestInitializingView, _testView);
+            ClassicAssert.AreEqual(_testNavigationView.CurrentPage as TestInitializingView, _testView);
         } 
 
         [Test]
@@ -70,7 +71,7 @@ namespace Blauhaus.MVVM.Tests.Tests.FormsNavigationServiceTests
             await Sut.ShowAndInitializeViewAsync<TestInitializingViewModel, Guid>(_parameter);
 
             //Assert
-            Assert.AreEqual(_parameter, ((TestInitializingViewModel)_testView.BindingContext).InitializedValue);
+            ClassicAssert.AreEqual(_parameter, ((TestInitializingViewModel)_testView.BindingContext).InitializedValue);
         }
         
         [Test]

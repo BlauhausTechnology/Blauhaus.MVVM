@@ -12,6 +12,7 @@ using Blauhaus.TestHelpers.PropertiesChanged.CanExecuteChanged;
 using Blauhaus.TestHelpers.PropertiesChanged.PropertiesChanged;
 using Moq;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.ExecutingNoParameterCommandTests
 {
@@ -79,7 +80,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
             Sut.Execute(null);  
 
             //Assert
-            Assert.AreEqual(1, result);
+            ClassicAssert.AreEqual(1, result);
         }
          
         [Test]
@@ -100,9 +101,9 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
                 Sut.RaiseCanExecuteChanged();
                 
                 //Assert
-                Assert.AreEqual(1, canExecuteChanges.Count);
-                Assert.IsTrue(canExecuteWasCalled);
-                Assert.AreEqual(true, canExecuteChanges[0]);
+                ClassicAssert.AreEqual(1, canExecuteChanges.Count);
+                ClassicAssert.IsTrue(canExecuteWasCalled);
+                ClassicAssert.AreEqual(true, canExecuteChanges[0]);
             }
         }
 
@@ -124,7 +125,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
 
                 //Assert
                 MockErrorHandler.Verify_HandleExceptionMessage("oops");
-                Assert.AreEqual(false, Sut.IsExecuting);
+                ClassicAssert.AreEqual(false, Sut.IsExecuting);
             }
         }
 
@@ -142,7 +143,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
 
                 //Assert
                 MockErrorHandler.Verify_HandleExceptionMessage("oopss");
-                Assert.AreEqual(false, Sut.IsExecuting);
+                ClassicAssert.AreEqual(false, Sut.IsExecuting);
             }
         }
          

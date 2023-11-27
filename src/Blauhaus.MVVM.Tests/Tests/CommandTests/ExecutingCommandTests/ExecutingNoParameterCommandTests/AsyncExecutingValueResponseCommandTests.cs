@@ -9,6 +9,7 @@ using Blauhaus.TestHelpers.PropertiesChanged.CanExecuteChanged;
 using Blauhaus.TestHelpers.PropertiesChanged.PropertiesChanged;
 using Moq;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.ExecutingNoParameterCommandTests
 {
@@ -59,9 +60,9 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
                 Sut.RaiseCanExecuteChanged();
                 
                 //Assert
-                Assert.AreEqual(1, canExecuteChanges.Count);
-                Assert.IsTrue(canExecuteWasCalled);
-                Assert.AreEqual(true, canExecuteChanges[0]);
+                ClassicAssert.AreEqual(1, canExecuteChanges.Count);
+                ClassicAssert.IsTrue(canExecuteWasCalled);
+                ClassicAssert.AreEqual(true, canExecuteChanges[0]);
             }
         }
 
@@ -83,7 +84,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
             await Task.Delay(10);
 
             //Assert
-            Assert.IsFalse(wasCalled);
+            ClassicAssert.IsFalse(wasCalled);
         }
 
         [Test]
@@ -103,7 +104,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
             var result = await tcs.Task;
 
             //Assert
-            Assert.AreEqual(1, result);
+            ClassicAssert.AreEqual(1, result);
         }
         
         [Test]
@@ -122,7 +123,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
             var result = await tcs.Task;
 
             //Assert
-            Assert.AreEqual("hi 1", result);
+            ClassicAssert.AreEqual("hi 1", result);
         }
 
         
@@ -163,7 +164,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
 
                 //Assert
                 MockErrorHandler.Verify_HandleExceptionMessage("gosh darn it");
-                Assert.AreEqual(false, Sut.IsExecuting);
+                ClassicAssert.AreEqual(false, Sut.IsExecuting);
             }
         }
 
@@ -181,7 +182,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
 
                 //Assert
                 MockErrorHandler.Verify_HandleError("oops");
-                Assert.AreEqual(false, Sut.IsExecuting);
+                ClassicAssert.AreEqual(false, Sut.IsExecuting);
             }
         }
         
@@ -205,7 +206,7 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Executing
 
                 //Assert
                 Assert.That(result == TestErrors.Fail());
-                Assert.AreEqual(false, Sut.IsExecuting);
+                ClassicAssert.AreEqual(false, Sut.IsExecuting);
                 MockErrorHandler.Verify_HandleErrorMessage_not_called();
             }
         }

@@ -5,6 +5,7 @@ using Blauhaus.MVVM.Tests.TestObjects;
 using Blauhaus.MVVM.Tests.Tests.FormsNavigationServiceTests._Base;
 using Blauhaus.MVVM.Xamarin.Views.MasterDetail;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using Xamarin.Forms;
 using Xamarin.Forms.Mocks;
 
@@ -60,7 +61,7 @@ namespace Blauhaus.MVVM.Tests.Tests.FormsNavigationServiceTests
 
 
             //Assert
-            Assert.AreEqual(_testFlyoutPage.Detail as TestView, _testView);
+            ClassicAssert.AreEqual(_testFlyoutPage.Detail as TestView, _testView);
         }
         
         [Test]

@@ -5,6 +5,7 @@ using Blauhaus.MVVM.Tests.TestObjects;
 using Blauhaus.MVVM.Tests.Tests.FormsNavigationServiceTests._Base;
 using Moq;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using Xamarin.Forms;
 
 namespace Blauhaus.MVVM.Tests.Tests.FormsNavigationServiceTests
@@ -32,7 +33,7 @@ namespace Blauhaus.MVVM.Tests.Tests.FormsNavigationServiceTests
             await Sut.ShowAndInitializeMainViewAsync<TestInitializingViewModel, Guid>(_parameter);
 
             //Assert
-            Assert.AreEqual(_parameter, ((TestInitializingViewModel)_testView.BindingContext).InitializedValue);
+            ClassicAssert.AreEqual(_parameter, ((TestInitializingViewModel)_testView.BindingContext).InitializedValue);
         }
         
         [Test]

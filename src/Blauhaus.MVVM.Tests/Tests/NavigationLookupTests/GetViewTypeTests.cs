@@ -2,6 +2,7 @@
 using Blauhaus.MVVM.Abstractions.Navigation.Register;
 using Blauhaus.MVVM.Tests.TestObjects;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace Blauhaus.MVVM.Tests.Tests.NavigationLookupTests
 {
@@ -19,7 +20,7 @@ namespace Blauhaus.MVVM.Tests.Tests.NavigationLookupTests
             var result = sut.GetViewType<TestViewModel>();
 
             //Assert
-            Assert.AreEqual(typeof(TestView), result);
+            ClassicAssert.AreEqual(typeof(TestView), result);
         }
 
         [Test]
@@ -32,7 +33,7 @@ namespace Blauhaus.MVVM.Tests.Tests.NavigationLookupTests
             var result = sut.GetViewType<TestViewModel>();
 
             //Assert
-            Assert.IsNull(result);
+            ClassicAssert.IsNull(result);
         }
     }
 }

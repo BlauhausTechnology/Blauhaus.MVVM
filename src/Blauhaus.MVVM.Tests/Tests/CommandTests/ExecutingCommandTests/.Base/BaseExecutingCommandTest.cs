@@ -11,9 +11,11 @@ using Blauhaus.TestHelpers.PropertiesChanged.PropertiesChanged;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Base
 {
+    [TestFixture]
     public class BaseExecutingCommandTest<TCommand> : BaseMvvmTest<TCommand> where TCommand : BaseExecutingCommand<TCommand>
     {
         
@@ -37,8 +39,8 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Base
             isExecutingChanges.WaitForChangeCount(2);
                 
             //Assert
-            Assert.AreEqual(true, isExecutingChanges[0]);
-            Assert.AreEqual(false, isExecutingChanges[1]);
+            ClassicAssert.AreEqual(true, isExecutingChanges[0]);
+            ClassicAssert.AreEqual(false, isExecutingChanges[1]);
         }
 
         [Test]
@@ -52,8 +54,8 @@ namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Base
             canExecuteChanges.WaitForChangeCount(2);
                 
             //Assert
-            Assert.AreEqual(false, canExecuteChanges[0]);
-            Assert.AreEqual(true, canExecuteChanges[1]);
+            ClassicAssert.AreEqual(false, canExecuteChanges[0]);
+            ClassicAssert.AreEqual(true, canExecuteChanges[1]);
         }
 
         [Test]
