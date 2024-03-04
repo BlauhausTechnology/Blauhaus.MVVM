@@ -29,4 +29,12 @@ public class MauiDialogService : IDialogService
 
         return await Application.Current.MainPage.DisplayActionSheet(title, cancel, destruction, FlowDirection.MatchParent, buttons);
     }
+
+    public async Task<string?> DisplayPromptAsync(string title, string message, string cancelButtonText = "Cancel", string acceptButtonText = "OK")
+    {
+        if (Application.Current is null) throw new InvalidOperationException("Current application is null");
+        if (Application.Current.MainPage is null) throw new InvalidOperationException("Current main application page is null");
+
+        return await Application.Current.MainPage.DisplayPromptAsync(title, message, acceptButtonText, cancelButtonText);
+    }
 }

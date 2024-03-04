@@ -25,9 +25,10 @@ namespace Blauhaus.MVVM.Xamarin.Navigation.FormsApplicationProxy
             return Application.Current.MainPage.DisplayActionSheet(title, cancel, destruction, buttons);
         }
 
-        public Task GoToAsync(string route, bool animate)
+        public Task<string?> DisplayPromptAsync(string title, string message, string cancelButtonText = "Cancel", string acceptButtonText = "OK")
         {
-            return Shell.Current.GoToAsync(route, animate);
+            return Application.Current.MainPage.DisplayPromptAsync(title, message, acceptButtonText, cancelButtonText);
         }
+         
     }
 }

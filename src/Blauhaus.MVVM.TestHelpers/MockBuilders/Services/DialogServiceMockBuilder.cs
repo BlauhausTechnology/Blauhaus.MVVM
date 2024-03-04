@@ -17,6 +17,12 @@ namespace Blauhaus.MVVM.TestHelpers.MockBuilders.Services
                 .ReturnsAsync(result);
             return this;
         }
+        public DialogServiceMockBuilder Where_DisplayPromptAsync_returns(string? result)
+        {
+            Mock.Setup(x => x.DisplayPromptAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync(result);
+            return this;
+        }
 
         public void Verify_DisplayAlert_called(string title, string message, string accept)
         {

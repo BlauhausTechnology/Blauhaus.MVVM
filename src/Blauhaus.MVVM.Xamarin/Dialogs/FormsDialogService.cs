@@ -35,5 +35,11 @@ namespace Blauhaus.MVVM.Xamarin.Dialogs
             return _threadService.InvokeOnMainThreadAsync(async () => await _application
                 .DisplayActionSheetAsync(title, cancel, destruction, buttons));
         }
+
+        public Task<string?> DisplayPromptAsync(string title, string message, string cancelButtonText = "Cancel", string acceptButtonText = "OK")
+        {
+            return _threadService.InvokeOnMainThreadAsync(async () => await _application
+                .DisplayPromptAsync(title, message, cancelButtonText, acceptButtonText));
+        }
     }
 }
