@@ -19,5 +19,10 @@ namespace Blauhaus.MVVM.MonoGame.Services
         {
             return Task.FromResult("");
         }
+
+        public Task<string?> DisplayPromptAsync(string title, string message, string cancelButtonText = "Cancel", string acceptButtonText = "OK")
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
