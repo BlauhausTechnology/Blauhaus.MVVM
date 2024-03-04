@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Blauhaus.Analytics.TestHelpers" Version="2.1.0" />
-    <PackageReference Include="Blauhaus.Ioc.DotNetCoreIocService" Version="1.5.4" />
+    <PackageReference Include="Blauhaus.Analytics.TestHelpers" Version="2.1.1" />
+    <PackageReference Include="Blauhaus.Ioc.DotNetCoreIocService" Version="1.6.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
   </ItemGroup>
 

@@ -348,9 +348,9 @@ namespace Blauhaus.MVVM.Xamarin.Navigation
                 await initializable.InitializeAsync();
             }
 
-            await _threadService.InvokeOnMainThreadAsync(() =>
+            await _threadService.InvokeOnMainThreadAsync(async () =>
             {
-                CurrentNavigationPage.PushAsync(page, false);
+                await CurrentNavigationPage.PushAsync(page, false);
             });
         }
 
