@@ -17,7 +17,7 @@ public class MauiDialogService : IDialogService
         if (Application.Current is null) throw new InvalidOperationException("Current application is null");
         if (Application.Current.MainPage is null) throw new InvalidOperationException("Current main application page is null");
 
-        await Application.Current.MainPage.DisplayPromptAsync(title, message, acceptButtonText, cancelButtonText);
+        await Application.Current.MainPage.DisplayAlert(title, message, acceptButtonText, cancelButtonText);
         return true;
         
     }
