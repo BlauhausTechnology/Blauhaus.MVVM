@@ -125,6 +125,21 @@ namespace Blauhaus.MVVM.MonoGame.Services
             throw new NotImplementedException();
         }
 
+        public async Task ShowModalViewAsync<TViewModel>(string navigationStackName = "") where TViewModel : IViewModel
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task ShowAndInitializeModalViewAsync<TViewModel, T>(T parameter, string navigationStackName = "") where TViewModel : IViewModel, IAsyncInitializable<T>
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task GoBackModalAsync()
+        {
+            throw new NotImplementedException();
+        }
+
 
         private IGameScreen GetScreenForViewModel(Type viewModelType) 
         {

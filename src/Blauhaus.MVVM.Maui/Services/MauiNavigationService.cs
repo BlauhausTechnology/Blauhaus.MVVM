@@ -243,6 +243,69 @@ public class MauiNavigationService : INavigationService
             throw new NotImplementedException();
         }
 
+        public async Task ShowModalViewAsync<TViewModel>(string navigationStackName = "") where TViewModel : IViewModel
+        {
+            if (navigationStackName != "")
+            {
+                SetCurrentNavigationStack(navigationStackName);
+            }
+
+            var page = GetPageForViewModel<Page>(typeof(TViewModel));
+            
+            if (CurrentNavigationPage == null)
+            {
+                throw new InvalidOperationException("No NavigationPage has been set");
+            }
+            
+            if (page.BindingContext is IAsyncInitializable initializable)
+            {
+                await initializable.InitializeAsync();
+            } 
+
+            await _threadService.InvokeOnMainThreadAsync(() =>
+            {
+                CurrentNavigationPage.Navigation.PushModalAsync(page, false);
+            });
+        }
+
+        public async Task ShowAndInitializeModalViewAsync<TViewModel, T>(T parameter, string navigationStackName = "") where TViewModel : IViewModel, IAsyncInitializable<T>
+        {
+            if (navigationStackName != "")
+            {
+                SetCurrentNavigationStack(navigationStackName);
+            }
+
+            var page = GetPageForViewModel<Page>(typeof(TViewModel));
+
+            var viewModel = (TViewModel)page.BindingContext;
+            await viewModel.InitializeAsync(parameter);
+
+            if (CurrentNavigationPage == null)
+            {
+                throw new InvalidOperationException("No NavigationPage has been set");
+            }
+
+            await _threadService.InvokeOnMainThreadAsync(() =>
+            {
+                CurrentNavigationPage.Navigation.PushModalAsync(page, false);
+            });
+        }
+
+        public async Task GoBackModalAsync()
+        {
+            if (CurrentNavigationPage != null)
+            {
+                if (CurrentNavigationPage.CurrentPage.BindingContext is IAsyncDisposable asyncDisposable)
+                    await asyncDisposable.DisposeAsync();
+                
+                if (CurrentNavigationPage.CurrentPage.BindingContext is IDisposable disposable)
+                    disposable.Dispose();
+
+                await _threadService.InvokeOnMainThreadAsync(async () => 
+                    await CurrentNavigationPage.Navigation.PopModalAsync(false));
+            };
+        }
+
         public void SetCurrentNavigationView(INavigationView navigationView)
         {
             navigationView.IsCurrent = true;
