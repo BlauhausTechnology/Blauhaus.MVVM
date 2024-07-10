@@ -37,5 +37,12 @@ namespace Blauhaus.MVVM.Abstractions.Navigation.NavigationService
         /// Navigates to the next page for TViewModel and removes the current page from the navigation stack.
         /// </summary>
         Task ShowViewAndRemoveCurrent<TViewModel>();
+		
+		/// <summary>
+        /// Navigation methods for using the modal navigation stack.
+        /// </summary>
+		Task ShowModalViewAsync<TViewModel>(string navigationStackName = "") where TViewModel : IViewModel;
+		Task ShowAndInitializeModalViewAsync<TViewModel, T>(T parameter, string navigationStackName = "") where TViewModel : IViewModel, IAsyncInitializable<T>;
+		Task GoBackModalAsync()
     }
 }
