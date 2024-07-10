@@ -43,6 +43,6 @@ namespace Blauhaus.MVVM.Abstractions.Navigation.NavigationService
         /// </summary>
 		Task ShowModalViewAsync<TViewModel>(string navigationStackName = "") where TViewModel : IViewModel;
 		Task ShowAndInitializeModalViewAsync<TViewModel, T>(T parameter, string navigationStackName = "") where TViewModel : IViewModel, IAsyncInitializable<T>;
-		Task GoBackModalAsync()
+		Task GoBackModalAsync();
     }
 }
