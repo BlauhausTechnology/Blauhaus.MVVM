@@ -26,7 +26,6 @@ jobs:
         dotnet build ./src/Blauhaus.MVVM.sln --configuration Release
         dotnet pack ./src/Blauhaus.MVVM.Abstractions/Blauhaus.MVVM.Abstractions.csproj -p:PackageVersion=${VERSION_NAME} --no-build --output ./ --configuration Release 
         dotnet pack ./src/Blauhaus.MVVM.TestHelpers/Blauhaus.MVVM.TestHelpers.csproj -p:PackageVersion=${VERSION_NAME} --no-build --output ./ --configuration Release 
-        dotnet pack ./src/Blauhaus.MVVM.Xamarin/Blauhaus.MVVM.Xamarin.csproj -p:PackageVersion=${VERSION_NAME} --no-build --output ./ --configuration Release 
         dotnet pack ./src/Blauhaus.MVVM/Blauhaus.MVVM.csproj -p:PackageVersion=${VERSION_NAME} --no-build --output ./ --configuration Release 
         dotnet pack ./src/Blauhaus.MVVM.MonoGame/Blauhaus.MVVM.MonoGame.csproj -p:PackageVersion=${VERSION_NAME} --no-build --output ./ --configuration Release 
         dotnet pack ./src/Blauhaus.MVVM.Maui/Blauhaus.MVVM.Maui.csproj -p:PackageVersion=${VERSION_NAME} --no-build --output ./ --configuration Release 
@@ -35,7 +34,6 @@ jobs:
        run:  |
         dotnet nuget push /Users/runner/work/Blauhaus.MVVM/Blauhaus.MVVM/Blauhaus.MVVM.Abstractions.${VERSION_NAME}.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
         dotnet nuget push /Users/runner/work/Blauhaus.MVVM/Blauhaus.MVVM/Blauhaus.MVVM.TestHelpers.${VERSION_NAME}.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
-        dotnet nuget push /Users/runner/work/Blauhaus.MVVM/Blauhaus.MVVM/Blauhaus.MVVM.Xamarin.${VERSION_NAME}.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
         dotnet nuget push /Users/runner/work/Blauhaus.MVVM/Blauhaus.MVVM/Blauhaus.MVVM.${VERSION_NAME}.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
         dotnet nuget push /Users/runner/work/Blauhaus.MVVM/Blauhaus.MVVM/Blauhaus.MVVM.MonoGame.${VERSION_NAME}.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
         dotnet nuget push /Users/runner/work/Blauhaus.MVVM/Blauhaus.MVVM/Blauhaus.MVVM.Maui.${VERSION_NAME}.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
