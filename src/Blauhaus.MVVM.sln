@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blauhaus.MVVM.TestHelpers",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blauhaus.MVVM.Tests", "Blauhaus.MVVM.Tests\Blauhaus.MVVM.Tests.csproj", "{3BE70EAC-1A6D-4E4B-998D-82CDE17EE9B9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blauhaus.MVVM.Xamarin", "Blauhaus.MVVM.Xamarin\Blauhaus.MVVM.Xamarin.csproj", "{878CCF87-9E78-42B3-A141-48CCF2478ACF}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{24A052CE-6A75-40FD-939B-D3E18A3C1212}"
 	ProjectSection(SolutionItems) = preProject
 		..\.github\workflows\blauhaus.yml = ..\.github\workflows\blauhaus.yml
@@ -42,10 +40,6 @@ Global
 		{3BE70EAC-1A6D-4E4B-998D-82CDE17EE9B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BE70EAC-1A6D-4E4B-998D-82CDE17EE9B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BE70EAC-1A6D-4E4B-998D-82CDE17EE9B9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{878CCF87-9E78-42B3-A141-48CCF2478ACF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{878CCF87-9E78-42B3-A141-48CCF2478ACF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{878CCF87-9E78-42B3-A141-48CCF2478ACF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{878CCF87-9E78-42B3-A141-48CCF2478ACF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F2655115-EDA0-4311-B079-913AB7B39E07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F2655115-EDA0-4311-B079-913AB7B39E07}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2655115-EDA0-4311-B079-913AB7B39E07}.Release|Any CPU.ActiveCfg = Release|Any CPU

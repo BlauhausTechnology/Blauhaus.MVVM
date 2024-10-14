@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Blauhaus.MVVM.ExecutingCommands.ExecutingNoParameterCommands;
 using Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Base;
 using Blauhaus.TestHelpers.PropertiesChanged.CanExecuteChanged;
 using Blauhaus.TestHelpers.PropertiesChanged.PropertiesChanged;
-using Moq;
-using NUnit.Framework;
 using NUnit.Framework.Legacy;
 
 namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.ExecutingNoParameterCommandTests

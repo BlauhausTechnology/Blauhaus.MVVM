@@ -1,5 +1,4 @@
 ﻿using Blauhaus.Analytics.Abstractions;
-using Blauhaus.Analytics.Abstractions.Service;
 using Blauhaus.Analytics.TestHelpers.MockBuilders;
 using Blauhaus.Common.ValueObjects.BuildConfigs;
 using Blauhaus.DeviceServices.Abstractions.Connectivity;
@@ -11,12 +10,9 @@ using Blauhaus.MVVM.Abstractions.Navigation.NavigationService;
 using Blauhaus.MVVM.Abstractions.Navigation.Register;
 using Blauhaus.MVVM.TestHelpers.MockBuilders.Services;
 using Blauhaus.MVVM.Tests.MockBuilders;
-using Blauhaus.MVVM.Xamarin.Navigation.FormsApplicationProxy;
 using Blauhaus.Responses;
 using Blauhaus.TestHelpers.BaseTests;
 using Microsoft.Extensions.Logging;
-using Moq;
-using NUnit.Framework;
 
 namespace Blauhaus.MVVM.Tests.Tests.Base
 {
@@ -35,7 +31,6 @@ namespace Blauhaus.MVVM.Tests.Tests.Base
 
             AddService(x => MockLogger.Object);
             AddService(x => MockNavigationLookup.Object);
-            AddService(x => MockFormsApplicationProxy.Object);
             AddService(x => MockErrorHandler.Object);
             AddService(x => threadService.Object);
             AddService(x => MockConnectivityService.Object);
@@ -51,7 +46,6 @@ namespace Blauhaus.MVVM.Tests.Tests.Base
 
         protected NavigationServiceMockBuilder MockNavigationService => Mocks.AddMock<NavigationServiceMockBuilder, INavigationService>().Invoke();
         protected NavigationLookupMockBuilder MockNavigationLookup => Mocks.AddMock<NavigationLookupMockBuilder, INavigationRegister>().Invoke();
-        protected FormsApplicationProxyMockBuilder MockFormsApplicationProxy => Mocks.AddMock<FormsApplicationProxyMockBuilder, IFormsApplicationProxy>().Invoke();
         protected ErrorHandlerMockBuilder MockErrorHandler => Mocks.AddMock<ErrorHandlerMockBuilder, IErrorHandler>().Invoke();
         protected ConnectivityServiceMockBuilder MockConnectivityService => Mocks.AddMock<ConnectivityServiceMockBuilder, IConnectivityService>().Invoke();
         protected DialogServiceMockBuilder MockDialogService => Mocks.AddMock<DialogServiceMockBuilder, IDialogService>().Invoke();

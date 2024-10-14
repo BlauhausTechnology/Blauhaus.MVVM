@@ -4,8 +4,6 @@ using Blauhaus.Errors;
 using Blauhaus.MVVM.Abstractions.Application;
 using Blauhaus.MVVM.Tests.Tests.AppLifecycleServiceTests.Base;
 using Blauhaus.Responses;
-using Moq;
-using NUnit.Framework;
 
 namespace Blauhaus.MVVM.Tests.Tests.AppLifecycleServiceTests
 {

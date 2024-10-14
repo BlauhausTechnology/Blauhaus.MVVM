@@ -2,7 +2,6 @@
 using Blauhaus.Auth.Abstractions.Errors;
 using Blauhaus.MVVM.Services;
 using Blauhaus.MVVM.Tests.Tests.Base;
-using NUnit.Framework;
 
 namespace Blauhaus.MVVM.Tests.Tests.ErrorHandlingServiceTests
 {

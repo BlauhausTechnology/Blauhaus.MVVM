@@ -1,9 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Blauhaus.MVVM.Tests.Tests.ObservableIdCollectionTests.Base;
-using Moq;
-using NUnit.Framework;
-using static SQLite.SQLite3;
 
 namespace Blauhaus.MVVM.Tests.Tests.ObservableIdCollectionTests.UpdateAsyncTests.Base
 {

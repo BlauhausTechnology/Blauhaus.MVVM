@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Blauhaus.Common.Abstractions;
-using Blauhaus.Common.Utils.Extensions;
 using Blauhaus.Ioc.Abstractions;
-using Blauhaus.MVVM.Collections;
 using Blauhaus.MVVM.Collections.Base;
 using Blauhaus.MVVM.Tests.Tests.Base;
 using Blauhaus.TestHelpers.MockBuilders;

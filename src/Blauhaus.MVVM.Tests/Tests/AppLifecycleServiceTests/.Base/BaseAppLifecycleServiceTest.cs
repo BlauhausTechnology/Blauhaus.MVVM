@@ -4,7 +4,6 @@ using Blauhaus.MVVM.Tests.Tests.Base;
 using Blauhaus.Responses;
 using Blauhaus.TestHelpers.MockBuilders;
 using Microsoft.Extensions.DependencyInjection;
-using Moq;
 
 namespace Blauhaus.MVVM.Tests.Tests.AppLifecycleServiceTests.Base
 {

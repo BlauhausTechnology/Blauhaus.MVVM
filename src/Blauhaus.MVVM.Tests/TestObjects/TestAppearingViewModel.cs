@@ -1,6 +1,5 @@
 ﻿using System.Windows.Input;
 using Blauhaus.Common.Utils.NotifyPropertyChanged;
-using Blauhaus.Ioc.Abstractions;
 using Blauhaus.MVVM.Abstractions.Commands;
 using Blauhaus.MVVM.Abstractions.ViewModels;
 

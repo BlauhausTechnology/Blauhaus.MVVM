@@ -1,7 +1,6 @@
 ﻿using System;
 using Blauhaus.MVVM.Abstractions.Navigation.Register;
 using Blauhaus.TestHelpers.MockBuilders;
-using Moq;
 
 namespace Blauhaus.MVVM.Tests.MockBuilders
 {

@@ -1,7 +1,4 @@
-﻿using Blauhaus.MVVM.Tests.Tests.ObservableIdCollectionTests.UpdateAsyncTests.Base;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Blauhaus.MVVM.Tests.Tests.ObservableIdCollectionTests.Base;
 
 namespace Blauhaus.MVVM.Tests.Tests.ObservableIdCollectionTests;

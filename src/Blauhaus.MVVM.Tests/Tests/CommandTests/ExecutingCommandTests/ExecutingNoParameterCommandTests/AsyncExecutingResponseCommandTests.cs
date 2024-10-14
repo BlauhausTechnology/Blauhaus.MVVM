@@ -7,7 +7,6 @@ using Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Base;
 using Blauhaus.Responses;
 using Blauhaus.TestHelpers.PropertiesChanged.CanExecuteChanged;
 using Blauhaus.TestHelpers.PropertiesChanged.PropertiesChanged;
-using NUnit.Framework;
 using NUnit.Framework.Legacy;
 
 namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.ExecutingNoParameterCommandTests

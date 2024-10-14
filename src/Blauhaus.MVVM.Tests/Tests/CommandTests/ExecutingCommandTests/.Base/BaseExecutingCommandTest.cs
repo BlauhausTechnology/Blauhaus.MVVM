@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Blauhaus.Analytics.TestHelpers.MockBuilders;
 using Blauhaus.MVVM.Abstractions.Contracts;
 using Blauhaus.MVVM.ExecutingCommands.Base;
 using Blauhaus.MVVM.Tests.Tests.Base;
-using Blauhaus.TestHelpers.Extensions;
 using Blauhaus.TestHelpers.PropertiesChanged.CanExecuteChanged;
 using Blauhaus.TestHelpers.PropertiesChanged.PropertiesChanged;
 using Microsoft.Extensions.Logging;
-using Moq;
-using NUnit.Framework;
 using NUnit.Framework.Legacy;
 
 namespace Blauhaus.MVVM.Tests.Tests.CommandTests.ExecutingCommandTests.Base
