@@ -7,8 +7,7 @@ using Blauhaus.MVVM.Abstractions.Navigation.Register;
 using Blauhaus.MVVM.Abstractions.ViewModels;
 using Blauhaus.MVVM.Abstractions.Views;
 using Blauhaus.MVVM.Maui.Applications;
-using Blauhaus.MVVM.Maui.Views;
-using Microsoft.Extensions.Logging;
+using Blauhaus.MVVM.Maui.Views; 
 using IFlyoutView = Blauhaus.MVVM.Abstractions.Views.IFlyoutView;
 using IView = Blauhaus.MVVM.Abstractions.Views.IView;
 
@@ -249,7 +248,7 @@ public class MauiNavigationService : INavigationService
             _navigationViews[navigationView.StackName] = navigationView;
         }
 
-        private async Task ShowMainPageAsync(Page page)
+        public async Task ShowMainPageAsync(Page page)
         {
             if (page.BindingContext is IAsyncInitializable initializable)
             {
@@ -262,7 +261,7 @@ public class MauiNavigationService : INavigationService
             });
         }
         
-        private async Task NavigateToAsync(Page page)
+        public async Task NavigateToAsync(Page page)
         {
             if (CurrentNavigationPage == null)
             {
@@ -280,7 +279,7 @@ public class MauiNavigationService : INavigationService
             });
         }
           
-        private TPage GetPageForViewModel<TPage>(Type viewModelType) where TPage : Page
+        public TPage GetPageForViewModel<TPage>(Type viewModelType) where TPage : Page
         {
             var viewType = _navigationRegister.GetViewType(viewModelType);
             if (viewType == null)
